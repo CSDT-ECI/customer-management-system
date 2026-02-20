@@ -27,15 +27,15 @@ David Santiago Castro Sierra
 	- Acceso a datos (consultas nativas) dentro de controladores
 
 **Evidencias representativas**
-- Controlador base genérico (endpoints + navegación + utilidades): [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
-- Mezcla REST + JSF + SQL nativo + modelos de UI: [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
-- Config de seguridad (enfoque legacy): [src/main/java/com/cms/configs/SecurityConfig.java](src/main/java/com/cms/configs/SecurityConfig.java)
+- Controlador base genérico (endpoints + navegación + utilidades): [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
+- Mezcla REST + JSF + SQL nativo + modelos de UI: [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
+- Config de seguridad (enfoque legacy): [src/main/java/com/cms/configs/SecurityConfig.java](../src/main/java/com/cms/configs/SecurityConfig.java)
 
 ### 1.2 Estado actual del proyecto (impacta Clean Code y XP)
-- No hay tests automatizados declarados: [README.md](README.md)
+- No hay tests automatizados declarados: [README.md](../README.md)
 - Hay un documento de deuda técnica / code smells ya elaborado (sirve como base para el backlog): [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md)
 - Configuración de runtime relevante:
-	- [src/main/resources/application.properties](src/main/resources/application.properties)
+	- [src/main/resources/application.properties](../src/main/resources/application.properties)
 
 ---
 
@@ -50,11 +50,11 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Parámetros/atributos genéricos o poco expresivos como `tobject` y colecciones con intención difusa.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 - Inconsistencias y typos en constantes y naming (por ejemplo, `BAR_CHAR_MODEL`).
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 - Nombres con errores ortográficos que dificultan lectura y búsqueda.
-	- [src/main/java/com/cms/util/RandomUtility.java](src/main/java/com/cms/util/RandomUtility.java)
+	- [src/main/java/com/cms/util/RandomUtility.java](../src/main/java/com/cms/util/RandomUtility.java)
 
 **Recomendaciones accionables**
 - Definir convención: idioma, casing, y términos del dominio (Customer/Person/Unit).
@@ -66,7 +66,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Métodos grandes que mezclan reglas, acceso a datos y armado de UI.
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 
 **Recomendaciones accionables**
 - Extraer colaboraciones:
@@ -80,7 +80,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Clase base de controlador con responsabilidades múltiples: endpoints REST, navegación JSF, creación por reflexión, utilidades varias.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 **Recomendaciones accionables**
 - Evitar herencia como “reuso de controladores”; preferir composición.
@@ -92,7 +92,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Ramificaciones redundantes en inicialización (un `if/else` que hace lo mismo) creando ruido y sospecha de bugs.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 **Recomendaciones accionables**
 - Simplificar el flujo a una sola ruta.
@@ -103,7 +103,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Comentarios tipo “Created by …” no explican intención ni reglas.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 **Recomendaciones accionables**
 - Mover “historia” al control de versiones (commit messages / PR).
@@ -117,7 +117,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Logging por concatenación y sin stacktrace (pierde diagnóstico).
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 
 **Recomendaciones accionables**
 - Usar `logger.error("mensaje", ex)`.
@@ -131,7 +131,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Instanciación por reflexión (`newInstance`) que oculta dependencias, es frágil y rompe testabilidad.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 **Recomendaciones accionables**
 - Reemplazar por fábrica explícita o `Supplier<T>`.
@@ -142,9 +142,9 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - SQL nativo construido desde strings, ejecutado desde controlador.
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 - Modelo que persiste un query como texto (`@Lob`) y tags como CSV en una sola columna.
-	- [src/main/java/com/cms/model/Dashboard.java](src/main/java/com/cms/model/Dashboard.java)
+	- [src/main/java/com/cms/model/Dashboard.java](../src/main/java/com/cms/model/Dashboard.java)
 
 **Recomendaciones accionables**
 - Evitar ejecutar SQL arbitrario almacenado. Alternativas:
@@ -158,15 +158,15 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - CSRF deshabilitado en configuración de seguridad.
-	- [src/main/java/com/cms/configs/SecurityConfig.java](src/main/java/com/cms/configs/SecurityConfig.java)
+	- [src/main/java/com/cms/configs/SecurityConfig.java](../src/main/java/com/cms/configs/SecurityConfig.java)
 - Login hardcodeado (usuario/clave) en lógica.
-	- [src/main/java/com/cms/contextHolder/LoginComponent.java](src/main/java/com/cms/contextHolder/LoginComponent.java)
+	- [src/main/java/com/cms/contextHolder/LoginComponent.java](../src/main/java/com/cms/contextHolder/LoginComponent.java)
 - CORS abierto con `@CrossOrigin("*")` en controladores.
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
-	- [src/main/java/com/cms/controller/RandomController.java](src/main/java/com/cms/controller/RandomController.java)
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/RandomController.java](../src/main/java/com/cms/controller/RandomController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 - Credenciales de base de datos en texto plano en configuración.
-	- [src/main/resources/application.properties](src/main/resources/application.properties)
+	- [src/main/resources/application.properties](../src/main/resources/application.properties)
 
 **Recomendaciones accionables**
 - Remover credenciales hardcodeadas y usar autenticación real (al menos por usuarios persistidos).
@@ -179,7 +179,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - El repositorio declara no tener tests.
-	- [README.md](README.md)
+	- [README.md](../README.md)
 
 **Recomendaciones accionables**
 - Empezar por tests “baratos” (utilidades, factories, validaciones) y crecer hacia integración.
@@ -190,7 +190,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Evidencias**
 - Concatenación de strings en bucles y naming inconsistente.
-	- [src/main/java/com/cms/util/RandomUtility.java](src/main/java/com/cms/util/RandomUtility.java)
+	- [src/main/java/com/cms/util/RandomUtility.java](../src/main/java/com/cms/util/RandomUtility.java)
 
 **Recomendaciones accionables**
 - Usar `StringBuilder` en loops.
@@ -205,38 +205,38 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 **SRP (Single Responsibility Principle)**
 - Conclusión: clases cambian por demasiadas razones.
 - Evidencias:
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 
 **OCP (Open/Closed Principle)**
 - Conclusión: agregar un nuevo tipo de gráfico implica modificar condicionales.
 - Evidencia:
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 
 **DIP (Dependency Inversion Principle)**
 - Conclusión: controladores dependen de otros controladores (capa web acoplada consigo misma).
 - Evidencia:
-	- [src/main/java/com/cms/controller/RandomController.java](src/main/java/com/cms/controller/RandomController.java)
+	- [src/main/java/com/cms/controller/RandomController.java](../src/main/java/com/cms/controller/RandomController.java)
 
 ### 3.2 DRY
 - Conclusión: duplicación/ruido reduce claridad y facilita inconsistencias.
 - Evidencia:
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 ### 3.3 KISS
 - Conclusión: reflexión y magia aportan complejidad accidental.
 - Evidencia:
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 ### 3.4 Ley de Demeter (LoD)
 - Conclusión: clases con demasiado conocimiento de otras partes del sistema.
 - Evidencia:
-	- [src/main/java/com/cms/controller/RandomController.java](src/main/java/com/cms/controller/RandomController.java)
+	- [src/main/java/com/cms/controller/RandomController.java](../src/main/java/com/cms/controller/RandomController.java)
 
 ### 3.5 Separation of Concerns (SoC)
 - Conclusión: UI, API, negocio y data access se mezclan.
 - Evidencia:
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
 
 ---
 
@@ -247,7 +247,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 **Aplicación práctica inmediata**
 - Comenzar con clases sin framework:
-	- [src/main/java/com/cms/util/RandomUtility.java](src/main/java/com/cms/util/RandomUtility.java)
+	- [src/main/java/com/cms/util/RandomUtility.java](../src/main/java/com/cms/util/RandomUtility.java)
 - Luego, tests de servicios (mock repositorios) cuando haya lógica separada del controlador.
 
 ### 4.2 Integración continua (CI)
@@ -263,8 +263,8 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 **Aplicación práctica**
 - 1 smell = 1 PR.
 - Priorizar smells que reducen acoplamiento:
-	- Separar [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
-	- Quitar reflexión de [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
+	- Separar [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
+	- Quitar reflexión de [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
 
 ### 4.4 Pair programming
 - Rotación de parejas.
@@ -291,13 +291,13 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 - Documento previo de smells/deuda técnica (detalle): [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md)
 - Archivos clave analizados:
-	- [src/main/java/com/cms/controller/AbstractController.java](src/main/java/com/cms/controller/AbstractController.java)
-	- [src/main/java/com/cms/controller/DashboardViewController.java](src/main/java/com/cms/controller/DashboardViewController.java)
-	- [src/main/java/com/cms/controller/RandomController.java](src/main/java/com/cms/controller/RandomController.java)
-	- [src/main/java/com/cms/configs/SecurityConfig.java](src/main/java/com/cms/configs/SecurityConfig.java)
-	- [src/main/java/com/cms/contextHolder/LoginComponent.java](src/main/java/com/cms/contextHolder/LoginComponent.java)
-	- [src/main/java/com/cms/service/AbstractService.java](src/main/java/com/cms/service/AbstractService.java)
-	- [src/main/java/com/cms/util/RandomUtility.java](src/main/java/com/cms/util/RandomUtility.java)
-	- [src/main/java/com/cms/model/Dashboard.java](src/main/java/com/cms/model/Dashboard.java)
-	- [src/main/resources/application.properties](src/main/resources/application.properties)
-	- [pom.xml](pom.xml)
+	- [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
+	- [src/main/java/com/cms/controller/DashboardViewController.java](../src/main/java/com/cms/controller/DashboardViewController.java)
+	- [src/main/java/com/cms/controller/RandomController.java](../src/main/java/com/cms/controller/RandomController.java)
+	- [src/main/java/com/cms/configs/SecurityConfig.java](../src/main/java/com/cms/configs/SecurityConfig.java)
+	- [src/main/java/com/cms/contextHolder/LoginComponent.java](../src/main/java/com/cms/contextHolder/LoginComponent.java)
+	- [src/main/java/com/cms/service/AbstractService.java](../src/main/java/com/cms/service/AbstractService.java)
+	- [src/main/java/com/cms/util/RandomUtility.java](../src/main/java/com/cms/util/RandomUtility.java)
+	- [src/main/java/com/cms/model/Dashboard.java](../src/main/java/com/cms/model/Dashboard.java)
+	- [src/main/resources/application.properties](../src/main/resources/application.properties)
+	- [pom.xml](../pom.xml)

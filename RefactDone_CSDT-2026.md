@@ -24,5 +24,5 @@ El análisis completo está en [CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIM
 
 | Fecha | Actividad | Evidencia | Resultado |
 |------:|-----------|----------|----------|
-| 2026-02-12 | Refactoring + Code Smells | [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md) | Hecho |
-| 2026-02-19 | Clean Code + XP Practices | [CODIGO_LIMPIO_+_PRACTICAS_XP.md](CODIGO_LIMPIO_+_PRACTICAS_XP.md) | Hecho |
+| 2026-02-12 | Refactoring + Code Smells | [DEUDA_TECNICA_Y_REFACTORIZACION.md](docs/DEUDA_TECNICA_Y_REFACTORIZACION.md) | Hecho |
+| 2026-02-19 | Clean Code + XP Practices | [CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md) | Hecho |
