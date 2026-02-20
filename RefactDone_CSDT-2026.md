@@ -5,9 +5,9 @@
 **Repositorio base:** [Customer Management System](https://github.com/sdrahnea/customer-management-system)
 
 ## Integrantes
-- Juan David Rodriguez Rodriguez
-- Jesus Alberto Jauregui Conde
-- David Santiago Castro Sierra
+- [Juan David Rodriguez Rodriguez](https://github.com/Enigmus12)
+- [Jesus Alberto Jauregui Conde](https://github.com/JesusJC15)
+- [David Santiago Castro Sierra](https://github.com/daviidc29)
 
 ## Enlaces rápidos del repo
 - Documentación del proyecto original: [README.md](README.md)
