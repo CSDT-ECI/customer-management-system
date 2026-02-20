@@ -1,7 +1,7 @@
 # Autores
-Juan David Rodriguez Rodriguez
-Jesus Alberto Jauregui Conde
-David Santiago Castro Sierra
+- Juan David Rodriguez Rodriguez
+- Jesus Alberto Jauregui Conde
+- David Santiago Castro Sierra
 
 # Análisis de Deuda Técnica y Propuestas de Refactorización
 
