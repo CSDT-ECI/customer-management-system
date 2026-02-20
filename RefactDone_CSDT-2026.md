@@ -15,10 +15,10 @@
 - Build (Maven): [pom.xml](pom.xml)
 
 ## Entregable 1 — Refactoring + Code Smells
-El análisis completo está en [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md).
+El análisis completo está en [DEUDA_TECNICA_Y_REFACTORIZACION.md](docs/DEUDA_TECNICA_Y_REFACTORIZACION.md).
 
 ## Entregable 2 — Clean Code + XP Practices
-El análisis completo está en [CODIGO_LIMPIO_+_PRACTICAS_XP.md](CODIGO_LIMPIO_+_PRACTICAS_XP.md).
+El análisis completo está en [CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md).
 
 ## Bitácora del curso
 
