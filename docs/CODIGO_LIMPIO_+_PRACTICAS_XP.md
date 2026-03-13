@@ -22,9 +22,9 @@
 - Aplicación **Spring Boot** con interfaz **JSF/PrimeFaces** (JoinFaces).
 - Estructura nominal por paquetes `controller/`, `service/`, `repository/`, `model/`.
 - En varios puntos se observa una mezcla fuerte entre:
-	- Backing beans JSF (`@ManagedBean`)
-	- Controladores REST (`@RestController`)
-	- Acceso a datos (consultas nativas) dentro de controladores
+  - Backing beans JSF (`@ManagedBean`)
+  - Controladores REST (`@RestController`)
+  - Acceso a datos (consultas nativas) dentro de controladores
 
 **Evidencias representativas**
 - Controlador base genérico (endpoints + navegación + utilidades): [src/main/java/com/cms/controller/AbstractController.java](../src/main/java/com/cms/controller/AbstractController.java)
@@ -35,7 +35,7 @@
 - No hay tests automatizados declarados: [README.md](../README.md)
 - Hay un documento de deuda técnica / code smells ya elaborado (sirve como base para el backlog): [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md)
 - Configuración de runtime relevante:
-	- [src/main/resources/application.properties](../src/main/resources/application.properties)
+  - [src/main/resources/application.properties](../src/main/resources/application.properties)
 
 ---
 
