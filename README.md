@@ -113,7 +113,7 @@ Once the build (the jar file) is ready the application can be run. Please, use t
 ```
 SDR:customer-management-system sdrahnea$ java -jar target/customer-management-system-0.0.2-SNAPSHOT.jar
 ```
-If was used default configuration then the application should be available at this url: http://localhost:8081/cms/login.xhtml 
+If the default configuration was used, then the application should be available at the following URL: http://localhost:8081/cms/login.xhtml 
 Use the following credentials: username: admin, password: 123.
 
 ## 4. Built With
