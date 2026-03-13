@@ -113,7 +113,7 @@ Once the build (the jar file) is ready the application can be run. Please, use t
 ```
 SDR:customer-management-system sdrahnea$ java -jar target/customer-management-system-0.0.2-SNAPSHOT.jar
 ```
-If was used default configuration then the application should be available at this url: http://localhost:8081/oms/login.xhtml 
+If the default configuration was used, then the application should be available at the following URL: http://localhost:8081/cms/login.xhtml 
 Use the following credentials: username: admin, password: 123.
 
 ## 4. Built With
@@ -150,4 +150,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 10. Donation
 * [PayPal](https://www.paypal.me/sdrahnea) - any donation is welcomed in case that you was pleased with this work :p
-
