@@ -10,9 +10,6 @@
 2. Características de Clean Code (evaluación + evidencias)
 3. Principios de programación incumplidos
 4. Prácticas XP recomendadas (aplicadas al repo)
-5. Plan de mejora incremental (iteraciones)
-6. Checklist de Pull Request
-7. Apéndice: evidencias y enlaces
 
 ---
 
