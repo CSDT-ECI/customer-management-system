@@ -287,7 +287,7 @@ En cada característica se listan: **Estado**, **Evidencias** y **Recomendacione
 
 ---
 
-## 6) Apéndice: evidencias y enlaces
+## 7) Apéndice: evidencias y enlaces
 
 - Documento previo de smells/deuda técnica (detalle): [DEUDA_TECNICA_Y_REFACTORIZACION.md](DEUDA_TECNICA_Y_REFACTORIZACION.md)
 - Archivos clave analizados:
