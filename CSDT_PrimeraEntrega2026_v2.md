@@ -493,3 +493,17 @@ La parte positiva es que la deuda está relativamente concentrada y el costo est
 
 ![alt text](images/image-4.png)
 
+---
+
+## 14. Estado actual de pruebas y cobertura
+
+En la línea base del proyecto, la cobertura era de **0%** porque el repositorio no incluía pruebas automatizadas. A partir de esa situación inicial se incorporó **más de 100 pruebas unitarias** orientadas a validar diferentes componentes del sistema, especialmente modelos, utilidades y clases de soporte. Esta incorporación permitió establecer una base mínima de verificación automática y reducir el riesgo de cambios triviales no detectados.
+
+Sin embargo, el incremento en la cantidad de pruebas no se tradujo de forma proporcional en la cobertura global, que se mantiene en un nivel **moderado, cercano al 35%**. La razón principal es que una parte importante de esas pruebas cubre clases simples, con lógica acotada y bajo número de ramas de ejecución. En contraste, las capas con mayor peso estructural, como **controllers** y algunos **services**, concentran flujos más complejos y, al tener menor cobertura, disminuyen el porcentaje total del sistema.
+
+![alt text](images/image-5.png)
+
+Para compensar parcialmente esa diferencia, se añadieron pruebas adicionales sobre algunos controllers representativos utilizando **MockMvc** para validar el comportamiento HTTP de los endpoints y **Mockito** para simular las dependencias de servicio. El propósito de esta ampliación no fue alcanzar una cobertura del **100%**, sino mejorar la calidad del código, verificar el comportamiento básico de las rutas más relevantes y contar con una evidencia técnica suficiente para esta etapa del proyecto. Desde una perspectiva académica y de aseguramiento de calidad, la cobertura obtenida puede considerarse adecuada como punto de partida para continuar con refactorización y ampliación gradual de pruebas en iteraciones posteriores.
+
+![alt text](images/image-6.png)
+
