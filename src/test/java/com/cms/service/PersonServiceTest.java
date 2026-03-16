@@ -18,11 +18,11 @@ import static org.mockito.Mockito.*;
  * Unit tests for PersonService, exercising the inherited logic in AbstractService.
  * The CrudRepository is mocked so no database connection is needed.
  */
-@SuppressWarnings({"unchecked", "deprecation"})
+
 class PersonServiceTest {
 
     @Mock
-    private CrudRepository repository;
+    private CrudRepository<Person, Long> repository;
 
     @InjectMocks
     private PersonService personService;

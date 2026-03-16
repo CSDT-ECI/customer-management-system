@@ -40,7 +40,7 @@ Este enfoque permite evitar una mala práctica frecuente: creer que una única l
 | Seguridad         | E           | 3           | 1 blocker, 1 high y 1 low                                    |
 | Confiabilidad     | D           | 14          | 2 high y 12 medium                                           |
 | Mantenibilidad    | A           | 69          | 1 blocker, 7 high, 29 medium y 32 low                        |
-| Cobertura         | 0.0%        | —           | No existen pruebas automatizadas en el repositorio           |
+| Cobertura         | 0.0%        | —           | En la línea base analizada por SonarQube no existían pruebas automatizadas en el repositorio |
 | Duplicación       | 0.0%        | —           | Métrica positiva, pero insuficiente para afirmar buen diseño |
 | Security Hotspots | E           | 7           | 100% pendientes de revisión según el panel                   |
 
@@ -67,7 +67,7 @@ Este enfoque permite evitar una mala práctica frecuente: creer que una única l
 - El **92.0%** de los hallazgos son **code smells**. Esto no significa que sean irrelevantes; significa que la mayor parte del deterioro es **estructural y de disciplina técnica**.
 - Existen **3 vulnerabilidades** y **3 bugs**. Aunque son pocos en número, son más importantes que decenas de smells menores.
 - La evidencia muestra **7 security hotspots** y **ninguno ha sido revisado**, por lo que la incertidumbre de seguridad sigue abierta.
-- La cobertura está en **0.0%** y el repositorio no contiene carpeta `src/test`, lo que confirma la ausencia de pruebas automatizadas.
+- En la línea base analizada por SonarQube, la cobertura estaba en **0.0%** y el repositorio no contenía carpeta `src/test`, lo que confirmaba la ausencia de pruebas automatizadas antes de esta entrega.
 
 ---
 

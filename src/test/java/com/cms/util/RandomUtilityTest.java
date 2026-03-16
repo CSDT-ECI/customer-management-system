@@ -30,14 +30,14 @@ class RandomUtilityTest {
     }
 
     @Test
-    void generatWord_noArgs_returnsNonEmptyString() {
+    void generateWord_noArgs_returnsNonEmptyString() {
         String word = RandomUtility.generatWord();
         assertNotNull(word);
         assertFalse(word.isEmpty(), "Generated word should not be empty");
     }
 
     @Test
-    void generatWord_withLengthBounds_returnsStringWithinBounds() {
+    void generateWord_withLengthBounds_returnsStringWithinBounds() {
         int minLength = 3;
         int maxLength = 6;
         String word = RandomUtility.generatWord(minLength, maxLength);
