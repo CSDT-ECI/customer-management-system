@@ -1,6 +1,7 @@
 # CSDT – Primera Entrega 2026
 
 ## Modelos de calidad  
+
 ### Análisis integral del proyecto `customer-management-system` con base en SonarQube Cloud
 
 > **Propósito del documento**  
@@ -101,6 +102,7 @@ Los dos puntos más delicados son:
    Acumula 11 hallazgos y sirve como base de acceso a datos y comportamiento genérico. Un error o mala práctica aquí tiene efecto transversal sobre varias entidades.
 
 Cuando la deuda se concentra en componentes base, el riesgo es doble:  
+
 - el problema es más profundo de lo que sugiere el número de archivos afectados;  
 - pero también existe una oportunidad, porque corregir bien unas pocas clases puede mejorar gran parte del proyecto.
 
@@ -111,9 +113,11 @@ Cuando la deuda se concentra en componentes base, el riesgo es doble:
 ### 5.1 Seguridad
 
 #### Estado
+
 **Crítico**
 
 #### Evidencia principal
+
 - **Security Rating E**
 - **3 security issues**
 - **7 security hotspots**
@@ -139,6 +143,7 @@ Fuera del JSON de Sonar, la revisión del repositorio identifica en `application
 #### Interpretación
 
 La seguridad del proyecto falla menos por cantidad y más por **naturaleza de los hallazgos**. En software real, una sola mala decisión de seguridad puede valer más que veinte smells menores. Aquí se combinan:
+
 - configuración sensible expuesta,
 - protección CSRF deshabilitada,
 - frontera REST demasiado acoplada a persistencia,
@@ -153,9 +158,11 @@ La seguridad del proyecto falla menos por cantidad y más por **naturaleza de lo
 ### 5.2 Confiabilidad
 
 #### Estado
+
 **Débil**
 
 #### Evidencia principal
+
 - **Reliability Rating D**
 - **14 reliability issues**
 - Distribución reportada: **2 high** y **12 medium**
@@ -187,9 +194,11 @@ La nota **D** es coherente con un sistema funcional pero **frágil ante cambios*
 ### 5.3 Mantenibilidad
 
 #### Estado
+
 **Aceptable, pero engañoso si se interpreta sola**
 
 #### Evidencia principal
+
 - **Maintainability Rating A**
 - **69 maintainability issues**
 - Distribución reportada: **1 blocker, 7 high, 29 medium y 32 low**
@@ -234,15 +243,18 @@ La A en mantenibilidad debe leerse como una **ventana de oportunidad**, no como 
 ### 5.4 Capacidad de prueba
 
 #### Estado
+
 **Muy bajo**
 
 #### Evidencia principal
+
 - **Coverage 0.0%**
 - No existe carpeta `src/test` en el repositorio entregado
 
 #### Interpretación
 
 Sin pruebas automatizadas, el proyecto no tiene red de seguridad para:
+
 - corregir vulnerabilidades,
 - modernizar APIs,
 - refactorizar controladores base,
@@ -259,13 +271,16 @@ La ausencia de pruebas es uno de los **principales bloqueadores de evolución se
 ### 5.5 Integridad del diseño
 
 #### Estado
+
 **Parcial**
 
 #### Señales positivas
+
 - **0.0% de duplicación** según Sonar.
 - Existe cierta estructura por capas: `controller`, `service`, `repository`, `model`, `converter`, `configs`.
 
 #### Señales negativas
+
 - Los controladores base mezclan responsabilidades JSF y REST.
 - Hay clases genéricas con reflexión (`newInstance()`), estado mutable y lógica transversal.
 - El borde REST expone entidades persistentes.
@@ -280,9 +295,11 @@ El diseño no está colapsado, pero sí **tensionado por herencia genérica, aco
 ### 5.6 Gobernanza técnica
 
 #### Estado
+
 **Insuficiente**
 
 #### Evidencia principal
+
 - El tablero muestra **Quality Gate: Not computed**.
 - Sí existe pipeline de GitHub Actions para análisis con Sonar.
 - Aun así, la evidencia entregada no permite afirmar que el gate esté actuando como criterio real de aceptación.
@@ -341,6 +358,7 @@ Los primeros afectan seguridad y exposición. Los segundos afectan estabilidad, 
 Además del tablero de Sonar, la revisión directa del código confirma patrones concretos que justifican el diagnóstico.
 
 ### 7.1 `SecurityConfig.java`
+
 - Desactiva CSRF.
 - Repite el literal `"/login.xhtml"` varias veces.
 - Conserva código comentado.
@@ -348,10 +366,12 @@ Además del tablero de Sonar, la revisión directa del código confirma patrones
 - Incluye un `main()` con generación de hash para la contraseña `"123"`.
 
 ### 7.2 `LoginComponent.java`
+
 - La autenticación es artificialmente débil: `if(login.equals("admin")) return true;`
 - Esto no representa una autenticación real ni escalable.
 
 ### 7.3 `AbstractController.java`
+
 - Mezcla comportamiento de managed beans con endpoints REST.
 - Usa logging por concatenación.
 - Construye objetos por reflexión usando `newInstance()`.
@@ -359,16 +379,19 @@ Además del tablero de Sonar, la revisión directa del código confirma patrones
 - Mantiene campos serializables con referencias no marcadas como `transient`.
 
 ### 7.4 `AbstractService.java`
+
 - Usa field injection.
 - Usa `CrudRepository.findOne(...)` y `delete(new Long(id))`, ambos patrones antiguos.
 - Repite casts innecesarios y variables temporales.
 - Declara `EntityManager` y repositorio de forma que Sonar cuestiona su serialización.
 
 ### 7.5 `MainRestController.java`
+
 - Registra usuarios exponiendo `SecurityUser` directamente.  
   A nivel de diseño seguro, esto debió pasar por DTO de entrada y salida.
 
 ### 7.6 `application.properties`
+
 - Almacena credenciales de PostgreSQL en texto plano.  
   No se deben versionar secretos ni credenciales reales en configuración estática.
 
@@ -398,6 +421,7 @@ Además del tablero de Sonar, la revisión directa del código confirma patrones
 ## 9. Priorización recomendada de remediación
 
 ### 9.1 Prioridad 1 — Corrección inmediata
+
 Corregir antes de cualquier mejora cosmética.
 
 1. Retirar la contraseña comprometida y eliminar la lógica auxiliar del `main()` en `SecurityConfig`.
@@ -408,6 +432,7 @@ Corregir antes de cualquier mejora cosmética.
 6. Evitar logging de datos controlados por el usuario.
 
 ### 9.2 Prioridad 2 — Estabilización estructural
+
 Buscar bajar el riesgo de regresión y fragilidad.
 
 1. Refactorizar `AbstractController` y `AbstractService`.
@@ -417,6 +442,7 @@ Buscar bajar el riesgo de regresión y fragilidad.
 5. Resolver el sombreado de `entityManager` en `UnitService`.
 
 ### 9.3 Prioridad 3 — Testabilidad y evolución
+
 Construir una base que permita mejorar sin romper.
 
 1. Crear pruebas unitarias para servicios.
@@ -425,6 +451,7 @@ Construir una base que permita mejorar sin romper.
 4. Definir checklist mínimo de revisión estática antes de merge.
 
 ### 9.4 Prioridad 4 — Higiene técnica
+
 Atacar la deuda barata para subir claridad.
 
 1. Reemplazar concatenación en logs por placeholders.
@@ -438,23 +465,27 @@ Atacar la deuda barata para subir claridad.
 ## 10. Buenas prácticas concretas que deberían guiar la corrección
 
 ### Seguridad
+
 - No exponer entidades JPA en contratos REST.
 - No guardar secretos en el repositorio.
 - No deshabilitar protecciones sin una justificación explícita y documentada.
 - No registrar datos de entrada del usuario sin sanitización y necesidad operativa.
 
 ### Diseño
+
 - Separar responsabilidades JSF y REST.
 - Evitar clases base con demasiada lógica transversal.
 - Preferir composición y contratos claros sobre reflexión genérica.
 
 ### Mantenibilidad
+
 - Constructor injection para dependencias obligatorias.
 - APIs modernas del framework.
 - Logs con placeholders.
 - Eliminación sistemática de código muerto y imports innecesarios.
 
 ### Calidad operativa
+
 - Tests antes de refactors grandes.
 - Quality Gate funcional y visible.
 - Política de “no merge” para blocker y critical abiertos.
@@ -468,8 +499,6 @@ Desde la perspectiva de **modelos de calidad**, el proyecto `customer-management
 La parte positiva es que la deuda está relativamente concentrada y el costo estimado inicial de remediación sigue siendo manejable. Eso significa que el proyecto es **recuperable**. Sin embargo, la recuperación no pasa por corregir issues al azar, sino por actuar en el orden correcto: primero seguridad, luego estabilidad estructural, luego testabilidad y finalmente limpieza incremental. Si el equipo sigue ese orden, Sonar puede convertirse en una herramienta real de gobierno de calidad y no solo en un tablero decorativo.
 
 ---
-
-
 
 > El proyecto posee una base funcional y una estructura recuperable, pero la evidencia de SonarQube Cloud demuestra que aún no alcanza una calidad integral suficiente. La mayor deuda está concentrada en seguridad, confiabilidad y ausencia de pruebas. En consecuencia, el plan de mejora debe priorizar la mitigación de riesgos críticos, la refactorización de clases base y la incorporación de pruebas automatizadas antes de considerar el sistema apto para evolución sostenida o despliegue productivo.
 
@@ -506,4 +535,3 @@ Sin embargo, el incremento en la cantidad de pruebas no se tradujo de forma prop
 Para compensar parcialmente esa diferencia, se añadieron pruebas adicionales sobre algunos controllers representativos utilizando **MockMvc** para validar el comportamiento HTTP de los endpoints y **Mockito** para simular las dependencias de servicio. El propósito de esta ampliación no fue alcanzar una cobertura del **100%**, sino mejorar la calidad del código, verificar el comportamiento básico de las rutas más relevantes y contar con una evidencia técnica suficiente para esta etapa del proyecto. Desde una perspectiva académica y de aseguramiento de calidad, la cobertura obtenida puede considerarse adecuada como punto de partida para continuar con refactorización y ampliación gradual de pruebas en iteraciones posteriores.
 
 ![alt text](images/image-6.png)
-
