@@ -61,7 +61,7 @@ class ChartTypeTest {
     }
 
     @Test
-    void toString_withNullName_returnsNull() {
+    void toString_withNullName_returnsStringNull() {
         assertNull(chartType.getName());
         assertEquals("null", chartType.toString());
     }
