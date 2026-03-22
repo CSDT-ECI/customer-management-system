@@ -80,7 +80,7 @@ class RandomUtilityTest {
     }
 
     @Test
-    void generateNumber_withSameBounds_returnsMin() {
+    void generateNumber_minAndMinPlusOne_returnsMin() {
         int number = RandomUtility.generateNumber(5, 6);
         assertEquals(5, number);
     }
