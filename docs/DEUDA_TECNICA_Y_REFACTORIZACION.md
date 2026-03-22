@@ -1,7 +1,7 @@
 # Autores
-Juan David Rodriguez Rodriguez
-Jesus Alberto Jauregui Conde
-David Santiago Castro Sierra
+- Juan David Rodriguez Rodriguez
+- Jesus Alberto Jauregui Conde
+- David Santiago Castro Sierra
 
 # Análisis de Deuda Técnica y Propuestas de Refactorización
 
@@ -17,7 +17,7 @@ David Santiago Castro Sierra
 2. [Code Smells Identificados](#code-smells-identificados)
 3. [Deuda Técnica por Categoría](#deuda-técnica-por-categoría)
 4. [Técnicas de Refactorización Propuestas](#técnicas-de-refactorización-propuestas)
-5. [Plan de Acción Priorizado](#plan-de-acción-priorizado)
+5. [Conclusiones y Recomendaciones](#conclusiones-y-recomendaciones)
 
 ---
 
