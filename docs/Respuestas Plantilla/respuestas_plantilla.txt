@@ -1,0 +1,27 @@
+Nombre: David Santiago Castro
+
+_____________________________________________________
+| Pregunta | Respuesta                              |
+| -------- | -------------------------------------- |
+| 1        | 4                                      |
+| 2        | 5                                      |
+| 3        | 4                                      |
+| 4        | 2                                      |
+| 5        | 5                                      |
+| 6        | 3                                      |
+| 7        | 3                                      |
+| 8        | 2                                      |
+| 9        | Neutral                                |
+| 10       | Comunicación directa entre integrantes |
+|___________________________________________________|
+
+
+Preguntas de apoyo
+
+11. ¿Cuál es hoy la principal fricción técnica o de proceso para desarrollar en el proyecto?
+
+Actualmente, la principal fricción es la falta de claridad en algunos procesos y en la organización técnica del proyecto. En ciertos momentos, identificar dónde hacer cambios o cómo validar rápidamente una modificación toma más tiempo del esperado, lo que genera retrabajo y ralentiza el avance del desarrollo.
+
+12. ¿Qué mejora concreta tendría el mayor impacto positivo en tu experiencia como desarrollador?
+
+La mejora que tendría mayor impacto sería contar con una documentación más clara y actualizada, junto con un flujo de validación más rápido para pruebas, build y revisión de cambios. Esto reduciría la carga mental, facilitaría el trabajo continuo y permitiría avanzar con más confianza y menos bloqueos.
