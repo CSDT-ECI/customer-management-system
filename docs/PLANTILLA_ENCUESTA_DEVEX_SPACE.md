@@ -1,4 +1,4 @@
-# Plantilla de Mini Encuesta DevEx + SPACE
+# Plantilla de Encuesta DevEx + SPACE
 
 ## Propósito
 
@@ -62,8 +62,6 @@ Esta encuesta breve permite capturar la dimensión perceptual de la experiencia 
 - Otro
 
 ### Preguntas opcionales de apoyo
-
-Si se quiere ampliar la medición, se pueden agregar estas dos preguntas abiertas:
 
 - ¿Cuál es hoy la principal fricción técnica o de proceso para desarrollar en el proyecto?
 - ¿Qué mejora concreta tendría el mayor impacto positivo en tu experiencia como desarrollador?
