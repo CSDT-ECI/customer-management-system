@@ -169,7 +169,7 @@ No se aplicó todavía una encuesta respondida por el equipo, por lo que la dime
 
 - **no infiere bienestar desde commits**;
 - **no concluye motivación a partir de actividad técnica**;
-- y deja una **plantilla de encuesta lista** para instrumentar la medición en una siguiente iteración.
+- y deja una **plantilla de encuesta lista** las respuestas a esta encuesta se encuentran en la carpeta [Respuestas Plantilla](./RespuestasPlantilla)
 
 ---
 
