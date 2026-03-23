@@ -1,0 +1,28 @@
+Nombre: Jesus Alberto Jauregui Conde
+
+_____________________________________________________
+| Pregunta | Respuesta                              |
+| -------- | -------------------------------------- |
+| 1        | 5 |
+| 2        | 4 |
+| 3        | 2 |
+| 4        | 3 |
+| 5        | 2 |
+| 6        | 2 |
+| 7        | 3 |
+| 8        | 4 |
+| 9        | Positiva |
+| 10       | Bitácora y trazabilidad de entregables |
+|___________________________________________________|
+
+
+Preguntas de apoyo
+
+11. ¿Cuál es hoy la principal fricción técnica o de proceso para desarrollar en el proyecto?
+
+La principal fricción seria la de adaptar estas dependencias y versiones viejas a unas mas recientes estables para familiarizarse aun mejor con el proyecto.
+
+
+12. ¿Qué mejora concreta tendría el mayor impacto positivo en tu experiencia como desarrollador?
+
+La mejora con mayor impacto seria actualizar el proyecto a un stack mas reciente con nuevas tecnologías que permitan mejorar y avanzar mas progresivamente en el desarrollo.
