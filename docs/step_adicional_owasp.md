@@ -22,7 +22,7 @@ Archivo modificado:
 ### Step 2: Integración con GitHub Security
 ```yaml
 - name: Upload Trivy results to GitHub Security
-  uses: github/codeql-action/upload-sarif@v2
+  uses: github/codeql-action/upload-sarif@v3
   with:
     sarif_file: 'trivy-results.sarif'
 ```
