@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@c00bf189870aeb73784e9c6fa4699f3d62584296
+        uses: aquasecurity/trivy-action@v0.21.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
