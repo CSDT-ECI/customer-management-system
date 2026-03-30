@@ -66,3 +66,4 @@ jobs:
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
           -Dsonar.projectKey=CSDT-ECI_customer-management-system
           -Dsonar.organization=csdt-eci
+          -Dsonar.host.url=https://sonarcloud.io
