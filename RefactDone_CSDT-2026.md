@@ -44,4 +44,4 @@ El análisis completo está en [VIBE_CODING_Y_SPEC_DRIVEN_DEVELOPMENT.md](docs/V
 | 2026-02-19 | Clean Code + XP Practices | [CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md) | Hecho |
 | 2026-03-15 | Primera Entrega | [PRIMERA_ENTREGA_2026](docs/PRIMERA_ENTREGA_2026.md) | Hecho |
 | 2026-03-22 | DevEx + Developer Productivity | [DEVEX_Y_DEVELOPER_PRODUCTIVITY.md](docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md) | Hecho |
-| 2026-04-10 | Vibe Coding + Spec-Driven Development | [VIBE_CODING_Y_SPEC_DRIVEN_DEVELOPMENT.md](docs/VIBE_CODING_Y_SPEC_DRIVEN_DEVELOPMENT.md) | Hecho |
+| 2026-04-10 | Vibe Coding + Spec-Driven Development Jesus Jauregui | [VIBE_CODING_Y_SPEC_DRIVEN_DEVELOPMENT_JESUS.md](VibeCoding-SDD-Jesus/VIBE_CODING_Y_SPEC_DRIVEN_DEVELOPMENT_JESUS.md) | Hecho |
