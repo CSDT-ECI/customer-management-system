@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Huella de Carbono</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    body.dark-mode {
+      background: #222;
+      color: #fff;
+    }
+
+    main {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    body.dark-mode main {
+      background: #222;
+      color: #fff;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfd6dd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    body.dark-mode input {
+      background: #222;
+      color: #fff;
+      border: 1px solid #fff;
+    }
+
+    input:focus,
+    button:focus {
+      outline: 2px solid #1f6feb;
+      outline-offset: 2px;
+    }
+
+    .input-error {
+      border: 2px solid #d93025;
+    }
+
+    body.dark-mode .input-error {
+      border: 2px solid #ff6b6b;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #1f6feb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #1859bc;
+    }
+
+    #resultado {
+      margin-top: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Huella de Carbono</h1>
+
+    <!-- Maquetado HTML -->
+    <div class="field">
+      <label for="kilometros">Kilómetros en auto</label>
+      <input type="number" id="kilometros" min="0" step="any" required />
+    </div>
+
+    <div class="field">
+      <label for="horasVuelo">Horas de vuelo</label>
+      <input type="number" id="horasVuelo" min="0" step="any" required />
+    </div>
+
+    <div class="field">
+      <label for="electricidad">Gasto en electricidad</label>
+      <input type="number" id="electricidad" min="0" step="any" required />
+    </div>
+
+    <button id="calcularBtn">Calcular</button>
+    <button id="modoOscuroBtn">Cambiar a Modo Oscuro</button>
+
+    <p id="resultado" aria-live="polite"></p>
+  </main>
+
+  <script>
+    // Lógica JavaScript
+    const kilometrosInput = document.getElementById('kilometros');
+    const horasVueloInput = document.getElementById('horasVuelo');
+    const electricidadInput = document.getElementById('electricidad');
+    const calcularBtn = document.getElementById('calcularBtn');
+    const modoOscuroBtn = document.getElementById('modoOscuroBtn');
+    const resultado = document.getElementById('resultado');
+
+    function limpiarErrores() {
+      kilometrosInput.classList.remove('input-error');
+      horasVueloInput.classList.remove('input-error');
+      electricidadInput.classList.remove('input-error');
+    }
+
+    function obtenerNumeroValido(input) {
+      const valor = input.value.trim();
+      const numero = Number(valor);
+
+      if (valor === '' || !Number.isFinite(numero) || numero < 0) {
+        input.classList.add('input-error');
+        return null;
+      }
+
+      return numero;
+    }
+
+    calcularBtn.addEventListener('click', function () {
+      limpiarErrores();
+
+      const kilometros = obtenerNumeroValido(kilometrosInput);
+      const horasVuelo = obtenerNumeroValido(horasVueloInput);
+      const electricidad = obtenerNumeroValido(electricidadInput);
+
+      if (kilometros === null || horasVuelo === null || electricidad === null) {
+        resultado.textContent = 'Ingresa solo números válidos mayores o iguales a 0 en todos los campos.';
+        return;
+      }
+
+      const total = (kilometros + horasVuelo + electricidad) * 0.5;
+      resultado.textContent = 'Total de Huella de Carbono en KG: ' + total;
+    });
+
+    modoOscuroBtn.addEventListener('click', function () {
+      document.body.classList.add('dark-mode');
+    });
+  </script>
+</body>
+</html>

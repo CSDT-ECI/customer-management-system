@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Huella de Carbono</title>
+  <style>
+    :root {
+      --bg-1: #07111f;
+      --bg-2: #0b1f36;
+      --panel: rgba(255,255,255,0.08);
+      --panel-strong: rgba(255,255,255,0.14);
+      --border: rgba(255,255,255,0.14);
+      --text: #eef6ff;
+      --muted: #aac1d8;
+      --accent: #49dcb1;
+      --accent-2: #67a7ff;
+      --danger: #ff7a7a;
+      --warning: #ffd166;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(73,220,177,0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(103,167,255,0.18), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .hero-card {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -70px -70px auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(73,220,177,0.26), transparent 60%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+      max-width: 62ch;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      padding: 20px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 126px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mini-card span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .mini-card strong {
+      font-size: 1.7rem;
+      letter-spacing: -0.03em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+
+    .panel {
+      padding: 26px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+    }
+
+    .panel .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.95rem;
+      color: #dcecff;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 14px;
+      font-size: 0.98rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input::placeholder {
+      color: #b7c8da;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(73,220,177,0.8);
+      box-shadow: 0 0 0 4px rgba(73,220,177,0.12);
+      transform: translateY(-1px);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #2ec4a5);
+      color: #03241d;
+      box-shadow: 0 12px 24px rgba(73,220,177,0.22);
+    }
+
+    .ghost {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .results {
+      display: grid;
+      gap: 16px;
+    }
+
+    .result-top {
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(103,167,255,0.18), rgba(73,220,177,0.18));
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .result-top p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .total {
+      margin: 10px 0 6px;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    .level-low {
+      background: rgba(73,220,177,0.15);
+      color: #97f2d8;
+      border: 1px solid rgba(73,220,177,0.2);
+    }
+
+    .level-mid {
+      background: rgba(255,209,102,0.14);
+      color: #ffe3a0;
+      border: 1px solid rgba(255,209,102,0.22);
+    }
+
+    .level-high {
+      background: rgba(255,122,122,0.13);
+      color: #ffb2b2;
+      border: 1px solid rgba(255,122,122,0.2);
+    }
+
+    .breakdown {
+      display: grid;
+      gap: 12px;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .item-head strong {
+      font-size: 1rem;
+    }
+
+    .item-head span {
+      color: var(--muted);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.45s ease;
+    }
+
+    .tips {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px 18px 8px;
+    }
+
+    .tips h3 {
+      margin: 0 0 14px;
+      font-size: 1.08rem;
+    }
+
+    .tips ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 20px, 100%);
+        padding-top: 18px;
+      }
+
+      .hero-card,
+      .panel {
+        padding: 20px;
+      }
+
+      .total {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <article class="hero-card">
+        <div class="eyebrow">🌍 Impacto personal • Estimación anual</div>
+        <h1>Calculadora de huella de carbono</h1>
+        <p>
+          Estima de forma rápida tu impacto ambiental con un diseño moderno y una experiencia clara.
+          Ingresa tus hábitos de transporte, energía, alimentación y vuelos para obtener una aproximación anual en toneladas de CO₂e.
+        </p>
+      </article>
+
+      <aside class="hero-card hero-stats">
+        <div class="mini-card">
+          <span>Factores incluidos</span>
+          <strong>4 áreas</strong>
+          <span>Transporte, energía, dieta y viajes</span>
+        </div>
+        <div class="mini-card">
+          <span>Resultado principal</span>
+          <strong>tCO₂e/año</strong>
+          <span>Valor aproximado y fácil de comparar</span>
+        </div>
+        <div class="mini-card">
+          <span>Enfoque</span>
+          <strong>Visual</strong>
+          <span>Desglose por categoría con barras</span>
+        </div>
+        <div class="mini-card">
+          <span>Objetivo</span>
+          <strong>Conciencia</strong>
+          <span>Pequeños cambios pueden reducir bastante</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="layout">
+      <section class="panel">
+        <h2>Ingresa tus datos</h2>
+        <p class="subtitle">
+          Completa los campos con valores aproximados. No necesitas ser exacto: esta herramienta está pensada para dar una referencia útil.
+        </p>
+
+        <div class="grid">
+          <div class="field">
+            <label for="carKm">Kilómetros en carro por semana</label>
+            <input id="carKm" type="number" min="0" placeholder="Ej. 120" />
+          </div>
+
+          <div class="field">
+            <label for="publicKm">Kilómetros en transporte público por semana</label>
+            <input id="publicKm" type="number" min="0" placeholder="Ej. 45" />
+          </div>
+
+          <div class="field">
+            <label for="electricity">Consumo eléctrico mensual (kWh)</label>
+            <input id="electricity" type="number" min="0" placeholder="Ej. 180" />
+          </div>
+
+          <div class="field">
+            <label for="flightsShort">Vuelos cortos al año</label>
+            <input id="flightsShort" type="number" min="0" placeholder="Ej. 2" />
+          </div>
+
+          <div class="field">
+            <label for="flightsLong">Vuelos largos al año</label>
+            <input id="flightsLong" type="number" min="0" placeholder="Ej. 1" />
+          </div>
+
+          <div class="field">
+            <label for="diet">Tipo de dieta</label>
+            <select id="diet">
+              <option value="2.5">Omnívora alta en carne</option>
+              <option value="1.8">Omnívora moderada</option>
+              <option value="1.2">Vegetariana</option>
+              <option value="0.8">Vegana</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="people">Personas en el hogar</label>
+            <input id="people" type="number" min="1" value="1" placeholder="Ej. 3" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" id="calculateBtn">Calcular huella</button>
+          <button class="ghost" id="resetBtn" type="button">Limpiar datos</button>
+        </div>
+      </section>
+
+      <section class="panel results">
+        <div class="result-top">
+          <p>Tu estimación anual</p>
+          <div class="total" id="totalValue">0.00</div>
+          <p>toneladas de CO₂e por año</p>
+          <div id="levelBadge" class="badge level-low">Nivel bajo</div>
+        </div>
+
+        <div class="breakdown">
+          <div class="item">
+            <div class="item-head">
+              <strong>🚗 Transporte</strong>
+              <span id="transportValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="transportBar"></div></div>
+          </div>
+
+          <div class="item">
+            <div class="item-head">
+              <strong>⚡ Energía</strong>
+              <span id="energyValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="energyBar"></div></div>
+          </div>
+
+          <div class="item">
+            <div class="item-head">
+              <strong>🍽️ Alimentación</strong>
+              <span id="dietValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="dietBar"></div></div>
+          </div>
+
+          <div class="item">
+            <div class="item-head">
+              <strong>✈️ Vuelos</strong>
+              <span id="flightsValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="flightsBar"></div></div>
+          </div>
+        </div>
+
+        <section class="tips">
+          <h3>Ideas para reducirla</h3>
+          <ul id="tipsList">
+            <li>Usar más transporte público o compartir carro.</li>
+            <li>Reducir consumos eléctricos innecesarios en casa.</li>
+            <li>Disminuir vuelos frecuentes cuando haya alternativas.</li>
+            <li>Elegir una dieta con menor intensidad de emisiones.</li>
+          </ul>
+        </section>
+
+        <p class="note">
+          Esta calculadora usa factores aproximados para dar una referencia educativa y visual. No reemplaza una medición profesional.
+        </p>
+      </section>
+    </section>
+
+    <p class="footer">Diseño moderno en una sola página • HTML, CSS y JavaScript puros</p>
+  </main>
+
+  <script>
+    const elements = {
+      carKm: document.getElementById('carKm'),
+      publicKm: document.getElementById('publicKm'),
+      electricity: document.getElementById('electricity'),
+      flightsShort: document.getElementById('flightsShort'),
+      flightsLong: document.getElementById('flightsLong'),
+      diet: document.getElementById('diet'),
+      people: document.getElementById('people'),
+      totalValue: document.getElementById('totalValue'),
+      levelBadge: document.getElementById('levelBadge'),
+      transportValue: document.getElementById('transportValue'),
+      energyValue: document.getElementById('energyValue'),
+      dietValue: document.getElementById('dietValue'),
+      flightsValue: document.getElementById('flightsValue'),
+      transportBar: document.getElementById('transportBar'),
+      energyBar: document.getElementById('energyBar'),
+      dietBar: document.getElementById('dietBar'),
+      flightsBar: document.getElementById('flightsBar'),
+      tipsList: document.getElementById('tipsList'),
+      calculateBtn: document.getElementById('calculateBtn'),
+      resetBtn: document.getElementById('resetBtn')
+    };
+
+    function safeNumber(value, fallback = 0) {
+      const num = Number(value);
+      return Number.isFinite(num) && num >= 0 ? num : fallback;
+    }
+
+    function formatTons(value) {
+      return `${value.toFixed(2)} t`;
+    }
+
+    function setBar(bar, value, total) {
+      const percent = total > 0 ? Math.min((value / total) * 100, 100) : 0;
+      bar.style.width = `${percent}%`;
+    }
+
+    function getLevel(total) {
+      if (total < 4) {
+        return { text: 'Nivel bajo', className: 'badge level-low' };
+      }
+      if (total < 8) {
+        return { text: 'Nivel medio', className: 'badge level-mid' };
+      }
+      return { text: 'Nivel alto', className: 'badge level-high' };
+    }
+
+    function getTips(parts) {
+      const entries = Object.entries(parts).sort((a, b) => b[1] - a[1]);
+      const biggest = entries[0]?.[0] || 'transport';
+
+      const baseTips = {
+        transport: [
+          'Prueba reducir trayectos en carro y agrupar salidas en un solo recorrido.',
+          'Caminar, usar bicicleta o compartir vehículo puede bajar bastante esta categoría.'
+        ],
+        energy: [
+          'Apaga equipos en espera, mejora iluminación y revisa consumos altos del hogar.',
+          'Equipos eficientes y hábitos de uso pueden recortar una parte importante del consumo eléctrico.'
+        ],
+        diet: [
+          'Reducir carne roja algunos días a la semana puede tener un impacto real.',
+          'Una alimentación con más vegetales suele disminuir esta parte de la huella.'
+        ],
+        flights: [
+          'Concentrar viajes o reemplazar algunos por reuniones virtuales puede ayudar bastante.',
+          'Los vuelos largos suelen elevar mucho la huella total anual.'
+        ]
+      };
+
+      const generic = [
+        'Haz seguimiento cada mes para comparar si tus cambios sí reducen el resultado.',
+        'Empieza por la categoría que más pesa: suele ser donde se logra la mayor mejora.'
+      ];
+
+      return [...baseTips[biggest], ...generic];
+    }
+
+    function calculateFootprint() {
+      const carKm = safeNumber(elements.carKm.value);
+      const publicKm = safeNumber(elements.publicKm.value);
+      const electricity = safeNumber(elements.electricity.value);
+      const flightsShort = safeNumber(elements.flightsShort.value);
+      const flightsLong = safeNumber(elements.flightsLong.value);
+      const people = Math.max(safeNumber(elements.people.value, 1), 1);
+      const dietAnnual = safeNumber(elements.diet.value);
+
+      // Factores aproximados en toneladas CO2e/año
+      const car = (carKm * 52 * 0.192) / 1000;
+      const publicTransport = (publicKm * 52 * 0.089) / 1000;
+      const transport = car + publicTransport;
+      const energy = ((electricity * 12 * 0.233) / 1000) / people;
+      const diet = dietAnnual;
+      const flights = (flightsShort * 0.25) + (flightsLong * 1.1);
+
+      const total = transport + energy + diet + flights;
+      const level = getLevel(total);
+      const tips = getTips({ transport, energy, diet, flights });
+
+      elements.totalValue.textContent = total.toFixed(2);
+      elements.levelBadge.textContent = level.text;
+      elements.levelBadge.className = level.className;
+
+      elements.transportValue.textContent = formatTons(transport);
+      elements.energyValue.textContent = formatTons(energy);
+      elements.dietValue.textContent = formatTons(diet);
+      elements.flightsValue.textContent = formatTons(flights);
+
+      setBar(elements.transportBar, transport, total);
+      setBar(elements.energyBar, energy, total);
+      setBar(elements.dietBar, diet, total);
+      setBar(elements.flightsBar, flights, total);
+
+      elements.tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+    }
+
+    function resetForm() {
+      elements.carKm.value = '';
+      elements.publicKm.value = '';
+      elements.electricity.value = '';
+      elements.flightsShort.value = '';
+      elements.flightsLong.value = '';
+      elements.diet.value = '2.5';
+      elements.people.value = '1';
+
+      elements.totalValue.textContent = '0.00';
+      elements.levelBadge.textContent = 'Nivel bajo';
+      elements.levelBadge.className = 'badge level-low';
+      elements.transportValue.textContent = '0.00 t';
+      elements.energyValue.textContent = '0.00 t';
+      elements.dietValue.textContent = '0.00 t';
+      elements.flightsValue.textContent = '0.00 t';
+      elements.transportBar.style.width = '0%';
+      elements.energyBar.style.width = '0%';
+      elements.dietBar.style.width = '0%';
+      elements.flightsBar.style.width = '0%';
+      elements.tipsList.innerHTML = `
+        <li>Usar más transporte público o compartir carro.</li>
+        <li>Reducir consumos eléctricos innecesarios en casa.</li>
+        <li>Disminuir vuelos frecuentes cuando haya alternativas.</li>
+        <li>Elegir una dieta con menor intensidad de emisiones.</li>
+      `;
+    }
+
+    elements.calculateBtn.addEventListener('click', calculateFootprint);
+    elements.resetBtn.addEventListener('click', resetForm);
+
+    [
+      elements.carKm,
+      elements.publicKm,
+      elements.electricity,
+      elements.flightsShort,
+      elements.flightsLong,
+      elements.diet,
+      elements.people
+    ].forEach(input => {
+      input.addEventListener('input', calculateFootprint);
+      input.addEventListener('change', calculateFootprint);
+    });
+
+    calculateFootprint();
+  </script>
+</body>
+</html>

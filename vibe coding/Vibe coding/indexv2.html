@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Huella de Carbono Pro</title>
+
+  <!-- Librerías para gráfica y PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-1: #07111f;
+      --bg-2: #0b1f36;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-strong: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #eef6ff;
+      --muted: #a9bfd7;
+      --accent: #34d399;
+      --accent-2: #10b981;
+      --accent-3: #6ee7b7;
+      --glow: rgba(52, 211, 153, 0.22);
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --info: #60a5fa;
+      --shadow: 0 24px 64px rgba(0, 0, 0, 0.34);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    body[data-theme="low"] {
+      --accent: #34d399;
+      --accent-2: #10b981;
+      --accent-3: #6ee7b7;
+      --glow: rgba(52, 211, 153, 0.22);
+    }
+
+    body[data-theme="mid"] {
+      --accent: #fbbf24;
+      --accent-2: #f59e0b;
+      --accent-3: #fde68a;
+      --glow: rgba(251, 191, 36, 0.24);
+    }
+
+    body[data-theme="high"] {
+      --accent: #fb7185;
+      --accent-2: #ef4444;
+      --accent-3: #fda4af;
+      --glow: rgba(251, 113, 133, 0.24);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, var(--glow), transparent 28%),
+        radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    .container {
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -30px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--glow), transparent 65%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      line-height: 1.03;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-main p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 68ch;
+    }
+
+    .hero-side {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .mini {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 18px;
+      min-height: 126px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mini span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .mini strong {
+      font-size: 1.7rem;
+      letter-spacing: -0.03em;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section {
+      padding: 26px;
+    }
+
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #e6f1ff;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 0.98rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input::placeholder {
+      color: #b4c6d8;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--glow);
+      transform: translateY(-1px);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06131c;
+      box-shadow: 0 12px 28px var(--glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #fb7185, #ef4444);
+      color: white;
+      box-shadow: 0 12px 28px rgba(239, 68, 68, 0.18);
+    }
+
+    .result-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .result-top {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, transparent), color-mix(in srgb, var(--accent-2) 18%, transparent)),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .result-top p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .total {
+      margin: 10px 0 6px;
+      font-size: clamp(2.7rem, 5vw, 4.2rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stats-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .stat-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .stat-head strong {
+      font-size: 1rem;
+    }
+
+    .stat-head span {
+      color: var(--muted);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.4s ease;
+    }
+
+    .insights {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 18px 18px 8px;
+    }
+
+    .insights h3 {
+      margin: 0 0 14px;
+      font-size: 1.06rem;
+    }
+
+    .insights ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.72;
+    }
+
+    .mid-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-right select {
+      min-width: 220px;
+    }
+
+    .chart-wrap {
+      min-height: 420px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #chartPlaceholder {
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.7;
+      padding: 20px;
+    }
+
+    .history-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      color: var(--muted);
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: middle;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.06);
+      color: #f2f8ff;
+      font-size: 0.92rem;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    td {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    tbody tr {
+      transition: background 0.18s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .row-total {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .level-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .chip-low {
+      background: rgba(52, 211, 153, 0.12);
+      color: #a7f3d0;
+    }
+
+    .chip-mid {
+      background: rgba(251, 191, 36, 0.12);
+      color: #fde68a;
+    }
+
+    .chip-high {
+      background: rgba(251, 113, 133, 0.12);
+      color: #fecdd3;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      padding: 9px 12px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .empty-state {
+      padding: 26px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .hidden-report {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 1120px;
+      background: white;
+      color: #0f172a;
+      padding: 36px;
+      z-index: -1;
+    }
+
+    .report-page {
+      width: 100%;
+      background: white;
+      color: #0f172a;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 26px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 18px;
+    }
+
+    .report-title {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.05;
+    }
+
+    .report-sub {
+      color: #475569;
+      margin: 8px 0 0;
+      line-height: 1.6;
+    }
+
+    .report-pill {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      background: #ecfeff;
+      color: #0f766e;
+      border: 1px solid #bae6fd;
+    }
+
+    .report-total {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin: 22px 0;
+    }
+
+    .report-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .report-box small {
+      display: block;
+      color: #64748b;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .report-box strong {
+      font-size: 1.5rem;
+      color: #0f172a;
+    }
+
+    .report-section {
+      margin-top: 22px;
+    }
+
+    .report-section h3 {
+      margin: 0 0 12px;
+      font-size: 1.18rem;
+      color: #0f172a;
+    }
+
+    .report-breakdown {
+      display: grid;
+      gap: 12px;
+    }
+
+    .report-row {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .report-row-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .report-bar {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .report-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #10b981);
+      border-radius: inherit;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .report-table th,
+    .report-table td {
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      color: #0f172a;
+    }
+
+    .report-table th {
+      background: #f1f5f9;
+    }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .top-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-side,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 20px, 100%);
+        padding-top: 18px;
+      }
+
+      .hero-main,
+      .section {
+        padding: 20px;
+      }
+
+      .total {
+        font-size: 2.6rem;
+      }
+
+      .chart-wrap {
+        min-height: 340px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="low">
+  <main class="container">
+    <section class="hero">
+      <article class="card hero-main">
+        <div class="eyebrow">🌍 Calculadora avanzada • Historial • PDF • Gráfica interactiva</div>
+        <h1>Huella de carbono personal</h1>
+        <p>
+          Calcula tu impacto anual, guarda cada resultado en una tabla, visualízalo con una gráfica interactiva
+          y descarga un reporte profesional en PDF. Los colores cambian automáticamente según el nivel de huella.
+        </p>
+      </article>
+
+      <aside class="card hero-side">
+        <div class="mini">
+          <span>Persistencia</span>
+          <strong>Local</strong>
+          <span>Los cálculos quedan guardados en tu navegador</span>
+        </div>
+        <div class="mini">
+          <span>Visualización</span>
+          <strong>Interactiva</strong>
+          <span>Modo distribución actual o tendencia histórica</span>
+        </div>
+        <div class="mini">
+          <span>Reporte</span>
+          <strong>PDF</strong>
+          <span>Resumen profesional listo para descargar</span>
+        </div>
+        <div class="mini">
+          <span>Diseño</span>
+          <strong>Dinámico</strong>
+          <span>La interfaz cambia según tu resultado</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="top-grid">
+      <section class="card section">
+        <h2>Ingresa tus datos</h2>
+        <p class="subtitle">
+          La estimación es anual. Puedes usar valores aproximados y luego comparar cambios guardando varios cálculos.
+        </p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="carKm">Kilómetros en carro por semana</label>
+            <input id="carKm" type="number" min="0" placeholder="Ej. 120" />
+          </div>
+
+          <div class="field">
+            <label for="publicKm">Kilómetros en transporte público por semana</label>
+            <input id="publicKm" type="number" min="0" placeholder="Ej. 45" />
+          </div>
+
+          <div class="field">
+            <label for="electricity">Consumo eléctrico mensual (kWh)</label>
+            <input id="electricity" type="number" min="0" placeholder="Ej. 180" />
+          </div>
+
+          <div class="field">
+            <label for="flightsShort">Vuelos cortos al año</label>
+            <input id="flightsShort" type="number" min="0" placeholder="Ej. 2" />
+          </div>
+
+          <div class="field">
+            <label for="flightsLong">Vuelos largos al año</label>
+            <input id="flightsLong" type="number" min="0" placeholder="Ej. 1" />
+          </div>
+
+          <div class="field">
+            <label for="diet">Tipo de dieta</label>
+            <select id="diet">
+              <option value="2.5">Omnívora alta en carne</option>
+              <option value="1.8">Omnívora moderada</option>
+              <option value="1.2">Vegetariana</option>
+              <option value="0.8">Vegana</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="people">Personas en el hogar</label>
+            <input id="people" type="number" min="1" value="1" placeholder="Ej. 3" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="calculateBtn">Calcular y guardar</button>
+          <button class="btn-secondary" id="previewBtn">Calcular sin guardar</button>
+          <button class="btn-secondary" id="resetBtn">Limpiar formulario</button>
+        </div>
+
+        <p class="footer-note">
+          Factores usados: transporte, energía, alimentación y vuelos. Esta herramienta es educativa y ofrece una referencia aproximada.
+        </p>
+      </section>
+
+      <section class="card section result-panel">
+        <div class="result-top">
+          <p>Tu estimación anual</p>
+          <div class="total" id="totalValue">0.00</div>
+          <p>toneladas de CO₂e por año</p>
+          <div class="badge" id="levelBadge">Huella baja</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-head">
+              <strong>🚗 Transporte</strong>
+              <span id="transportValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="transportBar"></div></div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-head">
+              <strong>⚡ Energía</strong>
+              <span id="energyValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="energyBar"></div></div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-head">
+              <strong>🍽️ Alimentación</strong>
+              <span id="dietValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="dietBar"></div></div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-head">
+              <strong>✈️ Vuelos</strong>
+              <span id="flightsValue">0.00 t</span>
+            </div>
+            <div class="bar"><div class="bar-fill" id="flightsBar"></div></div>
+          </div>
+        </div>
+
+        <section class="insights">
+          <h3>Recomendaciones</h3>
+          <ul id="tipsList">
+            <li>Usa la calculadora para detectar cuál categoría pesa más en tu huella.</li>
+            <li>Guarda varios escenarios para comparar hábitos distintos.</li>
+            <li>Descarga el PDF para compartir el resumen o dejar evidencia del análisis.</li>
+          </ul>
+        </section>
+
+        <div class="actions">
+          <button class="btn-primary" id="downloadPdfBtn">Descargar PDF profesional</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="mid-grid">
+      <section class="card section">
+        <div class="chart-toolbar">
+          <div>
+            <h2>Visualización interactiva</h2>
+            <p class="subtitle" style="margin-bottom:0;">
+              Cambia entre la distribución del cálculo actual y la tendencia del historial guardado.
+            </p>
+          </div>
+
+          <div class="toolbar-right">
+            <select id="chartMode">
+              <option value="current">Distribución actual</option>
+              <option value="history">Tendencia del historial</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="carbonChart"></canvas>
+          <div id="chartPlaceholder">Todavía no hay datos suficientes. Calcula o guarda un resultado para activar la gráfica.</div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card section">
+      <div class="history-meta">
+        <div>
+          <h2 style="margin:0 0 6px;">Historial de cálculos</h2>
+          <div>Se guarda en este navegador. Puedes revisar, recargar o eliminar cada registro.</div>
+        </div>
+        <div class="actions" style="margin-top:0;">
+          <button class="btn-secondary" id="clearHistoryBtn">Borrar historial</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Nivel</th>
+              <th>Transporte</th>
+              <th>Energía</th>
+              <th>Alimentación</th>
+              <th>Vuelos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <tr>
+              <td colspan="8" class="empty-state">Aún no hay cálculos guardados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="footer-note">
+        Consejo: usa varios escenarios. Por ejemplo, uno con más carro, otro con menos vuelos y otro con una dieta distinta. Así comparas el impacto real.
+      </p>
+    </section>
+  </main>
+
+  <!-- Reporte oculto para exportar a PDF -->
+  <div class="hidden-report" id="pdfReport">
+    <div class="report-page" id="pdfContent"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "carbon-footprint-history-v3";
+
+    const state = {
+      currentResult: null,
+      history: [],
+      chart: null
+    };
+
+    const elements = {
+      carKm: document.getElementById("carKm"),
+      publicKm: document.getElementById("publicKm"),
+      electricity: document.getElementById("electricity"),
+      flightsShort: document.getElementById("flightsShort"),
+      flightsLong: document.getElementById("flightsLong"),
+      diet: document.getElementById("diet"),
+      people: document.getElementById("people"),
+
+      totalValue: document.getElementById("totalValue"),
+      levelBadge: document.getElementById("levelBadge"),
+
+      transportValue: document.getElementById("transportValue"),
+      energyValue: document.getElementById("energyValue"),
+      dietValue: document.getElementById("dietValue"),
+      flightsValue: document.getElementById("flightsValue"),
+
+      transportBar: document.getElementById("transportBar"),
+      energyBar: document.getElementById("energyBar"),
+      dietBar: document.getElementById("dietBar"),
+      flightsBar: document.getElementById("flightsBar"),
+
+      tipsList: document.getElementById("tipsList"),
+      chartMode: document.getElementById("chartMode"),
+      chartCanvas: document.getElementById("carbonChart"),
+      chartPlaceholder: document.getElementById("chartPlaceholder"),
+      historyTableBody: document.getElementById("historyTableBody"),
+
+      calculateBtn: document.getElementById("calculateBtn"),
+      previewBtn: document.getElementById("previewBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      clearHistoryBtn: document.getElementById("clearHistoryBtn"),
+      downloadPdfBtn: document.getElementById("downloadPdfBtn"),
+
+      pdfReport: document.getElementById("pdfReport"),
+      pdfContent: document.getElementById("pdfContent")
+    };
+
+    function safeNumber(value, fallback = 0) {
+      const num = Number(value);
+      return Number.isFinite(num) && num >= 0 ? num : fallback;
+    }
+
+    function formatTons(value) {
+      return `${value.toFixed(2)} t`;
+    }
+
+    function formatDate(dateString) {
+      return new Intl.DateTimeFormat("es-CO", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }).format(new Date(dateString));
+    }
+
+    function setBar(bar, value, total) {
+      const percent = total > 0 ? Math.min((value / total) * 100, 100) : 0;
+      bar.style.width = `${percent}%`;
+    }
+
+    function getLevelInfo(total) {
+      if (total < 4) {
+        return { key: "low", text: "Huella baja" };
+      }
+      if (total < 8) {
+        return { key: "mid", text: "Huella media" };
+      }
+      return { key: "high", text: "Huella alta" };
+    }
+
+    function getLevelChip(level) {
+      if (level === "low") return `<span class="level-chip chip-low">Baja</span>`;
+      if (level === "mid") return `<span class="level-chip chip-mid">Media</span>`;
+      return `<span class="level-chip chip-high">Alta</span>`;
+    }
+
+    function getDietLabel(value) {
+      const map = {
+        "2.5": "Omnívora alta en carne",
+        "1.8": "Omnívora moderada",
+        "1.2": "Vegetariana",
+        "0.8": "Vegana"
+      };
+      return map[String(value)] || "Personalizada";
+    }
+
+    function getThemePalette(level) {
+      if (level === "low") {
+        return {
+          colors: ["#34d399", "#10b981", "#6ee7b7", "#2dd4bf"],
+          line: "#34d399",
+          fill: "rgba(52, 211, 153, 0.16)",
+          grid: "rgba(255,255,255,0.08)",
+          text: "#dbeafe"
+        };
+      }
+      if (level === "mid") {
+        return {
+          colors: ["#fbbf24", "#f59e0b", "#fde68a", "#fcd34d"],
+          line: "#fbbf24",
+          fill: "rgba(251, 191, 36, 0.16)",
+          grid: "rgba(255,255,255,0.08)",
+          text: "#fef3c7"
+        };
+      }
+      return {
+        colors: ["#fb7185", "#ef4444", "#fda4af", "#f43f5e"],
+        line: "#fb7185",
+        fill: "rgba(251, 113, 133, 0.16)",
+        grid: "rgba(255,255,255,0.08)",
+        text: "#ffe4e6"
+      };
+    }
+
+    function loadHistory() {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveHistory() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
+    }
+
+    function generateId() {
+      if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function readInputs() {
+      return {
+        carKm: safeNumber(elements.carKm.value),
+        publicKm: safeNumber(elements.publicKm.value),
+        electricity: safeNumber(elements.electricity.value),
+        flightsShort: safeNumber(elements.flightsShort.value),
+        flightsLong: safeNumber(elements.flightsLong.value),
+        people: Math.max(safeNumber(elements.people.value, 1), 1),
+        dietValue: Number(elements.diet.value),
+        dietLabel: getDietLabel(elements.diet.value)
+      };
+    }
+
+    function calculateResult() {
+      const inputs = readInputs();
+
+      const car = (inputs.carKm * 52 * 0.192) / 1000;
+      const publicTransport = (inputs.publicKm * 52 * 0.089) / 1000;
+      const transport = car + publicTransport;
+
+      const energy = ((inputs.electricity * 12 * 0.233) / 1000) / inputs.people;
+      const diet = inputs.dietValue;
+      const flights = (inputs.flightsShort * 0.25) + (inputs.flightsLong * 1.1);
+
+      const total = transport + energy + diet + flights;
+      const level = getLevelInfo(total);
+
+      return {
+        id: generateId(),
+        createdAt: new Date().toISOString(),
+        inputs,
+        breakdown: {
+          transport,
+          energy,
+          diet,
+          flights
+        },
+        total,
+        level: level.key,
+        levelText: level.text
+      };
+    }
+
+    function getRecommendations(result) {
+      const parts = Object.entries(result.breakdown).sort((a, b) => b[1] - a[1]);
+      const dominant = parts[0]?.[0] || "transport";
+
+      const tips = {
+        transport: [
+          "La categoría dominante es transporte. Reducir kilómetros en carro suele bajar la huella de forma visible.",
+          "Compartir trayectos, caminar o usar más transporte público puede generar una diferencia rápida."
+        ],
+        energy: [
+          "La energía pesa bastante. Revisa consumos innecesarios, tiempos de uso y eficiencia de tus equipos.",
+          "Separar el consumo entre más personas del hogar ayuda a reflejar mejor el impacto individual."
+        ],
+        diet: [
+          "La alimentación tiene un peso importante. Reducir carne roja algunos días puede bajar la huella anual.",
+          "Una dieta con más vegetales suele tener una intensidad de emisiones menor."
+        ],
+        flights: [
+          "Los vuelos están elevando mucho el resultado. Los viajes largos impactan bastante en el total anual.",
+          "Concentrar viajes o reemplazar algunos por reuniones virtuales ayuda a reducir esta categoría."
+        ]
+      };
+
+      const extra = [
+        "Guarda varios escenarios para comparar qué hábito produce la mayor reducción.",
+        "Empieza por la categoría dominante. Ahí es donde se notan más los cambios."
+      ];
+
+      return [...tips[dominant], ...extra];
+    }
+
+    function applyTheme(level) {
+      document.body.setAttribute("data-theme", level);
+    }
+
+    function updateSummary(result) {
+      applyTheme(result.level);
+
+      elements.totalValue.textContent = result.total.toFixed(2);
+      elements.levelBadge.textContent = result.levelText;
+
+      elements.transportValue.textContent = formatTons(result.breakdown.transport);
+      elements.energyValue.textContent = formatTons(result.breakdown.energy);
+      elements.dietValue.textContent = formatTons(result.breakdown.diet);
+      elements.flightsValue.textContent = formatTons(result.breakdown.flights);
+
+      setBar(elements.transportBar, result.breakdown.transport, result.total);
+      setBar(elements.energyBar, result.breakdown.energy, result.total);
+      setBar(elements.dietBar, result.breakdown.diet, result.total);
+      setBar(elements.flightsBar, result.breakdown.flights, result.total);
+
+      const tips = getRecommendations(result);
+      elements.tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join("");
+    }
+
+    function fillFormFromResult(result) {
+      elements.carKm.value = result.inputs.carKm;
+      elements.publicKm.value = result.inputs.publicKm;
+      elements.electricity.value = result.inputs.electricity;
+      elements.flightsShort.value = result.inputs.flightsShort;
+      elements.flightsLong.value = result.inputs.flightsLong;
+      elements.people.value = result.inputs.people;
+      elements.diet.value = String(result.inputs.dietValue);
+    }
+
+    function renderHistoryTable() {
+      const history = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      if (history.length === 0) {
+        elements.historyTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-state">Aún no hay cálculos guardados.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      elements.historyTableBody.innerHTML = history.map(item => `
+        <tr>
+          <td>${formatDate(item.createdAt)}</td>
+          <td class="row-total">${item.total.toFixed(2)} t</td>
+          <td>${getLevelChip(item.level)}</td>
+          <td>${item.breakdown.transport.toFixed(2)} t</td>
+          <td>${item.breakdown.energy.toFixed(2)} t</td>
+          <td>${item.breakdown.diet.toFixed(2)} t</td>
+          <td>${item.breakdown.flights.toFixed(2)} t</td>
+          <td>
+            <div class="row-actions">
+              <button class="btn-secondary mini-btn" data-action="view" data-id="${item.id}">Ver</button>
+              <button class="btn-danger mini-btn" data-action="delete" data-id="${item.id}">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function destroyChart() {
+      if (state.chart) {
+        state.chart.destroy();
+        state.chart = null;
+      }
+    }
+
+    function renderChart() {
+      const mode = elements.chartMode.value;
+      const hasCurrent = !!state.currentResult;
+      const hasHistory = state.history.length > 0;
+
+      destroyChart();
+
+      if ((mode === "current" && !hasCurrent) || (mode === "history" && !hasHistory)) {
+        elements.chartCanvas.style.display = "none";
+        elements.chartPlaceholder.style.display = "block";
+        elements.chartPlaceholder.textContent =
+          mode === "current"
+            ? "Todavía no hay un cálculo actual para mostrar. Usa “Calcular” o selecciona un registro del historial."
+            : "Todavía no hay historial guardado. Usa “Calcular y guardar” para construir la tendencia.";
+        return;
+      }
+
+      elements.chartCanvas.style.display = "block";
+      elements.chartPlaceholder.style.display = "none";
+
+      const ctx = elements.chartCanvas.getContext("2d");
+      const baseLevel = state.currentResult?.level || state.history[state.history.length - 1]?.level || "low";
+      const palette = getThemePalette(baseLevel);
+
+      if (mode === "current") {
+        const result = state.currentResult;
+
+        state.chart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Transporte", "Energía", "Alimentación", "Vuelos"],
+            datasets: [{
+              data: [
+                result.breakdown.transport,
+                result.breakdown.energy,
+                result.breakdown.diet,
+                result.breakdown.flights
+              ],
+              backgroundColor: palette.colors,
+              borderColor: "rgba(255,255,255,0.14)",
+              borderWidth: 2,
+              hoverOffset: 10
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "62%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  color: "#dbeafe",
+                  boxWidth: 14,
+                  padding: 18,
+                  font: {
+                    size: 13,
+                    weight: "700"
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: "rgba(5, 10, 20, 0.92)",
+                titleColor: "#ffffff",
+                bodyColor: "#dbeafe",
+                borderColor: "rgba(255,255,255,0.08)",
+                borderWidth: 1,
+                callbacks: {
+                  label(context) {
+                    const value = context.raw || 0;
+                    const pct = result.total > 0 ? ((value / result.total) * 100).toFixed(1) : "0.0";
+                    return ` ${context.label}: ${value.toFixed(2)} t (${pct}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      } else {
+        const history = [...state.history].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+        state.chart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: history.map(item =>
+              new Intl.DateTimeFormat("es-CO", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+              }).format(new Date(item.createdAt))
+            ),
+            datasets: [{
+              label: "Huella total (tCO₂e/año)",
+              data: history.map(item => item.total),
+              borderColor: palette.line,
+              backgroundColor: palette.fill,
+              fill: true,
+              tension: 0.35,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              pointBackgroundColor: palette.line,
+              pointBorderColor: "#ffffff",
+              pointBorderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              intersect: false,
+              mode: "index"
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: "#dbeafe",
+                  font: {
+                    size: 13,
+                    weight: "700"
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: "rgba(5, 10, 20, 0.92)",
+                titleColor: "#ffffff",
+                bodyColor: "#dbeafe",
+                borderColor: "rgba(255,255,255,0.08)",
+                borderWidth: 1,
+                callbacks: {
+                  afterLabel(context) {
+                    const item = history[context.dataIndex];
+                    return [
+                      `Transporte: ${item.breakdown.transport.toFixed(2)} t`,
+                      `Energía: ${item.breakdown.energy.toFixed(2)} t`,
+                      `Alimentación: ${item.breakdown.diet.toFixed(2)} t`,
+                      `Vuelos: ${item.breakdown.flights.toFixed(2)} t`
+                    ];
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "#cbd5e1",
+                  maxRotation: 0,
+                  autoSkip: true
+                },
+                grid: {
+                  color: "rgba(255,255,255,0.06)"
+                }
+              },
+              y: {
+                ticks: {
+                  color: "#cbd5e1"
+                },
+                grid: {
+                  color: "rgba(255,255,255,0.08)"
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function setCurrentResult(result, updateForm = false) {
+      state.currentResult = result;
+      updateSummary(result);
+      if (updateForm) {
+        fillFormFromResult(result);
+      }
+      renderChart();
+    }
+
+    function previewCalculation() {
+      const result = calculateResult();
+      setCurrentResult(result);
+    }
+
+    function calculateAndSave() {
+      const result = calculateResult();
+      state.history.push(result);
+      saveHistory();
+      setCurrentResult(result);
+      renderHistoryTable();
+      elements.chartMode.value = "current";
+      renderChart();
+    }
+
+    function deleteHistoryItem(id) {
+      state.history = state.history.filter(item => item.id !== id);
+      saveHistory();
+      renderHistoryTable();
+
+      if (state.currentResult && state.currentResult.id === id) {
+        if (state.history.length > 0) {
+          const latest = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+          setCurrentResult(latest, true);
+        } else {
+          state.currentResult = null;
+          resetSummaryOnly();
+          renderChart();
+        }
+      } else {
+        renderChart();
+      }
+    }
+
+    function resetSummaryOnly() {
+      applyTheme("low");
+      elements.totalValue.textContent = "0.00";
+      elements.levelBadge.textContent = "Huella baja";
+
+      elements.transportValue.textContent = "0.00 t";
+      elements.energyValue.textContent = "0.00 t";
+      elements.dietValue.textContent = "0.00 t";
+      elements.flightsValue.textContent = "0.00 t";
+
+      elements.transportBar.style.width = "0%";
+      elements.energyBar.style.width = "0%";
+      elements.dietBar.style.width = "0%";
+      elements.flightsBar.style.width = "0%";
+
+      elements.tipsList.innerHTML = `
+        <li>Usa la calculadora para detectar cuál categoría pesa más en tu huella.</li>
+        <li>Guarda varios escenarios para comparar hábitos distintos.</li>
+        <li>Descarga el PDF para compartir el resumen o dejar evidencia del análisis.</li>
+      `;
+    }
+
+    function resetForm() {
+      elements.carKm.value = "";
+      elements.publicKm.value = "";
+      elements.electricity.value = "";
+      elements.flightsShort.value = "";
+      elements.flightsLong.value = "";
+      elements.people.value = "1";
+      elements.diet.value = "2.5";
+    }
+
+    function clearHistory() {
+      const ok = confirm("¿Seguro que quieres borrar todo el historial guardado?");
+      if (!ok) return;
+
+      state.history = [];
+      saveHistory();
+      renderHistoryTable();
+      state.currentResult = null;
+      resetSummaryOnly();
+      renderChart();
+    }
+
+    function buildPdfReportHtml(result) {
+      const recommendations = getRecommendations(result);
+      const recentHistory = [...state.history]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5);
+
+      const breakdownEntries = [
+        ["Transporte", result.breakdown.transport],
+        ["Energía", result.breakdown.energy],
+        ["Alimentación", result.breakdown.diet],
+        ["Vuelos", result.breakdown.flights]
+      ];
+
+      const rowsHtml = breakdownEntries.map(([label, value]) => {
+        const percent = result.total > 0 ? ((value / result.total) * 100) : 0;
+        return `
+          <div class="report-row">
+            <div class="report-row-head">
+              <span>${label}</span>
+              <span>${value.toFixed(2)} t (${percent.toFixed(1)}%)</span>
+            </div>
+            <div class="report-bar">
+              <div class="report-bar-fill" style="width:${percent.toFixed(1)}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      const historyHtml = recentHistory.length
+        ? `
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Nivel</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${recentHistory.map(item => `
+                <tr>
+                  <td>${formatDate(item.createdAt)}</td>
+                  <td>${item.total.toFixed(2)} t</td>
+                  <td>${item.levelText}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `
+        : `<p style="color:#475569;margin:0;">No hay historial adicional guardado.</p>`;
+
+      return `
+        <div class="report-header">
+          <div>
+            <h1 class="report-title">Reporte de huella de carbono</h1>
+            <p class="report-sub">
+              Resumen generado desde la calculadora web. Este documento presenta una estimación anual
+              de CO₂e, el desglose por categoría y los registros recientes guardados.
+            </p>
+          </div>
+          <div>
+            <span class="report-pill">${result.levelText}</span>
+            <p class="report-sub" style="margin-top:10px;">Generado: ${formatDate(new Date().toISOString())}</p>
+          </div>
+        </div>
+
+        <div class="report-total">
+          <div class="report-box">
+            <small>Total anual estimado</small>
+            <strong>${result.total.toFixed(2)} tCO₂e</strong>
+          </div>
+          <div class="report-box">
+            <small>Dieta seleccionada</small>
+            <strong style="font-size:1.15rem;">${result.inputs.dietLabel}</strong>
+          </div>
+          <div class="report-box">
+            <small>Personas en el hogar</small>
+            <strong>${result.inputs.people}</strong>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3>Desglose por categoría</h3>
+          <div class="report-breakdown">${rowsHtml}</div>
+        </div>
+
+        <div class="report-section">
+          <h3>Entradas usadas en el cálculo</h3>
+          <table class="report-table">
+            <tbody>
+              <tr><th>Carro por semana</th><td>${result.inputs.carKm} km</td></tr>
+              <tr><th>Transporte público por semana</th><td>${result.inputs.publicKm} km</td></tr>
+              <tr><th>Electricidad mensual</th><td>${result.inputs.electricity} kWh</td></tr>
+              <tr><th>Vuelos cortos al año</th><td>${result.inputs.flightsShort}</td></tr>
+              <tr><th>Vuelos largos al año</th><td>${result.inputs.flightsLong}</td></tr>
+              <tr><th>Dieta</th><td>${result.inputs.dietLabel}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <h3>Recomendaciones</h3>
+          <ul style="color:#334155; line-height:1.75; margin:0; padding-left:20px;">
+            ${recommendations.map(tip => `<li>${tip}</li>`).join("")}
+          </ul>
+        </div>
+
+        <div class="report-section">
+          <h3>Registros recientes del historial</h3>
+          ${historyHtml}
+        </div>
+      `;
+    }
+
+    async function downloadPdf() {
+      if (!state.currentResult) {
+        alert("Primero debes calcular al menos un resultado.");
+        return;
+      }
+
+      const result = state.currentResult;
+      elements.pdfContent.innerHTML = buildPdfReportHtml(result);
+
+      const canvas = await html2canvas(elements.pdfReport, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff"
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("reporte-huella-carbono.pdf");
+    }
+
+    function attachTableEvents() {
+      elements.historyTableBody.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const { action, id } = button.dataset;
+        const item = state.history.find(entry => entry.id === id);
+        if (!item) return;
+
+        if (action === "view") {
+          setCurrentResult(item, true);
+          elements.chartMode.value = "current";
+          renderChart();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        if (action === "delete") {
+          deleteHistoryItem(id);
+        }
+      });
+    }
+
+    function init() {
+      state.history = loadHistory();
+      renderHistoryTable();
+      attachTableEvents();
+
+      if (state.history.length > 0) {
+        const latest = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+        setCurrentResult(latest, true);
+      } else {
+        resetSummaryOnly();
+        renderChart();
+      }
+
+      elements.previewBtn.addEventListener("click", previewCalculation);
+      elements.calculateBtn.addEventListener("click", calculateAndSave);
+      elements.resetBtn.addEventListener("click", () => {
+        resetForm();
+        previewCalculation();
+      });
+      elements.clearHistoryBtn.addEventListener("click", clearHistory);
+      elements.chartMode.addEventListener("change", renderChart);
+      elements.downloadPdfBtn.addEventListener("click", downloadPdf);
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Huella de Carbono Minimal</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg-soft: #111827;
+      --card: rgba(255, 255, 255, 0.06);
+      --card-strong: rgba(255, 255, 255, 0.09);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #22c55e;
+      --accent-2: #16a34a;
+      --accent-soft: rgba(34, 197, 94, 0.14);
+      --warning: #f59e0b;
+      --warning-soft: rgba(245, 158, 11, 0.14);
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.14);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    body[data-theme="low"] {
+      --accent: #22c55e;
+      --accent-2: #16a34a;
+      --accent-soft: rgba(34, 197, 94, 0.14);
+    }
+
+    body[data-theme="mid"] {
+      --accent: #f59e0b;
+      --accent-2: #d97706;
+      --accent-soft: rgba(245, 158, 11, 0.16);
+    }
+
+    body[data-theme="high"] {
+      --accent: #ef4444;
+      --accent-2: #dc2626;
+      --accent-soft: rgba(239, 68, 68, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.05), transparent 25%),
+        linear-gradient(180deg, #07101d 0%, #0b1220 100%);
+      min-height: 100vh;
+      transition: background 0.25s ease;
+    }
+
+    .container {
+      width: min(980px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: var(--radius-xl);
+    }
+
+    .main-card {
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .intro {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .single-layout {
+      display: grid;
+      gap: 22px;
+    }
+
+    .result-hero {
+      padding: 22px;
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, var(--accent-soft), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-hero p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .big-number {
+      margin: 10px 0 6px;
+      font-size: clamp(2.7rem, 6vw, 4.5rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .projection {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.94rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 0.98rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .metric small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+    }
+
+    .metric strong {
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tips {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .tips h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .tips ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .history-card {
+      padding: 22px;
+    }
+
+    .history-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .history-head h2 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+    }
+
+    .history-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+    }
+
+    table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    th {
+      background: rgba(255,255,255,0.05);
+      color: #f8fafc;
+      font-size: 0.9rem;
+    }
+
+    td {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .row-total {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .chip-low {
+      background: rgba(34, 197, 94, 0.14);
+      color: #86efac;
+    }
+
+    .chip-mid {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fcd34d;
+    }
+
+    .chip-high {
+      background: rgba(239, 68, 68, 0.14);
+      color: #fca5a5;
+    }
+
+    .row-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      padding: 8px 11px;
+      border-radius: 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px;
+    }
+
+    .note {
+      margin-top: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+
+    .hidden-report {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 1080px;
+      background: white;
+      color: #0f172a;
+      padding: 34px;
+      z-index: -1;
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 18px;
+    }
+
+    .report-title {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.05;
+    }
+
+    .report-sub {
+      margin: 8px 0 0;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .report-pill {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .report-box {
+      padding: 16px;
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .report-box small {
+      display: block;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .report-box strong {
+      font-size: 1.35rem;
+      color: #0f172a;
+    }
+
+    .report-section {
+      margin-top: 22px;
+    }
+
+    .report-section h3 {
+      margin: 0 0 12px;
+      color: #0f172a;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .report-table th,
+    .report-table td {
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      text-align: left;
+      color: #0f172a;
+      font-size: 0.92rem;
+    }
+
+    .report-table th {
+      background: #f1f5f9;
+    }
+
+    @media (max-width: 760px) {
+      .main-card,
+      .history-card {
+        padding: 18px;
+      }
+
+      .grid,
+      .metrics,
+      .report-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .big-number {
+        font-size: 2.7rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="low">
+  <main class="container">
+    <section class="card main-card">
+      <div class="eyebrow">🌍 Minimalista • Mensual • PDF</div>
+      <h1>Calculadora de huella de carbono</h1>
+      <p class="intro">
+        Esta versión calcula tu huella mensual estimada y además proyecta el resultado a 12 meses.
+        Todo está en una sola tarjeta, sin gráfica, con historial guardado y reporte PDF profesional.
+      </p>
+
+      <div class="single-layout">
+        <div class="result-hero">
+          <p>Huella mensual estimada</p>
+          <div class="big-number" id="monthlyTotal">0.00</div>
+          <p>toneladas de CO₂e por mes</p>
+          <div class="projection" id="yearProjection">Proyección 12 meses: 0.00 tCO₂e</div>
+          <div class="badge" id="levelBadge">Huella baja</div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="carKm">Kilómetros en carro por mes</label>
+            <input id="carKm" type="number" min="0" placeholder="Ej. 480" />
+          </div>
+
+          <div class="field">
+            <label for="publicKm">Kilómetros en transporte público por mes</label>
+            <input id="publicKm" type="number" min="0" placeholder="Ej. 180" />
+          </div>
+
+          <div class="field">
+            <label for="electricity">Consumo eléctrico mensual (kWh)</label>
+            <input id="electricity" type="number" min="0" placeholder="Ej. 180" />
+          </div>
+
+          <div class="field">
+            <label for="flightsShort">Vuelos cortos por mes</label>
+            <input id="flightsShort" type="number" min="0" step="0.1" placeholder="Ej. 0.2" />
+          </div>
+
+          <div class="field">
+            <label for="flightsLong">Vuelos largos por mes</label>
+            <input id="flightsLong" type="number" min="0" step="0.1" placeholder="Ej. 0.1" />
+          </div>
+
+          <div class="field">
+            <label for="diet">Tipo de dieta</label>
+            <select id="diet">
+              <option value="0.2083">Omnívora alta en carne</option>
+              <option value="0.15">Omnívora moderada</option>
+              <option value="0.10">Vegetariana</option>
+              <option value="0.0667">Vegana</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="people">Personas en el hogar</label>
+            <input id="people" type="number" min="1" value="1" placeholder="Ej. 3" />
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <small>🚗 Transporte mensual</small>
+            <strong id="transportValue">0.00 t</strong>
+          </div>
+          <div class="metric">
+            <small>⚡ Energía mensual</small>
+            <strong id="energyValue">0.00 t</strong>
+          </div>
+          <div class="metric">
+            <small>🍽️ Alimentación mensual</small>
+            <strong id="dietValue">0.00 t</strong>
+          </div>
+          <div class="metric">
+            <small>✈️ Vuelos mensuales</small>
+            <strong id="flightsValue">0.00 t</strong>
+          </div>
+        </div>
+
+        <div class="tips">
+          <h3>Recomendaciones</h3>
+          <ul id="tipsList">
+            <li>Empieza por la categoría con mayor peso mensual.</li>
+            <li>Guarda distintos escenarios para comparar hábitos.</li>
+            <li>Usa el PDF para dejar evidencia del análisis.</li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="calculateBtn">Calcular y guardar</button>
+          <button class="btn-secondary" id="previewBtn">Calcular sin guardar</button>
+          <button class="btn-secondary" id="resetBtn">Limpiar</button>
+          <button class="btn-primary" id="downloadPdfBtn">Descargar PDF</button>
+        </div>
+
+        <p class="note">
+          El resultado principal es mensual. La proyección a 12 meses se calcula multiplicando el valor mensual por 12.
+        </p>
+      </div>
+    </section>
+
+    <section class="card history-card">
+      <div class="history-head">
+        <div>
+          <h2>Historial de cálculos</h2>
+          <p>Se guarda en este navegador. Puedes revisar, recargar o eliminar registros.</p>
+        </div>
+        <div class="actions" style="margin:0;">
+          <button class="btn-danger" id="clearHistoryBtn">Borrar historial</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Mensual</th>
+              <th>12 meses</th>
+              <th>Nivel</th>
+              <th>Transporte</th>
+              <th>Energía</th>
+              <th>Alimentación</th>
+              <th>Vuelos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <tr>
+              <td colspan="9" class="empty">Aún no hay cálculos guardados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="hidden-report" id="pdfReport">
+    <div id="pdfContent"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "carbon-footprint-monthly-minimal-v1";
+
+    const state = {
+      currentResult: null,
+      history: []
+    };
+
+    const elements = {
+      carKm: document.getElementById("carKm"),
+      publicKm: document.getElementById("publicKm"),
+      electricity: document.getElementById("electricity"),
+      flightsShort: document.getElementById("flightsShort"),
+      flightsLong: document.getElementById("flightsLong"),
+      diet: document.getElementById("diet"),
+      people: document.getElementById("people"),
+
+      monthlyTotal: document.getElementById("monthlyTotal"),
+      yearProjection: document.getElementById("yearProjection"),
+      levelBadge: document.getElementById("levelBadge"),
+
+      transportValue: document.getElementById("transportValue"),
+      energyValue: document.getElementById("energyValue"),
+      dietValue: document.getElementById("dietValue"),
+      flightsValue: document.getElementById("flightsValue"),
+
+      tipsList: document.getElementById("tipsList"),
+      historyTableBody: document.getElementById("historyTableBody"),
+
+      calculateBtn: document.getElementById("calculateBtn"),
+      previewBtn: document.getElementById("previewBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      downloadPdfBtn: document.getElementById("downloadPdfBtn"),
+      clearHistoryBtn: document.getElementById("clearHistoryBtn"),
+
+      pdfReport: document.getElementById("pdfReport"),
+      pdfContent: document.getElementById("pdfContent")
+    };
+
+    function safeNumber(value, fallback = 0) {
+      const num = Number(value);
+      return Number.isFinite(num) && num >= 0 ? num : fallback;
+    }
+
+    function formatTons(value) {
+      return `${value.toFixed(2)} t`;
+    }
+
+    function formatDate(dateString) {
+      return new Intl.DateTimeFormat("es-CO", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      }).format(new Date(dateString));
+    }
+
+    function getDietLabel(value) {
+      const map = {
+        "0.2083": "Omnívora alta en carne",
+        "0.15": "Omnívora moderada",
+        "0.10": "Vegetariana",
+        "0.0667": "Vegana"
+      };
+      return map[String(value)] || "Personalizada";
+    }
+
+    function getLevelInfo(monthlyTotal) {
+      if (monthlyTotal < 0.35) {
+        return { key: "low", text: "Huella baja" };
+      }
+      if (monthlyTotal < 0.75) {
+        return { key: "mid", text: "Huella media" };
+      }
+      return { key: "high", text: "Huella alta" };
+    }
+
+    function getChip(level) {
+      if (level === "low") return '<span class="chip chip-low">Baja</span>';
+      if (level === "mid") return '<span class="chip chip-mid">Media</span>';
+      return '<span class="chip chip-high">Alta</span>';
+    }
+
+    function loadHistory() {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        return Array.isArray(data) ? data : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveHistory() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
+    }
+
+    function generateId() {
+      if (window.crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function readInputs() {
+      return {
+        carKm: safeNumber(elements.carKm.value),
+        publicKm: safeNumber(elements.publicKm.value),
+        electricity: safeNumber(elements.electricity.value),
+        flightsShort: safeNumber(elements.flightsShort.value),
+        flightsLong: safeNumber(elements.flightsLong.value),
+        people: Math.max(safeNumber(elements.people.value, 1), 1),
+        dietValue: Number(elements.diet.value),
+        dietLabel: getDietLabel(elements.diet.value)
+      };
+    }
+
+    function calculateResult() {
+      const inputs = readInputs();
+
+      const transport = ((inputs.carKm * 0.192) + (inputs.publicKm * 0.089)) / 1000;
+      const energy = ((inputs.electricity * 0.233) / 1000) / inputs.people;
+      const diet = inputs.dietValue;
+      const flights = (inputs.flightsShort * 0.25) + (inputs.flightsLong * 1.1);
+
+      const monthlyTotal = transport + energy + diet + flights;
+      const yearlyProjection = monthlyTotal * 12;
+      const level = getLevelInfo(monthlyTotal);
+
+      return {
+        id: generateId(),
+        createdAt: new Date().toISOString(),
+        inputs,
+        breakdown: {
+          transport,
+          energy,
+          diet,
+          flights
+        },
+        monthlyTotal,
+        yearlyProjection,
+        level: level.key,
+        levelText: level.text
+      };
+    }
+
+    function getRecommendations(result) {
+      const ordered = Object.entries(result.breakdown).sort((a, b) => b[1] - a[1]);
+      const dominant = ordered[0]?.[0] || "transport";
+
+      const tipsMap = {
+        transport: [
+          "El transporte es la categoría que más pesa. Reducir kilómetros en carro puede bajar bastante el valor mensual.",
+          "Mover algunos trayectos a transporte público, bicicleta o caminata suele ser lo más efectivo."
+        ],
+        energy: [
+          "La energía está impactando fuerte este mes. Revisa equipos conectados, tiempos de uso e iluminación.",
+          "Dividir correctamente el consumo entre las personas del hogar mejora la estimación individual."
+        ],
+        diet: [
+          "La alimentación está aportando una fracción importante. Reducir carne roja algunos días ayuda.",
+          "Un patrón más vegetal suele disminuir el impacto mensual."
+        ],
+        flights: [
+          "Los vuelos están elevando mucho tu resultado mensual estimado.",
+          "Si no vuelas todos los meses, usa un promedio mensual realista para evitar sobreestimar."
+        ]
+      };
+
+      return [
+        ...tipsMap[dominant],
+        "Compara varios escenarios mensuales para ver qué cambio reduce más la proyección de 12 meses.",
+        "Empieza por la categoría dominante: ahí se ve la mayor diferencia."
+      ];
+    }
+
+    function applyTheme(level) {
+      document.body.setAttribute("data-theme", level);
+    }
+
+    function updateUI(result) {
+      state.currentResult = result;
+      applyTheme(result.level);
+
+      elements.monthlyTotal.textContent = result.monthlyTotal.toFixed(2);
+      elements.yearProjection.textContent = `Proyección 12 meses: ${result.yearlyProjection.toFixed(2)} tCO₂e`;
+      elements.levelBadge.textContent = result.levelText;
+
+      elements.transportValue.textContent = formatTons(result.breakdown.transport);
+      elements.energyValue.textContent = formatTons(result.breakdown.energy);
+      elements.dietValue.textContent = formatTons(result.breakdown.diet);
+      elements.flightsValue.textContent = formatTons(result.breakdown.flights);
+
+      const tips = getRecommendations(result);
+      elements.tipsList.innerHTML = tips.map(t => `<li>${t}</li>`).join("");
+    }
+
+    function fillForm(result) {
+      elements.carKm.value = result.inputs.carKm;
+      elements.publicKm.value = result.inputs.publicKm;
+      elements.electricity.value = result.inputs.electricity;
+      elements.flightsShort.value = result.inputs.flightsShort;
+      elements.flightsLong.value = result.inputs.flightsLong;
+      elements.people.value = result.inputs.people;
+      elements.diet.value = String(result.inputs.dietValue);
+    }
+
+    function resetForm() {
+      elements.carKm.value = "";
+      elements.publicKm.value = "";
+      elements.electricity.value = "";
+      elements.flightsShort.value = "";
+      elements.flightsLong.value = "";
+      elements.people.value = "1";
+      elements.diet.value = "0.2083";
+    }
+
+    function resetUI() {
+      applyTheme("low");
+      elements.monthlyTotal.textContent = "0.00";
+      elements.yearProjection.textContent = "Proyección 12 meses: 0.00 tCO₂e";
+      elements.levelBadge.textContent = "Huella baja";
+      elements.transportValue.textContent = "0.00 t";
+      elements.energyValue.textContent = "0.00 t";
+      elements.dietValue.textContent = "0.00 t";
+      elements.flightsValue.textContent = "0.00 t";
+      elements.tipsList.innerHTML = `
+        <li>Empieza por la categoría con mayor peso mensual.</li>
+        <li>Guarda distintos escenarios para comparar hábitos.</li>
+        <li>Usa el PDF para dejar evidencia del análisis.</li>
+      `;
+    }
+
+    function renderHistory() {
+      const history = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      if (history.length === 0) {
+        elements.historyTableBody.innerHTML = `
+          <tr>
+            <td colspan="9" class="empty">Aún no hay cálculos guardados.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      elements.historyTableBody.innerHTML = history.map(item => `
+        <tr>
+          <td>${formatDate(item.createdAt)}</td>
+          <td class="row-total">${item.monthlyTotal.toFixed(2)} t</td>
+          <td class="row-total">${item.yearlyProjection.toFixed(2)} t</td>
+          <td>${getChip(item.level)}</td>
+          <td>${item.breakdown.transport.toFixed(2)} t</td>
+          <td>${item.breakdown.energy.toFixed(2)} t</td>
+          <td>${item.breakdown.diet.toFixed(2)} t</td>
+          <td>${item.breakdown.flights.toFixed(2)} t</td>
+          <td>
+            <div class="row-actions">
+              <button class="btn-secondary mini-btn" data-action="view" data-id="${item.id}">Ver</button>
+              <button class="btn-danger mini-btn" data-action="delete" data-id="${item.id}">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function previewCalculation() {
+      const result = calculateResult();
+      updateUI(result);
+    }
+
+    function calculateAndSave() {
+      const result = calculateResult();
+      state.history.push(result);
+      saveHistory();
+      updateUI(result);
+      renderHistory();
+    }
+
+    function deleteItem(id) {
+      state.history = state.history.filter(item => item.id !== id);
+      saveHistory();
+      renderHistory();
+
+      if (state.currentResult && state.currentResult.id === id) {
+        if (state.history.length > 0) {
+          const latest = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+          fillForm(latest);
+          updateUI(latest);
+        } else {
+          state.currentResult = null;
+          resetUI();
+        }
+      }
+    }
+
+    function clearHistory() {
+      const ok = confirm("¿Seguro que quieres borrar todo el historial?");
+      if (!ok) return;
+
+      state.history = [];
+      saveHistory();
+      renderHistory();
+      state.currentResult = null;
+      resetUI();
+    }
+
+    function buildPdfHtml(result) {
+      const tips = getRecommendations(result);
+      const recent = [...state.history]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 5);
+
+      return `
+        <div class="report-header">
+          <div>
+            <h1 class="report-title">Reporte de huella de carbono</h1>
+            <p class="report-sub">
+              Este documento resume la estimación mensual de CO₂e y su proyección a 12 meses,
+              junto con el desglose por categoría y el historial reciente.
+            </p>
+          </div>
+          <div>
+            <span class="report-pill">${result.levelText}</span>
+            <p class="report-sub" style="margin-top:10px;">Generado: ${formatDate(new Date().toISOString())}</p>
+          </div>
+        </div>
+
+        <div class="report-grid">
+          <div class="report-box">
+            <small>Huella mensual estimada</small>
+            <strong>${result.monthlyTotal.toFixed(2)} tCO₂e</strong>
+          </div>
+          <div class="report-box">
+            <small>Proyección de 12 meses</small>
+            <strong>${result.yearlyProjection.toFixed(2)} tCO₂e</strong>
+          </div>
+          <div class="report-box">
+            <small>Dieta seleccionada</small>
+            <strong style="font-size:1.1rem;">${result.inputs.dietLabel}</strong>
+          </div>
+          <div class="report-box">
+            <small>Personas en el hogar</small>
+            <strong>${result.inputs.people}</strong>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3>Desglose mensual</h3>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th>Valor mensual</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Transporte</td><td>${result.breakdown.transport.toFixed(2)} t</td></tr>
+              <tr><td>Energía</td><td>${result.breakdown.energy.toFixed(2)} t</td></tr>
+              <tr><td>Alimentación</td><td>${result.breakdown.diet.toFixed(2)} t</td></tr>
+              <tr><td>Vuelos</td><td>${result.breakdown.flights.toFixed(2)} t</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <h3>Entradas del cálculo</h3>
+          <table class="report-table">
+            <tbody>
+              <tr><th>Carro por mes</th><td>${result.inputs.carKm} km</td></tr>
+              <tr><th>Transporte público por mes</th><td>${result.inputs.publicKm} km</td></tr>
+              <tr><th>Electricidad mensual</th><td>${result.inputs.electricity} kWh</td></tr>
+              <tr><th>Vuelos cortos por mes</th><td>${result.inputs.flightsShort}</td></tr>
+              <tr><th>Vuelos largos por mes</th><td>${result.inputs.flightsLong}</td></tr>
+              <tr><th>Dieta</th><td>${result.inputs.dietLabel}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-section">
+          <h3>Recomendaciones</h3>
+          <ul style="margin:0; padding-left:20px; color:#334155; line-height:1.75;">
+            ${tips.map(t => `<li>${t}</li>`).join("")}
+          </ul>
+        </div>
+
+        <div class="report-section">
+          <h3>Historial reciente</h3>
+          ${
+            recent.length
+              ? `
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Mensual</th>
+                      <th>12 meses</th>
+                      <th>Nivel</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${recent.map(item => `
+                      <tr>
+                        <td>${formatDate(item.createdAt)}</td>
+                        <td>${item.monthlyTotal.toFixed(2)} t</td>
+                        <td>${item.yearlyProjection.toFixed(2)} t</td>
+                        <td>${item.levelText}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              `
+              : `<p style="color:#475569;">No hay historial adicional guardado.</p>`
+          }
+        </div>
+      `;
+    }
+
+    async function downloadPdf() {
+      if (!state.currentResult) {
+        alert("Primero debes calcular un resultado.");
+        return;
+      }
+
+      elements.pdfContent.innerHTML = buildPdfHtml(state.currentResult);
+
+      const canvas = await html2canvas(elements.pdfReport, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff"
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      pdf.save("reporte-huella-carbono-mensual.pdf");
+    }
+
+    function attachEvents() {
+      elements.previewBtn.addEventListener("click", previewCalculation);
+
+      elements.calculateBtn.addEventListener("click", calculateAndSave);
+
+      elements.resetBtn.addEventListener("click", () => {
+        resetForm();
+        previewCalculation();
+      });
+
+      elements.downloadPdfBtn.addEventListener("click", downloadPdf);
+
+      elements.clearHistoryBtn.addEventListener("click", clearHistory);
+
+      elements.historyTableBody.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const { action, id } = button.dataset;
+        const item = state.history.find(x => x.id === id);
+        if (!item) return;
+
+        if (action === "view") {
+          fillForm(item);
+          updateUI(item);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        if (action === "delete") {
+          deleteItem(id);
+        }
+      });
+    }
+
+    function init() {
+      state.history = loadHistory();
+      renderHistory();
+      attachEvents();
+
+      if (state.history.length > 0) {
+        const latest = [...state.history].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+        fillForm(latest);
+        updateUI(latest);
+      } else {
+        resetUI();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
