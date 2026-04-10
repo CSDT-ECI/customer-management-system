@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huella de Carbono</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090e0b;--card:#111d12;
+  --b0:rgba(60,140,60,.10);--b1:rgba(60,140,60,.22);--b2:rgba(60,140,60,.38);
+  --text:#e8f5e9;--t2:#7aad7a;--t3:#3d6b3d;
+  --ff:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --accent:#4ade80;--accent-bg:rgba(74,222,128,.07);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 15% 5%,rgba(74,222,128,.04) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 85%,rgba(74,222,128,.03) 0%,transparent 50%);pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:3rem 1.25rem 5rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.au{animation:fadeUp .55s ease both}
+.au1{animation-delay:.08s}.au2{animation-delay:.16s}.au3{animation-delay:.24s}.au4{animation-delay:.32s}
+
+/* hero */
+.hero{text-align:center;margin-bottom:2.5rem}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#22c55e;border:1px solid rgba(74,222,128,.2);border-radius:99px;padding:4px 14px;margin-bottom:1.1rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s infinite}
+.hero h1{font-family:var(--ff);font-size:clamp(32px,6vw,54px);font-weight:800;line-height:1.05;letter-spacing:-.02em;background:linear-gradient(135deg,#e8f5e9 30%,#4ade80 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.6rem}
+.hero p{font-size:14px;color:var(--t2);font-weight:300}
+
+/* single card */
+.card{background:var(--card);border:1px solid var(--b1);border-radius:22px;padding:2rem 2.25rem;margin-bottom:1.25rem;position:relative;overflow:hidden;transition:border-color .5s}
+.card::after{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,var(--accent-bg) 0%,transparent 70%);pointer-events:none;transition:background .5s}
+
+/* score row */
+.score-row{display:flex;align-items:center;gap:1.75rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.ring-box{position:relative;width:100px;height:100px;flex-shrink:0}
+.ring-svg{display:block;transform:rotate(-90deg)}
+.r-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:9}
+.r-fg{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset .65s cubic-bezier(.4,0,.2,1),stroke .4s}
+.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rn{font-family:var(--ff);font-size:24px;font-weight:800;color:var(--text);line-height:1}
+.ru{font-size:9px;color:var(--t2);margin-top:2px}
+.score-meta{flex:1;min-width:180px}
+.score-period{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:.35rem}
+.score-big{font-family:var(--ff);font-size:38px;font-weight:800;line-height:1;transition:color .4s}
+.score-unit{font-size:14px;color:var(--t2);font-weight:400;margin-left:4px}
+.score-annual{font-size:12px;color:var(--t3);margin-top:4px}
+
+/* status */
+.status{display:inline-block;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:500;margin-bottom:1.5rem;border:1px solid transparent;transition:all .4s}
+.s-good{background:rgba(74,222,128,.08);color:#4ade80;border-color:rgba(74,222,128,.22)}
+.s-ok  {background:rgba(251,191,36,.08);color:#fbbf24;border-color:rgba(251,191,36,.22)}
+.s-high{background:rgba(248,113,113,.08);color:#f87171;border-color:rgba(248,113,113,.22)}
+
+/* bars */
+.cats-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:.9rem}
+.bar-item{display:grid;grid-template-columns:90px 1fr 52px;align-items:center;gap:10px;margin-bottom:9px}
+.bar-name{font-size:12px;color:var(--t2);text-align:right}
+.bar-track{height:5px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.bf-t{background:#4ade80}.bf-e{background:#fbbf24}.bf-a{background:#f87171}.bf-c{background:#a78bfa}
+.bar-val{font-size:11px;color:var(--t2);text-align:right}
+.divider{height:1px;background:var(--b0);margin:1.5rem 0}
+
+/* sliders */
+.sliders-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 2rem}
+.sec-ttl{font-family:var(--ff);font-size:13px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;grid-column:1/-1;margin-bottom:.75rem;margin-top:1.25rem}
+.sec-ttl:first-child{margin-top:0}
+.slw{margin-bottom:14px}
+.slt{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.sln{font-size:12px;color:var(--t2)}.slv{font-size:12px;font-weight:500;color:var(--text)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:99px;background:rgba(255,255,255,.07);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-bg);transition:box-shadow .2s,transform .15s}
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 6px var(--accent-bg);transform:scale(1.12)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--accent);border:none}
+
+/* tip */
+.tip{background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.13);border-radius:12px;padding:1rem 1.25rem;margin-top:1.5rem}
+.tip-h{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#22c55e;font-weight:500;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.tip-h::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.tip-t{font-size:13px;color:var(--t2);line-height:1.6;font-weight:300}
+
+/* chips */
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.25rem}
+.chip{background:var(--card);border:1px solid var(--b0);border-radius:12px;padding:11px 8px;text-align:center;transition:border-color .3s}
+.chip:hover{border-color:var(--b2)}
+.chip-l{font-size:11px;color:var(--t3);margin-bottom:4px;line-height:1.3}
+.chip-v{font-family:var(--ff);font-size:20px;font-weight:700}
+.cg{color:#4ade80}.ca{color:#fbbf24}.cr{color:#f87171}.cm{color:var(--text);transition:color .4s}
+
+/* actions */
+.actions{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--fb);font-size:13px;font-weight:500;padding:9px 18px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:all .2s}
+.btn-save{background:var(--accent);color:#060e07;border-color:var(--accent)}
+.btn-save:hover{opacity:.85;transform:translateY(-1px)}
+.btn-pdf{background:transparent;color:var(--t2);border-color:var(--b1)}
+.btn-pdf:hover{border-color:var(--b2);color:var(--text);background:rgba(255,255,255,.03)}
+.btn-clr{background:transparent;color:var(--t3);border-color:var(--b0)}
+.btn-clr:hover{border-color:rgba(248,113,113,.3);color:#f87171}
+
+/* table */
+.tbl-card{background:var(--card);border:1px solid var(--b0);border-radius:18px;overflow:hidden;margin-bottom:1.25rem}
+.tbl-hdr{padding:1.1rem 1.4rem;border-bottom:1px solid var(--b0);display:flex;justify-content:space-between;align-items:center}
+.tbl-title{font-family:var(--ff);font-size:15px;font-weight:700}
+.tbl-cnt{font-size:11px;color:var(--t3)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{border-bottom:1px solid var(--b0)}
+th{padding:8px 14px;text-align:left;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(60,140,60,.06);transition:background .15s}
+tbody tr:hover{background:rgba(74,222,128,.025)}
+tbody tr:last-child{border-bottom:none}
+td{padding:10px 14px;color:var(--t2);white-space:nowrap}
+td.tot{font-family:var(--ff);font-weight:700;font-size:13px}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;border:1px solid transparent}
+.badge.good{background:rgba(74,222,128,.1);color:#4ade80;border-color:rgba(74,222,128,.25)}
+.badge.ok  {background:rgba(251,191,36,.1);color:#fbbf24;border-color:rgba(251,191,36,.25)}
+.badge.high{background:rgba(248,113,113,.1);color:#f87171;border-color:rgba(248,113,113,.25)}
+.del{background:transparent;border:none;cursor:pointer;color:var(--t3);font-size:13px;padding:2px 5px;border-radius:5px;transition:color .2s,background .2s}
+.del:hover{color:#f87171;background:rgba(248,113,113,.1)}
+.empty{text-align:center;padding:2rem;color:var(--t3);font-size:12px}
+footer{text-align:center;margin-top:2rem;font-size:11px;color:var(--t3);line-height:1.8}
+
+/* ══ PRINT ══ */
+@media print{
+  @page{margin:1.4cm 1.8cm;size:A4}
+  body{background:#fff!important;color:#111!important}
+  body::before{display:none}
+  .page{padding:0;max-width:100%}
+  .actions,.del,.print-hide{display:none!important}
+  .hero h1{background:none!important;-webkit-text-fill-color:#111!important;font-size:26pt}
+  .hero p{color:#555!important}
+  .card{background:#f6faf6!important;border:1.5px solid #c6e6c6!important;border-radius:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card::after{display:none}
+  .rn,.ru{color:#111!important}
+  .score-big{color:#111!important}
+  .score-period,.score-annual,.cats-label,.bar-name,.bar-val,.sln,.t2{color:#555!important}
+  .bar-track{background:#ddd!important}
+  .s-good{background:#d4f5e2!important;color:#166534!important;border-color:#86efac!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .s-ok  {background:#fef3c7!important;color:#854d0e!important;border-color:#fcd34d!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .s-high{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .chips{margin-bottom:1rem}
+  .chip{background:#f6faf6!important;border:1px solid #c6e6c6!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .chip-l{color:#555!important}
+  .cg{color:#16a34a!important}.ca{color:#b45309!important}.cr{color:#dc2626!important}.cm{color:#111!important}
+  .sliders-grid,.sec-ttl,.divider{display:none!important}
+  .tip{background:#f0faf4!important;border:1px solid #86efac!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tip-h{color:#16a34a!important}.tip-t{color:#333!important}
+  .tbl-card{background:#f6faf6!important;border:1px solid #c6e6c6!important;page-break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tbl-hdr{border-bottom:1px solid #c6e6c6!important}
+  .tbl-title,.tbl-cnt{color:#111!important}
+  th{color:#555!important}td{color:#333!important}
+  tbody tr{border-bottom:1px solid #e5e7eb!important}
+  td.tot{color:#111!important}
+  .badge.good{background:#d4f5e2!important;color:#166534!important;border-color:#86efac!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .badge.ok  {background:#fef3c7!important;color:#854d0e!important;border-color:#fcd34d!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .badge.high{background:#fee2e2!important;color:#991b1b!important;border-color:#fca5a5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-hdr{display:block!important}
+}
+.print-hdr{display:none;text-align:right;font-size:10pt;color:#888;margin-bottom:1rem;border-bottom:1px solid #e5e7eb;padding-bottom:8px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="print-hdr">Reporte Huella de Carbono &nbsp;·&nbsp; <span id="pdate"></span></div>
+
+  <header class="hero au">
+    <div class="eyebrow">Estimación mensual de CO₂</div>
+    <h1>Tu Huella de Carbono</h1>
+    <p>Resultados por mes · multiplica ×12 para ver el total anual</p>
+  </header>
+
+  <!-- SINGLE CARD -->
+  <div class="card au au1">
+
+    <div class="score-row">
+      <div class="ring-box">
+        <svg class="ring-svg" width="100" height="100" viewBox="0 0 100 100">
+          <circle class="r-bg" cx="50" cy="50" r="45"/>
+          <circle class="r-fg" id="rfg" cx="50" cy="50" r="45"/>
+        </svg>
+        <div class="ring-inner">
+          <span class="rn" id="rnum">0.00</span>
+          <span class="ru">t CO₂</span>
+        </div>
+      </div>
+      <div class="score-meta">
+        <div class="score-period">Este mes</div>
+        <div>
+          <span class="score-big" id="sbig">0.00</span>
+          <span class="score-unit">t CO₂</span>
+        </div>
+        <div class="score-annual" id="sann">≈ 0.00 t al año</div>
+      </div>
+    </div>
+
+    <div class="status s-good" id="status">Calculando…</div>
+
+    <div class="cats-label">Desglose mensual</div>
+    <div class="bar-item"><span class="bar-name">Transporte</span><div class="bar-track"><div class="bar-fill bf-t" id="bt" style="width:0%"></div></div><span class="bar-val" id="vt">0.000 t</span></div>
+    <div class="bar-item"><span class="bar-name">Energía</span><div class="bar-track"><div class="bar-fill bf-e" id="be" style="width:0%"></div></div><span class="bar-val" id="ve">0.000 t</span></div>
+    <div class="bar-item"><span class="bar-name">Alimentación</span><div class="bar-track"><div class="bar-fill bf-a" id="ba" style="width:0%"></div></div><span class="bar-val" id="va">0.000 t</span></div>
+    <div class="bar-item"><span class="bar-name">Consumo</span><div class="bar-track"><div class="bar-fill bf-c" id="bc" style="width:0%"></div></div><span class="bar-val" id="vc">0.000 t</span></div>
+
+    <div class="divider"></div>
+
+    <div class="sliders-grid">
+      <div class="sec-ttl">🚗 Transporte</div>
+      <div class="slw"><div class="slt"><span class="sln">km en auto / semana</span><span class="slv" id="dv-au">150 km</span></div><input type="range" min="0" max="1000" step="10" value="150" id="s-au"></div>
+      <div class="slw"><div class="slt"><span class="sln">vuelos cortos este mes</span><span class="slv" id="dv-vc">0</span></div><input type="range" min="0" max="4" step="1" value="0" id="s-vc"></div>
+      <div class="slw"><div class="slt"><span class="sln">vuelos largos este mes</span><span class="slv" id="dv-vl">0</span></div><input type="range" min="0" max="2" step="1" value="0" id="s-vl"></div>
+
+      <div class="sec-ttl">⚡ Energía</div>
+      <div class="slw"><div class="slt"><span class="sln">electricidad kWh / mes</span><span class="slv" id="dv-el">200 kWh</span></div><input type="range" min="0" max="1000" step="10" value="200" id="s-el"></div>
+      <div class="slw"><div class="slt"><span class="sln">gas natural m³ / mes</span><span class="slv" id="dv-ga">30 m³</span></div><input type="range" min="0" max="200" step="5" value="30" id="s-ga"></div>
+      <div class="slw"><div class="slt"><span class="sln">% energía renovable</span><span class="slv" id="dv-re">10%</span></div><input type="range" min="0" max="100" step="5" value="10" id="s-re"></div>
+
+      <div class="sec-ttl">🥩 Alimentación</div>
+      <div class="slw"><div class="slt"><span class="sln">porciones de carne / sem.</span><span class="slv" id="dv-ca">5</span></div><input type="range" min="0" max="21" step="1" value="5" id="s-ca"></div>
+      <div class="slw"><div class="slt"><span class="sln">lácteos / día</span><span class="slv" id="dv-la">2</span></div><input type="range" min="0" max="10" step="1" value="2" id="s-la"></div>
+      <div class="slw"><div class="slt"><span class="sln">% alimentos locales</span><span class="slv" id="dv-lo">30%</span></div><input type="range" min="0" max="100" step="5" value="30" id="s-lo"></div>
+
+      <div class="sec-ttl">🛍️ Consumo</div>
+      <div class="slw"><div class="slt"><span class="sln">prendas nuevas este mes</span><span class="slv" id="dv-ro">2</span></div><input type="range" min="0" max="20" step="1" value="2" id="s-ro"></div>
+      <div class="slw"><div class="slt"><span class="sln">compras online este mes</span><span class="slv" id="dv-on">4</span></div><input type="range" min="0" max="30" step="1" value="4" id="s-on"></div>
+      <div class="slw"><div class="slt"><span class="sln">% residuos reciclados</span><span class="slv" id="dv-rc">40%</span></div><input type="range" min="0" max="100" step="5" value="40" id="s-rc"></div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-h">Consejo</div>
+      <div class="tip-t" id="tipt">Ajusta los controles para ver recomendaciones personalizadas.</div>
+    </div>
+  </div>
+
+  <!-- chips -->
+  <div class="chips au au2">
+    <div class="chip"><div class="chip-l">Meta IPCC / mes</div><div class="chip-v cg">0.21 t</div></div>
+    <div class="chip"><div class="chip-l">Colombia / mes</div><div class="chip-v cg">0.16 t</div></div>
+    <div class="chip"><div class="chip-l">Mundial / mes</div><div class="chip-v ca">0.39 t</div></div>
+    <div class="chip"><div class="chip-l">EE.UU. / mes</div><div class="chip-v cr">1.21 t</div></div>
+    <div class="chip"><div class="chip-l">Tu mes</div><div class="chip-v cm" id="chipm">— t</div></div>
+  </div>
+
+  <!-- actions -->
+  <div class="actions au au3">
+    <button class="btn btn-save" id="bsave" onclick="saveRecord()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.83a2 2 0 0 0-.586-1.414L13 2H2zm1 1h9.172l1.414 1.414A1 1 0 0 1 14 5.17V12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1v3H5l3 3 3-3H9V4H7z"/></svg>
+      Guardar cálculo
+    </button>
+    <button class="btn btn-pdf" onclick="dlPDF()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zM9.5 3V0L13 4h-3a.5.5 0 0 1-.5-.5z"/></svg>
+      Descargar PDF
+    </button>
+    <button class="btn btn-clr print-hide" onclick="clearHist()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1z"/></svg>
+      Borrar historial
+    </button>
+  </div>
+
+  <!-- history -->
+  <div class="tbl-card au au4">
+    <div class="tbl-hdr">
+      <span class="tbl-title">Historial de cálculos</span>
+      <span class="tbl-cnt" id="tcnt">0 registros</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Fecha</th>
+          <th>Transp.</th><th>Energía</th><th>Aliment.</th><th>Consumo</th>
+          <th>Total/mes</th><th>Total/año</th><th>Nivel</th>
+          <th class="print-hide"></th>
+        </tr></thead>
+        <tbody id="tbody">
+          <tr><td colspan="10" class="empty">Aún sin registros — pulsa "Guardar cálculo" para empezar.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>Factores IPCC · Our World in Data · Estimación mensual × 12 = anual</footer>
+</div>
+
+<script>
+const g=id=>document.getElementById(id);
+const gv=id=>+g('s-'+id).value;
+
+const SL=[
+  {id:'au',out:'dv-au',fmt:v=>v+' km'},
+  {id:'vc',out:'dv-vc',fmt:v=>v},
+  {id:'vl',out:'dv-vl',fmt:v=>v},
+  {id:'el',out:'dv-el',fmt:v=>v+' kWh'},
+  {id:'ga',out:'dv-ga',fmt:v=>v+' m³'},
+  {id:'re',out:'dv-re',fmt:v=>v+'%'},
+  {id:'ca',out:'dv-ca',fmt:v=>v},
+  {id:'la',out:'dv-la',fmt:v=>v},
+  {id:'lo',out:'dv-lo',fmt:v=>v+'%'},
+  {id:'ro',out:'dv-ro',fmt:v=>v},
+  {id:'on',out:'dv-on',fmt:v=>v},
+  {id:'rc',out:'dv-rc',fmt:v=>v+'%'},
+];
+SL.forEach(s=>g('s-'+s.id).addEventListener('input',()=>{g(s.out).textContent=s.fmt(gv(s.id));update();}));
+
+function calc(){
+  const au=gv('au'),vc=gv('vc'),vl=gv('vl');
+  const el=gv('el'),ga=gv('ga'),re=gv('re');
+  const ca=gv('ca'),la=gv('la'),lo=gv('lo');
+  const ro=gv('ro'),on=gv('on'),rc=gv('rc');
+  // All results in t CO2 per MONTH
+  const transport   =Math.max(0,(au*4.33*.21/1000)+(vc*.26)+(vl*1.15));
+  const energia     =Math.max(0,(el*.233*(1-re/100)/1000)+(ga*2.02/1000));
+  const alimentacion=Math.max(0,(ca*4.33*3.6/1000)+(la*30*.6/1000)-(lo/100*.35/12));
+  const consumo     =Math.max(0,(ro*16/1000)+(on*.5/1000)-(rc/100*.22/12));
+  return{transport,energia,alimentacion,consumo};
+}
+
+function setAccent(m){
+  const[ac,ab]=m<.21?['#4ade80','rgba(74,222,128,.07)']:m<.5?['#fbbf24','rgba(251,191,36,.07)']:['#f87171','rgba(248,113,113,.07)'];
+  document.documentElement.style.setProperty('--accent',ac);
+  document.documentElement.style.setProperty('--accent-bg',ab);
+}
+
+function update(){
+  const c=calc();
+  const m=+(c.transport+c.energia+c.alimentacion+c.consumo).toFixed(3);
+  const y=+(m*12).toFixed(2);
+  setAccent(m);
+  const col=m<.21?'#4ade80':m<.5?'#fbbf24':'#f87171';
+  g('rfg').style.strokeDashoffset=(283*(1-Math.min(m/2,1))).toFixed(1);
+  g('rfg').style.stroke=col;
+  g('rnum').textContent=m.toFixed(2);
+  g('sbig').textContent=m.toFixed(2);
+  g('sbig').style.color=col;
+  g('sann').textContent='≈ '+y+' t al año';
+  const cm=g('chipm');cm.textContent=m.toFixed(2)+' t';cm.style.color=col;
+  const sb=g('status');
+  if(m<.21){sb.className='status s-good';sb.textContent='Excelente — por debajo de la meta mensual del IPCC (0.21 t/mes).';}
+  else if(m<.5){sb.className='status s-ok';sb.textContent='Moderado — superas la meta mensual. Pequeños cambios harán la diferencia.';}
+  else{sb.className='status s-high';sb.textContent='Alto — superas el promedio mundial mensual (0.39 t). Revisa tu categoría principal.';}
+  const mx=Math.max(c.transport,c.energia,c.alimentacion,c.consumo,.001);
+  const pct=n=>Math.min(100,Math.round(n/mx*100))+'%';
+  g('bt').style.width=pct(c.transport);g('vt').textContent=c.transport.toFixed(3)+' t';
+  g('be').style.width=pct(c.energia);g('ve').textContent=c.energia.toFixed(3)+' t';
+  g('ba').style.width=pct(c.alimentacion);g('va').textContent=c.alimentacion.toFixed(3)+' t';
+  g('bc').style.width=pct(c.consumo);g('vc').textContent=c.consumo.toFixed(3)+' t';
+  const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];
+  const tips={transport:'El transporte domina tus emisiones este mes. Combinar viajes, usar transporte público o pasarte a la bicicleta marcaría la mayor diferencia.',energia:'Tu hogar es la mayor fuente de emisiones. Reducir climatización, cambiar a LEDs o contratar energía renovable puede recortarlo a la mitad.',alimentacion:'Tu dieta lidera las emisiones este mes. Sustituir carne roja por legumbres 2-3 veces por semana es el cambio individual de mayor impacto.',consumo:'Las compras y los residuos pesan bastante. Comprar de segunda mano o aplazar pedidos no urgentes reduce esta categoría fácilmente.'};
+  g('tipt').textContent=tips[top];
+}
+
+let hist=[],cnt=0;
+function saveRecord(){
+  cnt++;
+  const c=calc();
+  const m=+(c.transport+c.energia+c.alimentacion+c.consumo).toFixed(3);
+  const now=new Date();
+  hist.push({id:cnt,date:now.toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+now.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}),cats:c,m,y:+(m*12).toFixed(2)});
+  renderTable();
+  const b=g('bsave');b.textContent='✓ Guardado';b.style.background='#22c55e';
+  setTimeout(()=>{b.innerHTML='<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5.83a2 2 0 0 0-.586-1.414L13 2H2zm1 1h9.172l1.414 1.414A1 1 0 0 1 14 5.17V12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm4 1v3H5l3 3 3-3H9V4H7z"/></svg> Guardar cálculo';b.style.background='';},1500);
+}
+function delRec(id){hist=hist.filter(r=>r.id!==id);renderTable();}
+function clearHist(){if(!hist.length||!confirm('¿Borrar todo el historial?'))return;hist=[];cnt=0;renderTable();}
+function badge(m){return m<.21?'<span class="badge good">Bajo</span>':m<.5?'<span class="badge ok">Moderado</span>':'<span class="badge high">Alto</span>';}
+function renderTable(){
+  g('tcnt').textContent=hist.length+' registro'+(hist.length===1?'':'s');
+  if(!hist.length){g('tbody').innerHTML='<tr><td colspan="10" class="empty">Aún sin registros — pulsa "Guardar cálculo" para empezar.</td></tr>';return;}
+  g('tbody').innerHTML=[...hist].reverse().map(r=>`<tr><td style="color:var(--t3)">#${r.id}</td><td>${r.date}</td><td>${r.cats.transport.toFixed(3)} t</td><td>${r.cats.energia.toFixed(3)} t</td><td>${r.cats.alimentacion.toFixed(3)} t</td><td>${r.cats.consumo.toFixed(3)} t</td><td class="tot" style="color:${r.m<.21?'#4ade80':r.m<.5?'#fbbf24':'#f87171'}">${r.m.toFixed(3)} t</td><td class="tot" style="color:${r.y<2.5?'#4ade80':r.y<6?'#fbbf24':'#f87171'}">${r.y.toFixed(2)} t</td><td>${badge(r.m)}</td><td class="print-hide"><button class="del" onclick="delRec(${r.id})">✕</button></td></tr>`).join('');
+}
+function dlPDF(){g('pdate').textContent=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});window.print();}
+update();
+g('pdate').textContent=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Huella de Carbono</title>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-bg: #f5f5f0;
+      --color-surface: #ffffff;
+      --color-border: #e0ddd5;
+      --color-text-primary: #1a1a18;
+      --color-text-secondary: #6b6b66;
+      --color-accent: #1d9e75;
+      --color-accent-hover: #0f6e56;
+      --color-accent-light: #e1f5ee;
+      --color-error: #e24b4a;
+      --color-error-light: #fcebeb;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    main {
+      background: var(--color-surface);
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      height: 40px;
+      padding: 0 3rem 0 12px;
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      color: var(--color-text-primary);
+      background: var(--color-surface);
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.12);
+    }
+
+    input[type="number"].error {
+      border-color: var(--color-error);
+      box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.1);
+    }
+
+    .unit {
+      position: absolute;
+      right: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      pointer-events: none;
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: var(--color-error);
+      min-height: 16px;
+    }
+
+    button {
+      width: 100%;
+      height: 42px;
+      background: var(--color-accent);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    button:hover {
+      background: var(--color-accent-hover);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .result-card {
+      margin-top: 1.5rem;
+      background: var(--color-accent-light);
+      border: 0.5px solid #9fe1cb;
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      display: none;
+    }
+
+    .result-card.visible {
+      display: block;
+    }
+
+    .result-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #0f6e56;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .result-value {
+      font-size: 32px;
+      font-weight: 500;
+      color: #085041;
+      line-height: 1;
+    }
+
+    .result-unit {
+      font-size: 14px;
+      color: #0f6e56;
+      margin-top: 4px;
+    }
+    /* ── Modo oscuro ── */
+    body.dark-mode {
+      background-color: #222;
+      color: #fff;
+    }
+
+    body.dark-mode main {
+      background: #2e2e2e;
+      border-color: #444;
+    }
+
+    body.dark-mode h1 {
+      color: #fff;
+    }
+
+    body.dark-mode .subtitle {
+      color: #aaa;
+    }
+
+    body.dark-mode label {
+      color: #aaa;
+    }
+
+    body.dark-mode input[type="number"] {
+      background: #3a3a3a;
+      color: #fff;
+      border-color: #555;
+    }
+
+    body.dark-mode .unit {
+      color: #aaa;
+    }
+
+    body.dark-mode #btn-calcular {
+      background: #1d9e75;
+    }
+
+    body.dark-mode #btn-calcular:hover {
+      background: #0f6e56;
+    }
+
+    body.dark-mode #btn-toggle-tema {
+      background: #444;
+      color: #fff;
+      border-color: #666;
+    }
+
+    body.dark-mode #btn-toggle-tema:hover {
+      background: #555;
+    }
+
+    /* ── Botón de tema (estilo propio, no hereda el verde) ── */
+    #btn-toggle-tema {
+      width: 100%;
+      height: 42px;
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 0.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    #btn-toggle-tema:hover {
+      background: #f0ede6;
+    }
+
+    #btn-toggle-tema:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Calculadora de Huella de Carbono</h1>
+    <p class="subtitle">Ingresa tus consumos para estimar el impacto en CO₂.</p>
+
+    <div class="field-group">
+      <div class="field">
+        <label for="km-auto">Kilómetros en auto</label>
+        <div class="input-wrapper">
+          <input type="number" id="km-auto" placeholder="0" min="0" />
+          <span class="unit">km</span>
+        </div>
+        <span class="error-msg" id="err-km"></span>
+      </div>
+
+      <div class="field">
+        <label for="horas-vuelo">Horas de vuelo</label>
+        <div class="input-wrapper">
+          <input type="number" id="horas-vuelo" placeholder="0" min="0" />
+          <span class="unit">hrs</span>
+        </div>
+        <span class="error-msg" id="err-vuelo"></span>
+      </div>
+
+      <div class="field">
+        <label for="electricidad">Gasto en electricidad</label>
+        <div class="input-wrapper">
+          <input type="number" id="electricidad" placeholder="0" min="0" />
+          <span class="unit">kWh</span>
+        </div>
+        <span class="error-msg" id="err-elec"></span>
+      </div>
+    </div>
+
+    <button id="btn-calcular">Calcular huella de carbono</button>
+    <button id="btn-toggle-tema">Cambiar a Modo Oscuro</button>
+
+    <div class="result-card" id="result-card" role="region" aria-live="polite" aria-label="Resultado de huella de carbono">
+      <p class="result-label">Total de huella de carbono</p>
+      <p class="result-value" id="result-value">0</p>
+      <p class="result-unit">kg de CO₂</p>
+    </div>
+  </main>
+
+  <script>
+    const campos = [
+      { inputId: 'km-auto',     errorId: 'err-km',    label: 'kilómetros en auto'   },
+      { inputId: 'horas-vuelo', errorId: 'err-vuelo', label: 'horas de vuelo'       },
+      { inputId: 'electricidad',errorId: 'err-elec',  label: 'gasto en electricidad'},
+    ];
+
+    function limpiarErrores() {
+      campos.forEach(({ inputId, errorId }) => {
+        document.getElementById(inputId).classList.remove('error');
+        document.getElementById(errorId).textContent = '';
+      });
+    }
+
+    function validar() {
+      let valido = true;
+
+      campos.forEach(({ inputId, errorId, label }) => {
+        const input = document.getElementById(inputId);
+        const valor = input.value.trim();
+
+        if (valor === '' || isNaN(Number(valor))) {
+          input.classList.add('error');
+          document.getElementById(errorId).textContent = `El campo "${label}" es obligatorio.`;
+          valido = false;
+        }
+      });
+
+      return valido;
+    }
+
+    function calcular() {
+      limpiarErrores();
+
+      if (!validar()) return;
+
+      const km    = parseFloat(document.getElementById('km-auto').value);
+      const vuelo = parseFloat(document.getElementById('horas-vuelo').value);
+      const elec  = parseFloat(document.getElementById('electricidad').value);
+
+      const total = (km + vuelo + elec) * 0.5;
+
+      const tarjeta = document.getElementById('result-card');
+      document.getElementById('result-value').textContent = total.toFixed(2);
+      tarjeta.classList.add('visible');
+    }
+
+    document.getElementById('btn-calcular').addEventListener('click', calcular);
+
+    const btnTema = document.getElementById('btn-toggle-tema');
+    btnTema.addEventListener('click', function () {
+      const esModoOscuro = document.body.classList.toggle('dark-mode');
+      btnTema.textContent = esModoOscuro ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro';
+    });
+  </script>
+</body>
+</html>
