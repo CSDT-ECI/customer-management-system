@@ -36,6 +36,10 @@ El análisis completo está en [DEVEX_Y_DEVELOPER_PRODUCTIVITY.md](docs/DEVEX_Y_
 
 El análisis completo está en [DEUDA_TECNICA_EN_PROCESOS.md](docs/DEUDA_TECNICA_EN_PROCESOS.md).
 
+## Entregable 6 — Architectural Smells
+
+El análisis completo está en [ARCHITECTURAL_SMELLS_PARTE_1.md](docs/ARCHITECTURAL_SMELLS_PARTE_1.md).
+
 ## Bitácora del curso
 
 | Fecha | Actividad | Evidencia | Resultado |
@@ -45,6 +49,7 @@ El análisis completo está en [DEUDA_TECNICA_EN_PROCESOS.md](docs/DEUDA_TECNICA
 | 2026-03-15 | Primera Entrega | [PRIMERA_ENTREGA_2026.md](docs/PRIMERA_ENTREGA_2026.md) | Hecho |
 | 2026-03-22 | DevEx + Developer Productivity | [DEVEX_Y_DEVELOPER_PRODUCTIVITY.md](docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md) | Hecho |
 | 2026-03-29 | Deuda técnica en procesos | [DEUDA_TECNICA_EN_PROCESOS.md](docs/DEUDA_TECNICA_EN_PROCESOS.md) | Hecho |
+| 2026-04-18 | Architectural Smells Parte 1 | [ARCHITECTURAL_SMELLS_PARTE_1.md](docs/ARCHITECTURAL_SMELLS_PARTE_1.md) | Hecho |
 
 ## Descripción general del proyecto
 
@@ -64,6 +69,7 @@ Cada documento en la carpeta `docs/` corresponde a una entrega específica y re�
 │   ├── DEUDA_TECNICA_EN_PROCESOS.md
 │   ├── DEUDA_TECNICA_Y_REFACTORIZACION.md
 │   ├── DEVEX_Y_DEVELOPER_PRODUCTIVITY.md
+│   ├── ARCHITECTURAL_SMELLS_PARTE_1.md
 │   ├── PLANTILLA_ENCUESTA_DEVEX_SPACE.md
 │   └── PRIMERA_ENTREGA_2026.md
 ├── src/
