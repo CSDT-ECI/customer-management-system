@@ -1,36 +1,79 @@
-# Customer Management System
+<div align="center">
 
-Customer Management System helps you to manage the business activity of your entity. The menus are: clients, persons, dashboards.
-You can create your custom dashboards using native sql scrips. Basic operations for all entities. 
+# 🗂️ Customer Management System
 
-## Summary
-1. Getting Started (Prerequisites, Installing)
-2. Running the tests
-3. Deployment
-4. Built With
-5. Do you have any issue?
-6. Contributing
-7. Versioning
-8. Authors
-9. License
-10. Donation
+**A full-stack enterprise solution for managing clients, people, and custom business dashboards.**
 
-## 1. Getting Started
+[![Java](https://img.shields.io/badge/Java-1.8-ED8B00?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-1.5.7-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Maven-Build_Tool-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE.md)
 
-Clone or download a copy of this project.
+</div>
+
+---
+
+## 📖 About the Project
+
+**Customer Management System (CMS)** helps you manage the business activity of your entity with ease. It provides:
+
+- 👥 **Client & Person Management** — Full CRUD operations for all entities
+- 📊 **Custom Dashboards** — Build dashboards using native SQL scripts
+- 🔐 **Secure Authentication** — Powered by Spring Security
+- 🗄️ **Dual Database Support** — Compatible with MySQL and PostgreSQL
+
+---
+
+## 📋 Table of Contents
+
+1. [Getting Started](#-getting-started)
+   - [Prerequisites](#11-prerequisites)
+   - [Installing](#12-installing)
+2. [Running the Tests](#-running-the-tests)
+3. [Deployment](#-deployment)
+4. [Built With](#-built-with)
+5. [Issues & Support](#-issues--support)
+6. [Contributing](#-contributing)
+7. [Versioning](#-versioning)
+8. [Authors](#-authors)
+9. [License](#-license)
+10. [Donation](#-donation)
+11. [🎓 CSDT 2026 — Course Work](#-csdt-2026--calidad-de-software-y-gestión-de-deuda-técnica)
+
+---
+
+## 🚀 Getting Started
+
+Clone or download a copy of this project to get started:
+
+```bash
+git clone https://github.com/sdrahnea/customer-management-system.git
+cd customer-management-system
+```
 
 ### 1.1 Prerequisites
 
-This project requires Java 1.8, MySQL (or PostgreSQL) and Maven.
+Make sure you have the following installed:
+
+| Tool | Version | Link |
+|------|---------|------|
+| Java JDK | 1.8+ | [Download](https://www.java.com/en/download/) |
+| Maven | 3.x | [Download](https://maven.apache.org/download.cgi) |
+| MySQL **or** PostgreSQL | Latest | [MySQL](https://www.mysql.com/) / [PostgreSQL](https://www.postgresql.org/) |
 
 ### 1.2 Installing
 
-After MySQL (or PostgreSQL) instalation, it is required to create a database:
+**Step 1 — Create the database**
 
+```sql
+CREATE DATABASE cms;
 ```
-CREATE DATABSE cms;
-```
-Execute the content of `.sql` files, such as: 
+
+**Step 2 — Populate with initial data**
+
+Execute the following `.sql` files in order:
+
 ```
 chart_type.sql
 country.sql
@@ -40,113 +83,213 @@ last_name.sql
 unit_industry.sql
 unit_type.sql
 ```
-Note: in case that you run the application starting with MySQL 8.0.4, please execute the following query:
+
+> **⚠️ Note for MySQL 8.0.4+:** Run the following query to fix authentication issues:
+> ```sql
+> ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASSWORD}';
+> -- Replace ${USER} and ${PASSWORD} with your actual credentials.
+> ```
+
+**Step 3 — Build the project**
+
+```bash
+mvn clean compile package
 ```
-ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PASSWORD}';
--- where ${USER} and ${PASSWORD} should be provided. 
+
+Expected output on success:
+
 ```
-All this files contains initial data. Just copy and paste the file's content Go to downloaded folder and create the build (you should have something similar like the following):
-```
-SDR:customer-management-system sdrahnea$ mvn clean compile package
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] ------------------< com.oms:customer-management-system >-------------------
-[INFO] Building customer-management-system 0.0.2-SNAPSHOT
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-clean-plugin:2.6.1:clean (default-clean) @ customer-management-system ---
-[INFO] Deleting /my-projects/customer-management-system/target
-[INFO] 
-[INFO] --- maven-enforcer-plugin:1.4.1:enforce (enforce-versions) @ customer-management-system ---
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ customer-management-system ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 1 resource
-[INFO] Copying 69 resources
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ customer-management-system ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 127 source files to /my-projects/customer-management-system/target/classes
-[INFO] /my-projects/customer-management-system/src/main/java/com/oms/controller/AbstractController.java: Some input files use unchecked or unsafe operations.
-[INFO] /my-projects/customer-management-system/src/main/java/com/oms/controller/AbstractController.java: Recompile with -Xlint:unchecked for details.
-[INFO] 
-[INFO] --- maven-enforcer-plugin:1.4.1:enforce (enforce-versions) @ customer-management-system ---
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ customer-management-system ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] Copying 1 resource
-[INFO] Copying 69 resources
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.7.0:compile (default-compile) @ customer-management-system ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO] 
-[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ customer-management-system ---
-[INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] skip non existing resourceDirectory /my-projects/customer-management-system/src/test/resources
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.7.0:testCompile (default-testCompile) @ customer-management-system ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO] 
-[INFO] --- maven-surefire-plugin:2.18.1:test (default-test) @ customer-management-system ---
-[INFO] No tests to run.
-[INFO] 
-[INFO] --- maven-jar-plugin:3.0.2:jar (default-jar) @ customer-management-system ---
-[INFO] Building jar: /my-projects/customer-management-system/target/customer-management-system-0.0.2-SNAPSHOT.jar
-[INFO] 
-[INFO] --- spring-boot-maven-plugin:1.5.7.RELEASE:repackage (default) @ customer-management-system ---
-[INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  8.183 s
-[INFO] Finished at: 2019-01-10T10:14:15+02:00
-[INFO] ------------------------------------------------------------------------
-SDR:customer-management-system sdrahnea$ 
+[INFO] Total time: 8.183 s
 ```
 
-## 2. Running the tests
+---
 
-This project does not have any kind of tests :).
+## 🧪 Running the Tests
 
-## 3. Deployment
+> This project currently does not include automated tests. Manual testing is performed through the UI after deployment.
 
-Once the build (the jar file) is ready the application can be run. Please, use the following command to run the application:
+---
+
+## ⚙️ Deployment
+
+Once the JAR is built, run the application with:
+
+```bash
+java -jar target/customer-management-system-0.0.2-SNAPSHOT.jar
 ```
-SDR:customer-management-system sdrahnea$ java -jar target/customer-management-system-0.0.2-SNAPSHOT.jar
+
+Then open your browser and navigate to:
+
 ```
-If the default configuration was used, then the application should be available at the following URL: http://localhost:8081/cms/login.xhtml 
-Use the following credentials: username: admin, password: 123.
+http://localhost:8081/cms/login.xhtml
+```
 
-## 4. Built With
+**Default credentials:**
 
-* [Java](https://www.java.com/en/download/) - Java technology allows you to work and play in a secure computing environment. Java allows you to play online games, chat with people around the world, calculate your mortgage interest, and view images in 3D, just to name a few.
-* [PrimeFaces](https://www.primefaces.org/) - PrimeFaces is a popular open source framework for JavaServer Faces featuring over 100 components, touch optimized mobilekit, client side validation, theme engine and more.
-* [Spring Security](https://spring.io/projects/spring-security) - Spring Security is a powerful and highly customizable authentication and access-control framework. It is the de-facto standard for securing Spring-based applications.
-* [Spring Boot](https://spring.io/projects/spring-boot) - Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
-* [Spring Data](https://spring.io/projects/spring-data) - Spring Data’s mission is to provide a familiar and consistent, Spring-based programming model for data access while still retaining the special traits of the underlying data store.
-* [Spring Data JPA](https://spring.io/projects/spring-data-jpa) - Spring Data JPA, part of the larger Spring Data family, makes it easy to easily implement JPA based repositories. This module deals with enhanced support for JPA based data access layers. It makes it easier to build Spring-powered applications that use data access technologies.
-* [MySQL](https://www.mysql.com/) - MySQL is the world's most popular open source database. Whether you are a fast growing web property, technology ISV or large enterprise, MySQL can cost-effectively help you deliver high performance, scalable database applications.
-* [PostgreSQL](https://www.postgresql.org/) - PostgreSQL, also known as Postgres, is a free and open-source relational database management system (RDBMS) emphasizing extensibility and technical standards compliance. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users. It is the default database for macOS Server, and is also available for Linux, FreeBSD, OpenBSD, and Windows. 
-* [Maven](https://maven.apache.org/) - Apache Maven is a software project management and comprehension tool. Based on the concept of a project object model (POM), Maven can manage a project's build, reporting and documentation from a central piece of information. 
+| Field | Value |
+|-------|-------|
+| Username | `admin` |
+| Password | `123` |
 
-## 5. Do you have any issue?
+---
 
-Please contact via LinkedIn account or drop an email (read [LICENSE.md](LICENSE.md) file) or create an issue into project's space.
+## 🛠️ Built With
 
-## 6. Contributing
+| Technology | Purpose |
+|-----------|---------|
+| [Java](https://www.java.com/en/download/) | Core programming language |
+| [Spring Boot](https://spring.io/projects/spring-boot) | Application framework |
+| [Spring Security](https://spring.io/projects/spring-security) | Authentication & authorization |
+| [Spring Data JPA](https://spring.io/projects/spring-data-jpa) | Data access layer |
+| [PrimeFaces](https://www.primefaces.org/) | JSF UI component library |
+| [MySQL](https://www.mysql.com/) | Primary relational database |
+| [PostgreSQL](https://www.postgresql.org/) | Alternative relational database |
+| [Maven](https://maven.apache.org/) | Build & dependency management |
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+---
 
-## 7. Versioning
+## 🐛 Issues & Support
 
-We use [SemVer](http://semver.org/) for versioning.
+Found a bug or need help?
 
-## 8. Authors
+- 📌 [Open an issue](../../issues) in the project's repository
+- 💼 Contact via [LinkedIn](https://www.linkedin.com/in/sergiu-drahnea/)
+- 📧 See the [LICENSE.md](LICENSE.md) for email contact information
 
-* **Sergiu Drahnea** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/sergiu-drahnea/)
+---
 
-## 9. License
+## 🤝 Contributing
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-## 10. Donation
-* [PayPal](https://www.paypal.me/sdrahnea) - any donation is welcomed in case that you was pleased with this work :p
+---
+
+## 🔖 Versioning
+
+We use [SemVer](http://semver.org/) for versioning. Check the [tags on this repository](../../tags) for all available versions.
+
+---
+
+## 👤 Authors
+
+- **Sergiu Drahnea** — *Initial work* — [LinkedIn](https://www.linkedin.com/in/sergiu-drahnea/)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE.md](LICENSE.md) file for details.
+
+---
+
+## 💙 Donation
+
+If this project was useful to you, consider supporting the author:
+
+[![PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/sdrahnea)
+
+---
+
+---
+
+## 🎓 CSDT 2026 — Calidad de Software y Gestión de Deuda Técnica
+
+> Este apartado documenta el trabajo académico desarrollado sobre este repositorio como proyecto base durante el curso **Calidad de Software y Gestión de Deuda Técnica (CSDT)**.
+
+<div align="center">
+
+[![Curso](https://img.shields.io/badge/Curso-CSDT_2026-6C63FF?style=for-the-badge)](.)
+[![Estado](https://img.shields.io/badge/Estado-Completado-success?style=for-the-badge)](.)
+
+</div>
+
+### 👨‍💻 Integrantes del equipo
+
+| Nombre | GitHub |
+|--------|--------|
+| David Santiago Castro Sierra | [@daviidc29](https://github.com/daviidc29) |
+| Jesus Alberto Jauregui Conde | [@JesusJC15](https://github.com/JesusJC15) |
+| Juan David Rodriguez Rodriguez | [@Enigmus12](https://github.com/Enigmus12) |
+
+---
+
+### 📚 Entregables del curso
+
+#### Entregable 1 — Refactoring + Code Smells
+> Identificación y análisis de malos olores en el código base, propuesta de refactorizaciones y aplicación de patrones limpios.
+
+📄 [Ver documento completo → DEUDA_TECNICA_Y_REFACTORIZACION.md](docs/DEUDA_TECNICA_Y_REFACTORIZACION.md)
+
+---
+
+#### Entregable 2 — Clean Code + XP Practices
+> Aplicación de principios de código limpio y prácticas de Extreme Programming (XP) sobre el sistema.
+
+📄 [Ver documento completo → CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md)
+
+---
+
+#### Entregable 3 — Primera Entrega Sem06
+> Primera entrega formal del semestre con análisis integral del proyecto.
+
+📄 [Ver documento completo → PRIMERA_ENTREGA_2026.md](docs/PRIMERA_ENTREGA_2026.md)
+
+---
+
+#### Entregable 4 — DevEx + Developer Productivity
+> Evaluación de la experiencia del desarrollador (DevEx) y análisis de productividad sobre el proyecto base.
+
+📄 [Ver documento completo → DEVEX_Y_DEVELOPER_PRODUCTIVITY.md](docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md)
+
+---
+
+#### Entregable 5 — Deuda Técnica en Procesos
+> Análisis de la deuda técnica a nivel de procesos de desarrollo, metodología y flujos de trabajo.
+
+📄 [Ver documento completo → DEUDA_TECNICA_EN_PROCESOS.md](docs/DEUDA_TECNICA_EN_PROCESOS.md)
+
+---
+
+### 🗓️ Bitácora del curso
+
+| Fecha | Actividad | Documento | Estado |
+|-------|-----------|-----------|--------|
+| 2026-02-12 | Refactoring + Code Smells | [DEUDA_TECNICA_Y_REFACTORIZACION.md](docs/DEUDA_TECNICA_Y_REFACTORIZACION.md) | ✅ Hecho |
+| 2026-02-19 | Clean Code + XP Practices | [CODIGO_LIMPIO_+_PRACTICAS_XP.md](docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md) | ✅ Hecho |
+| 2026-03-15 | Primera Entrega | [PRIMERA_ENTREGA_2026.md](docs/PRIMERA_ENTREGA_2026.md) | ✅ Hecho |
+| 2026-03-22 | DevEx + Developer Productivity | [DEVEX_Y_DEVELOPER_PRODUCTIVITY.md](docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md) | ✅ Hecho |
+| 2026-03-29 | Deuda técnica en procesos | [DEUDA_TECNICA_EN_PROCESOS.md](docs/DEUDA_TECNICA_EN_PROCESOS.md) | ✅ Hecho |
+
+---
+
+### 🗂️ Estructura del repositorio
+
+```text
+.
+├── .github/
+├── .vscode/
+├── docs/
+│   ├── respuestas-encuesta/
+│   ├── CODIGO_LIMPIO_+_PRACTICAS_XP.md
+│   ├── DEUDA_TECNICA_EN_PROCESOS.md
+│   ├── DEUDA_TECNICA_Y_REFACTORIZACION.md
+│   ├── DEVEX_Y_DEVELOPER_PRODUCTIVITY.md
+│   ├── PLANTILLA_ENCUESTA_DEVEX_SPACE.md
+│   └── PRIMERA_ENTREGA_2026.md
+├── src/
+├── pom.xml
+└── README.md
+```
+
+### 📝 Descripción general del trabajo académico
+
+Este repositorio contiene el trabajo desarrollado durante el curso **Calidad de Software y Gestión de Deuda Técnica** sobre el proyecto base **Customer Management System**. A lo largo del curso se realizaron distintos entregables orientados a identificar, analizar y documentar problemas de calidad, mantenibilidad, productividad y deuda técnica presentes en el sistema.
+
+Cada documento en la carpeta `docs/` corresponde a una entrega específica y reúne el análisis realizado por el equipo, junto con observaciones, hallazgos, propuestas de mejora y evidencias del trabajo realizado en clase.
+
+---
+
+<div align="center">
+<sub>Hecho por el equipo RefactDone CSDT 2026</sub>
+</div>
