@@ -16,7 +16,7 @@ baseurl: "/customer-management-system"
 future: true
 
 # ─── Social ───────────────────────────────────────────────────────────────────
-github_username: "CSDT-ECI"
+github_username: "CSDT-ECI/customer-management-system"
 
 # ─── Navigation ───────────────────────────────────────────────────────────────
 header_pages:
