@@ -1,0 +1,356 @@
+---
+layout: default
+title: Home
+---
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+  :root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --primary: #6366f1;
+    --secondary: #ec4899;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+
+  /* Override Minima defaults for a dark premium look */
+  body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-main) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  }
+  
+  .site-header {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color) !important;
+  }
+
+  .site-title, .page-link {
+    color: var(--text-main) !important;
+  }
+
+  .wrapper {
+    max-width: 1100px !important;
+  }
+
+  .site-footer {
+    background-color: var(--bg-color) !important;
+    border-top: 1px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+  }
+  .site-footer a {
+    color: var(--primary) !important;
+  }
+
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 4rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(15,23,42,0) 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #a5b4fc, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 2.5rem auto;
+    line-height: 1.6;
+  }
+
+  /* Badges */
+  .badges {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .badge-img {
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+  }
+  .badge-img:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Glassmorphism Cards */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .metric-value {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin: 0.5rem 0;
+    color: var(--primary);
+  }
+  
+  .metric-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 5rem 0 2rem 0;
+    text-align: center;
+    color: var(--text-main);
+  }
+  
+  /* Blog List */
+  .post-list {
+    list-style: none;
+    padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .post-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  @media (min-width: 600px) {
+    .post-item {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .post-item:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--primary);
+    transform: translateX(5px);
+  }
+
+  .post-link {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-main);
+  }
+
+  .post-link:hover {
+    text-decoration: none;
+    color: var(--primary);
+  }
+
+  .post-date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* Team Section */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .team-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+  }
+
+  .team-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .team-github {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .team-github:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="hero">
+  <h1>Customer Management System</h1>
+  <p>An enterprise-grade refactoring initiative transforming a legacy monolith into a maintainable, testable, and professionally architected system.</p>
+  
+  <div class="badges">
+    <img class="badge-img" src="https://img.shields.io/badge/Curso-CSDT_2026-6C63FF?style=for-the-badge" alt="Curso CSDT 2026">
+    <img class="badge-img" src="https://img.shields.io/badge/Estado-Completado-22c55e?style=for-the-badge" alt="Estado Completado">
+    <img class="badge-img" src="https://img.shields.io/badge/Entregas-5_de_5-f59e0b?style=for-the-badge" alt="Entregas">
+    <img class="badge-img" src="https://img.shields.io/badge/Tests-100%25_unitarios-3b82f6?style=for-the-badge" alt="Tests">
+  </div>
+</div>
+
+<h2 class="section-title">Metrics Dashboard</h2>
+<div class="dashboard-grid">
+  <div class="glass-card">
+    <div class="metric-label">Security Rating</div>
+    <div class="metric-value" style="color: #ef4444;">E</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">Vulnerabilities identified and prioritized</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Reliability Rating</div>
+    <div class="metric-value" style="color: #f59e0b;">D</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">14 issues (2 high, 12 medium)</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Maintainability</div>
+    <div class="metric-value" style="color: #22c55e;">A</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">69 code smells — manageable debt</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Test Coverage</div>
+    <div class="metric-value" style="color: #a855f7;">~45%</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">100+ unit tests incorporated</p>
+  </div>
+</div>
+
+<h2 class="section-title">Latest Updates</h2>
+{% if site.posts.size > 0 %}
+  <ul class="post-list">
+    {% for post in site.posts limit:5 %}
+      <li class="post-item">
+        <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+        <span class="post-date">{{ post.date | date: "%B %-d, %Y" }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <div class="glass-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
+    <p style="margin: 0; color: var(--text-muted);">No blog posts found yet.</p>
+  </div>
+{% endif %}
+
+<h2 class="section-title">The Team</h2>
+<div class="team-grid">
+  <div class="glass-card team-card">
+    <div class="team-avatar">J</div>
+    <div class="team-name">Juan David Rodriguez</div>
+    <a href="https://github.com/Enigmus12" class="team-github" target="_blank">@Enigmus12</a>
+  </div>
+  <div class="glass-card team-card">
+    <div class="team-avatar">J</div>
+    <div class="team-name">Jesus Alberto Jauregui</div>
+    <a href="https://github.com/JesusJC15" class="team-github" target="_blank">@JesusJC15</a>
+  </div>
+  <div class="glass-card team-card">
+    <div class="team-avatar">D</div>
+    <div class="team-name">David Santiago Castro</div>
+    <a href="https://github.com/daviidc29" class="team-github" target="_blank">@daviidc29</a>
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 5rem; padding-bottom: 2rem;">
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/project-report.md" class="glass-card" style="display: inline-block; text-decoration: none; padding: 1rem 2rem;">
+    <span style="color: var(--text-main); font-weight: 600;">View Full Project Report (Markdown) &rarr;</span>
+  </a>
+</div>
+
+<script>
+  // Add simple intersection observer animations for the cards
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.glass-card, .badge-img, .post-item');
+    
+    // Set initial state
+    cards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          // Unobserve once animated
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+    // Stagger animations
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        observer.observe(card);
+      }, index * 50); // slight delay for stagger effect
+    });
+  });
+</script>
