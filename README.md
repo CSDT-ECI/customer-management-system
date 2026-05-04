@@ -208,9 +208,9 @@ If this project was useful to you, consider supporting the author:
 
 | Nombre | GitHub |
 |--------|--------|
-| Juan David Rodriguez Rodriguez | [@Enigmus12](https://github.com/Enigmus12) |
-| Jesus Alberto Jauregui Conde | [@JesusJC15](https://github.com/JesusJC15) |
 | David Santiago Castro Sierra | [@daviidc29](https://github.com/daviidc29) |
+| Jesus Alberto Jauregui Conde | [@JesusJC15](https://github.com/JesusJC15) |
+| Juan David Rodriguez Rodriguez | [@Enigmus12](https://github.com/Enigmus12) |
 
 ---
 

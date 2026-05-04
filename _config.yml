@@ -1,0 +1,43 @@
+theme: minima
+
+# ─── Site Identity ────────────────────────────────────────────────────────────
+title: "Customer Management System — Enterprise Refactoring"
+description: >-
+  An enterprise-grade refactoring initiative progressively transforming a legacy
+  Customer Management System into a maintainable, testable, and
+  professionally architected system. Developed as part of the Calidad de
+  Software y Gestión de Deuda Técnica (CSDT) course at Universidad Escuela Colombiana
+  de Ingeniería Julio Garavito, 2026.
+author: "CSDT-ECI Team"
+
+# ─── Deployment ───────────────────────────────────────────────────────────────
+url: "https://csdt-eci.github.io"
+baseurl: "/customer-management-system"
+future: true
+
+# ─── Social ───────────────────────────────────────────────────────────────────
+github_username: "CSDT-ECI"
+
+# ─── Navigation ───────────────────────────────────────────────────────────────
+header_pages:
+  - index.md
+
+# ─── Plugins (GitHub Pages whitelisted) ───────────────────────────────────────
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# ─── Feed ─────────────────────────────────────────────────────────────────────
+feed:
+  path: feed.xml
+
+# ─── Build exclusions (non-web assets) ────────────────────────────────────────
+exclude:
+  - src/
+  - target/
+  - pom.xml
+  - CONTRIBUTING.md
+  - RefactDone_CSDT-2026.md
+  - CHANGELOG.md
+  - license.md

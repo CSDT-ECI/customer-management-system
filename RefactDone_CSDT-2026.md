@@ -6,9 +6,9 @@
 
 ## Integrantes
 
-- [Juan David Rodriguez Rodriguez](https://github.com/Enigmus12)
-- [Jesus Alberto Jauregui Conde](https://github.com/JesusJC15)
 - [David Santiago Castro Sierra](https://github.com/daviidc29)
+- [Jesus Alberto Jauregui Conde](https://github.com/JesusJC15)
+- [Juan David Rodriguez Rodriguez](https://github.com/Enigmus12)
 
 ## Enlaces rápidos del repo
 
