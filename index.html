@@ -282,21 +282,34 @@ title: Home
   </div>
 </div>
 
-<h2 class="section-title">Latest Updates</h2>
-{% if site.posts.size > 0 %}
-  <ul class="post-list">
-    {% for post in site.posts limit:5 %}
-      <li class="post-item">
-        <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
-        <span class="post-date">{{ post.date | date: "%B %-d, %Y" }}</span>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <div class="glass-card" style="text-align: center; max-width: 800px; margin: 0 auto;">
-    <p style="margin: 0; color: var(--text-muted);">No blog posts found yet.</p>
-  </div>
-{% endif %}
+<h2 class="section-title">Project Deliverables</h2>
+<div class="dashboard-grid">
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_Y_REFACTORIZACION.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
+    <div class="metric-label">Entregable 1</div>
+    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Refactoring & Code Smells</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Identificación de 35+ code smells y análisis de deuda técnica base.</p>
+  </a>
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
+    <div class="metric-label">Entregable 2</div>
+    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Clean Code & XP Practices</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Evaluación de principios SOLID y aplicación de prácticas XP.</p>
+  </a>
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/PRIMERA_ENTREGA_2026.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
+    <div class="metric-label">Entregable 3</div>
+    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Quality Models (SonarQube)</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Análisis según estándar ISO 25010 y estrategia de remediación.</p>
+  </a>
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
+    <div class="metric-label">Entregable 4</div>
+    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">DevEx & SPACE Framework</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Medición de la experiencia del desarrollador y cuellos de botella.</p>
+  </a>
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_EN_PROCESOS.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
+    <div class="metric-label">Entregable 5</div>
+    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Technical Debt in CI/CD</div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Pipeline automatizado con GitHub Actions, SonarQube y Trivy.</p>
+  </a>
+</div>
 
 <h2 class="section-title">The Team</h2>
 <div class="team-grid">
