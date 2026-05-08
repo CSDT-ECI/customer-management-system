@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login.xhtml").permitAll()
             .antMatchers("/main.xhtml").authenticated();
      //           .anyRequest().authenticated();
-        http.formLogin().usernameParameter("form:username").passwordParameter("form:password").loginPage("/login.xhtml").permitAll()
-            .loginProcessingUrl("/login.xhtml")
+        http.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/login.xhtml").permitAll()
+            .loginProcessingUrl("/login")
                 .failureUrl("/login.xhtml?error=true").defaultSuccessUrl("/main.xhtml");
         http.logout().logoutSuccessUrl("/login.xhtml");
         http.csrf().disable();

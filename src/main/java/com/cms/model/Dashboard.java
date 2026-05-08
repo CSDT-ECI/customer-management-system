@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "dashboard")
 public class Dashboard extends CoreEntity {
 
-  @Lob
   @Column(name = "cquery")
   private String query;
 

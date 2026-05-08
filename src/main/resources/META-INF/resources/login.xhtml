@@ -15,40 +15,29 @@
 
     <h:body>
 
-        <h:form id="form">
-            <p:growl id="growl" showDetail="true"/>
-
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center"  class="outer_table">
-                <tr>
-                    <td>
-                        <table width="350" height="300" cellpadding="0" cellspacing="0" border="0" align="center">
-                            <tr>
-                                <td align="center">
-                                    <h:graphicImage value="/images/logo1.png" width="200" style="margin: 50px 0;"/>
-                                    <h:form prependId="false" action="/login">
-                                    <p:panel header="Login">
-                                        <h:panelGrid columns="2" cellpadding="5">
-
-                                            <p:inputText name="username" id="username" label="username"/>
-
-                                            <p:password name="password" id="password"  label="password" />
-
-                                            <p:commandButton value="Login"
-                                                             ajax="false"
-                                                             type="submit"
-                                                           />
-
-                                        </h:panelGrid>
-                                    </p:panel>
-                                    </h:form>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-
-        </h:form>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="outer_table">
+            <tr>
+                <td>
+                    <table width="350" height="300" cellpadding="0" cellspacing="0" border="0" align="center">
+                        <tr>
+                            <td align="center">
+                                <h:graphicImage value="/images/logo1.png" width="200" style="margin: 50px 0;"/>
+                                <form method="POST" action="/cms/login" style="border: 1px solid #ccc; border-radius: 5px; padding: 20px; width: 350px;">
+                                    <h3 style="background-color: #5B9BD5; color: white; padding: 10px; text-align: center;">Login</h3>
+                                    <div style="padding: 10px;">
+                                        <label for="username">Username:</label><br/>
+                                        <input type="text" id="username" name="username" style="width: 100%; padding: 5px; margin: 5px 0;"/><br/>
+                                        <label for="password">Password:</label><br/>
+                                        <input type="password" id="password" name="password" style="width: 100%; padding: 5px; margin: 5px 0;"/><br/>
+                                        <input type="submit" value="Login" style="padding: 8px 20px; margin-top: 10px; cursor: pointer;"/>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 
     </h:body>
 

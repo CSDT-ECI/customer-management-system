@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSDT 2026 - Customer Management System</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#0a0e1a;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.08);--primary:#6366f1;--accent:#ec4899;--text:#f8fafc;--muted:#94a3b8}body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden}.slides{width:100vw;height:100vh;position:relative}.slide{position:absolute;width:100%;height:100%;display:none;flex-direction:column;justify-content:center;align-items:center;padding:60px;opacity:0;transition:opacity .5s}.slide.active{display:flex;opacity:1}.bg-grad{background:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(236,72,153,.1) 0%,transparent 60%),var(--bg)}.nav{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:100}.nav button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 24px;border-radius:24px;cursor:pointer;font-family:inherit;font-size:.9rem;transition:all .3s}.nav button:hover,.nav button.active-btn{background:var(--primary);border-color:var(--primary)}.counter{position:fixed;top:20px;right:30px;color:var(--muted);font-size:.85rem;z-index:100}.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .5s;z-index:100}.badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid}.badge-primary{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.5);color:#a5b4fc}.badge-pink{background:rgba(236,72,153,.2);border-color:rgba(236,72,153,.5);color:#f9a8d4}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;backdrop-filter:blur(10px)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.h1{font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#a5b4fc,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;text-align:center}.h2{font-size:2.4rem;font-weight:800;margin-bottom:24px;color:var(--text)}.h3{font-size:1.2rem;font-weight:700;color:#a5b4fc;margin-bottom:8px}.p{color:var(--muted);line-height:1.7;font-size:.95rem}.metric-val{font-size:2.5rem;font-weight:900;color:var(--primary)}.tag{display:inline-block;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#a5b4fc;border-radius:8px;padding:4px 12px;font-size:.8rem;margin:3px}.smell-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.smell-item:last-child{border-bottom:none}.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}.dot-red{background:#ef4444}.dot-orange{background:#f97316}.dot-yellow{background:#eab308}.dot-green{background:#22c55e}.link-card{display:block;text-decoration:none;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(236,72,153,.1));border:1px solid rgba(99,102,241,.3);border-radius:16px;padding:28px;text-align:center;transition:all .3s}.link-card:hover{transform:translateY(-4px);border-color:var(--primary);box-shadow:0 20px 40px rgba(99,102,241,.2)}.team-av{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;margin:0 auto 12px}.toc-item{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}.toc-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}</style></head><body>
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter">1 / 12</div>
+<div class="slides" id="slides">
+<!-- SLIDE 1: PORTADA -->
+<div class="slide bg-grad active" id="s1">
+  <div style="text-align:center;max-width:800px">
+    <div style="display:flex;justify-content:center;gap:12px;margin-bottom:32px">
+      <span class="badge badge-primary">CSDT 2026</span>
+      <span class="badge badge-pink">ECI</span>
+    </div>
+    <h1 class="h1">Customer Management<br>System</h1>
+    <p class="p" style="font-size:1.1rem;margin:20px 0 36px">Calidad de Software y Gestión de Deuda Técnica</p>
+    <div class="grid3" style="max-width:700px;margin:0 auto">
+      <div class="card" style="text-align:center">
+        <div class="team-av">D</div>
+        <div style="font-weight:600;font-size:.9rem">David Santiago</div>
+        <div style="color:var(--muted);font-size:.8rem">Castro Sierra</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="team-av">J</div>
+        <div style="font-weight:600;font-size:.9rem">Jesus Alberto</div>
+        <div style="color:var(--muted);font-size:.8rem">Jauregui Conde</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="team-av">J</div>
+        <div style="font-weight:600;font-size:.9rem">Juan David</div>
+        <div style="color:var(--muted);font-size:.8rem">Rodriguez Rodriguez</div>
+      </div>
+    </div>
+    <p class="p" style="margin-top:28px;font-size:.85rem">Mayo 2026 • RefactDone Team</p>
+  </div>
+</div>
+<!-- SLIDE 2: TABLA DE CONTENIDO -->
+<div class="slide" id="s2">
+  <div style="max-width:900px;width:100%">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px">
+      <span class="badge badge-primary">Índice</span>
+    </div>
+    <h2 class="h2">Tabla de Contenido</h2>
+    <div class="grid2">
+      <div>
+        <div class="toc-item"><div class="toc-num">01</div><div><div style="font-weight:600">Contexto del Proyecto</div><div class="p" style="font-size:.85rem">Stack, arquitectura y descripción</div></div></div>
+        <div class="toc-item"><div class="toc-num">02</div><div><div style="font-weight:600">Deuda Técnica y Refactorización</div><div class="p" style="font-size:.85rem">Code smells e identificación</div></div></div>
+        <div class="toc-item"><div class="toc-num">03</div><div><div style="font-weight:600">Clean Code + Prácticas XP</div><div class="p" style="font-size:.85rem">Principios SOLID y prácticas ágiles</div></div></div>
+        <div class="toc-item"><div class="toc-num">04</div><div><div style="font-weight:600">Primera Entrega — Sonar</div><div class="p" style="font-size:.85rem">Modelos de calidad ISO 25010</div></div></div>
+        <div class="toc-item"><div class="toc-num">05</div><div><div style="font-weight:600">DevEx + Developer Productivity</div><div class="p" style="font-size:.85rem">Framework SPACE</div></div></div>
+      </div>
+      <div>
+        <div class="toc-item"><div class="toc-num">06</div><div><div style="font-weight:600">Deuda Técnica en Procesos</div><div class="p" style="font-size:.85rem">CI/CD, SonarQube y Trivy</div></div></div>
+        <div class="toc-item"><div class="toc-num">07</div><div><div style="font-weight:600">Sitio Web del Proyecto</div><div class="p" style="font-size:.85rem">GitHub Pages — index.html</div></div></div>
+        <div class="toc-item"><div class="toc-num">08</div><div><div style="font-weight:600">Conclusiones</div><div class="p" style="font-size:.85rem">Resumen del tratamiento de deuda técnica</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 3: CONTEXTO -->
+<div class="slide" id="s3">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-primary" style="margin-bottom:16px;display:inline-block">01</span>
+    <h2 class="h2">Contexto del Proyecto</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">¿Qué es Customer Management System?</h3>
+          <p class="p">Aplicación empresarial Java para gestión de clientes, personas y dashboards personalizados. Base de código legacy seleccionada para análisis académico de deuda técnica.</p>
+        </div>
+        <div class="card">
+          <h3 class="h3">Stack Tecnológico</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            <span class="tag">Java 1.8</span><span class="tag">Spring Boot 1.5.7</span><span class="tag">JSF / PrimeFaces</span><span class="tag">Spring Security</span><span class="tag">Spring Data JPA</span><span class="tag">MySQL / PostgreSQL</span><span class="tag">Maven</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Objetivo del Curso CSDT</h3>
+          <p class="p">Identificar, analizar y documentar problemas de calidad, mantenibilidad, productividad y deuda técnica presentes en el sistema, aplicando herramientas y metodologías modernas.</p>
+        </div>
+        <div class="card">
+          <h3 class="h3">Estructura del Repo</h3>
+          <p class="p" style="font-family:monospace;font-size:.82rem;line-height:1.8">docs/ → Entregables del curso<br>src/ → Código fuente Java<br>.github/ → CI/CD workflows<br>README.md · pom.xml</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 4: DEUDA TÉCNICA Y REFACTORIZACIÓN -->
+<div class="slide" id="s4">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-primary" style="margin-bottom:16px;display:inline-block">02 · DEUDA_TECNICA_Y_REFACTORIZACION.md</span>
+    <h2 class="h2">Deuda Técnica y Refactorización</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Hallazgos Principales</h3>
+          <div class="smell-item"><div class="dot dot-red"></div><div><b>Seguridad Crítica:</b> <span class="p">Credenciales hardcodeadas, CSRF deshabilitado, contraseñas en texto plano, inyección SQL potencial</span></div></div>
+          <div class="smell-item"><div class="dot dot-orange"></div><div><b>Arquitectura:</b> <span class="p">God Class (AbstractController), field injection, clases vacías, violación SRP</span></div></div>
+          <div class="smell-item"><div class="dot dot-yellow"></div><div><b>Persistencia:</b> <span class="p">FetchType.EAGER excesivo, IDs primitivos, almacenamiento CSV, sin validaciones</span></div></div>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>Legacy:</b> <span class="p">Métodos deprecated Spring Data, dependencias inconsistentes, boilerplate</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Métricas de Deuda</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
+            <div style="text-align:center"><div class="metric-val" style="color:#ef4444">35+</div><div class="p" style="font-size:.8rem">Code Smells</div></div>
+            <div style="text-align:center"><div class="metric-val" style="color:#f97316">6</div><div class="p" style="font-size:.8rem">Issues Críticos Seg.</div></div>
+            <div style="text-align:center"><div class="metric-val" style="color:#eab308">8</div><div class="p" style="font-size:.8rem">Problemas Arquitectura</div></div>
+            <div style="text-align:center"><div class="metric-val" style="color:#22c55e">11</div><div class="p" style="font-size:.8rem">Refact. Propuestas</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="h3">Técnicas de Refactorización</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            <span class="tag">Extract Method</span><span class="tag">Builder Pattern</span><span class="tag">Introduce DTO</span><span class="tag">Replace Inheritance</span><span class="tag">Constructor Injection</span><span class="tag">Extract Class</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 5: CLEAN CODE + XP -->
+<div class="slide" id="s5">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-pink" style="margin-bottom:16px;display:inline-block">03 · CODIGO_LIMPIO_+_PRACTICAS_XP.md</span>
+    <h2 class="h2">Clean Code + Prácticas XP</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Evaluación Clean Code</h3>
+          <div class="smell-item"><div class="dot dot-red"></div><div><b>No cumple — Seguridad:</b> <span class="p">CSRF off, login hardcodeado, CORS abierto, credenciales en texto</span></div></div>
+          <div class="smell-item"><div class="dot dot-red"></div><div><b>No cumple — Diseño:</b> <span class="p">Reflexión con newInstance(), clases con 5+ responsabilidades</span></div></div>
+          <div class="smell-item"><div class="dot dot-orange"></div><div><b>No cumple — Funciones:</b> <span class="p">Métodos grandes mezclando UI, datos y lógica de negocio</span></div></div>
+          <div class="smell-item"><div class="dot dot-yellow"></div><div><b>Parcial — Nombres:</b> <span class="p">tobject, BAR_CHAR_MODEL, typos en constantes</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Principios SOLID Violados</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="background:#ef4444;color:#fff;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.8rem">SRP</span><span class="p" style="font-size:.85rem">AbstractController cambia por múltiples razones</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="background:#f97316;color:#fff;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.8rem">OCP</span><span class="p" style="font-size:.85rem">Nuevo gráfico = modificar condicionales</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="background:#eab308;color:#000;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.8rem">DIP</span><span class="p" style="font-size:.85rem">Controladores dependen de otros controladores</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="h3">Prácticas XP Aplicadas</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+            <span class="tag">TDD</span><span class="tag">Integración Continua</span><span class="tag">Refactoring Continuo</span><span class="tag">Pair Programming</span><span class="tag">Small Releases</span><span class="tag">Collective Ownership</span><span class="tag">Coding Standards</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 6: PRIMERA ENTREGA / SONAR -->
+<div class="slide" id="s6">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-primary" style="margin-bottom:16px;display:inline-block">04 · PRIMERA_ENTREGA_2026.md</span>
+    <h2 class="h2">Modelos de Calidad — SonarQube</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Línea Base ISO/IEC 25010</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+            <div class="card" style="text-align:center;padding:12px"><div style="font-size:1.8rem;font-weight:900;color:#ef4444">E</div><div class="p" style="font-size:.75rem">Seguridad</div></div>
+            <div class="card" style="text-align:center;padding:12px"><div style="font-size:1.8rem;font-weight:900;color:#f97316">D</div><div class="p" style="font-size:.75rem">Confiabilidad</div></div>
+            <div class="card" style="text-align:center;padding:12px"><div style="font-size:1.8rem;font-weight:900;color:#22c55e">A</div><div class="p" style="font-size:.75rem">Mantenibilidad</div></div>
+            <div class="card" style="text-align:center;padding:12px"><div style="font-size:1.8rem;font-weight:900;color:#a855f7">0%</div><div class="p" style="font-size:.75rem">Cobertura (inicial)</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Distribución de Issues (75 total)</h3>
+          <div class="smell-item"><div class="dot dot-red"></div><div><b>2 Blockers</b> — contraseña comprometida, sombra de campos</div></div>
+          <div class="smell-item"><div class="dot dot-orange"></div><div><b>10 Critical</b> — serialización, Random, entidad en REST</div></div>
+          <div class="smell-item"><div class="dot dot-yellow"></div><div><b>30 Major</b> — field injection (11×), RequestMapping legacy</div></div>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>33 Minor</b> — imports, logs, constantes, retornos</div></div>
+        </div>
+        <div class="card">
+          <h3 class="h3">Concentración de Deuda</h3>
+          <p class="p" style="font-size:.85rem">52 de 75 issues (69.3%) en solo 5 archivos:<br><b>AbstractController</b> (21) · <b>AbstractService</b> (11) · <b>RandomUtility</b> (7) · <b>RandomController</b> (7) · <b>DashboardViewController</b> (6)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 7: DEVEX -->
+<div class="slide" id="s7">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-pink" style="margin-bottom:16px;display:inline-block">05 · DEVEX_Y_DEVELOPER_PRODUCTIVITY.md</span>
+    <h2 class="h2">DevEx + Developer Productivity</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Framework DevEx — 3 Dimensiones</h3>
+          <div class="smell-item"><div class="dot dot-yellow"></div><div><b>Feedback Loops:</b> <span class="p">Mixtos — CI activo con Sonar + JaCoCo, pero setup manual costoso y README desactualizado</span></div></div>
+          <div class="smell-item"><div class="dot dot-red"></div><div><b>Cognitive Load:</b> <span class="p">Alto — mezcla JSF/Spring/REST/SQL, 11 field injections, reflexión, frameworks legacy</span></div></div>
+          <div class="smell-item"><div class="dot dot-orange"></div><div><b>Flow State:</b> <span class="p">Limitado — deuda estructural + documentación inconsistente interrumpen el flujo</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Framework SPACE</h3>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span class="p" style="font-size:.85rem">Satisfaction</span><span style="color:#eab308;font-weight:700">No medido (encuesta)</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span class="p" style="font-size:.85rem">Performance</span><span style="color:#f97316;font-weight:700">Mixto con deuda</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span class="p" style="font-size:.85rem">Activity</span><span style="color:#22c55e;font-weight:700">Visible en Git</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span class="p" style="font-size:.85rem">Collaboration</span><span style="color:#22c55e;font-weight:700">Fuerte (PRs + docs)</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span class="p" style="font-size:.85rem">Efficiency</span><span style="color:#ef4444;font-weight:700">Baja por fricción</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="h3">Logros del Equipo</h3>
+          <p class="p" style="font-size:.85rem">De 0 tests → 16 clases de prueba<br>CI con GitHub Actions + SonarQube<br>JaCoCo con umbrales mínimos<br>Documentación estructurada en docs/</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 8: DEUDA TÉCNICA EN PROCESOS -->
+<div class="slide" id="s8">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-primary" style="margin-bottom:16px;display:inline-block">06 · DEUDA_TECNICA_EN_PROCESOS.md</span>
+    <h2 class="h2">Deuda Técnica en Procesos</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">SonarQube Cloud — Resultados CI</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+            <div style="text-align:center"><div class="metric-val" style="font-size:1.8rem;color:#a855f7">45.2%</div><div class="p" style="font-size:.78rem">Coverage final</div></div>
+            <div style="text-align:center"><div class="metric-val" style="font-size:1.8rem;color:#ef4444">76</div><div class="p" style="font-size:.78rem">Issues abiertos</div></div>
+            <div style="text-align:center"><div class="metric-val" style="font-size:1.8rem;color:#f97316">621min</div><div class="p" style="font-size:.78rem">Deuda estimada</div></div>
+            <div style="text-align:center"><div class="metric-val" style="font-size:1.8rem;color:#eab308">7</div><div class="p" style="font-size:.78rem">Security Hotspots</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="h3">Pipeline GitHub Actions</h3>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>Step 1:</b> <span class="p">Setup JDK 8 + cache Maven</span></div></div>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>Step 2:</b> <span class="p">mvn -B verify — Build + Unit Tests</span></div></div>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>Step 3:</b> <span class="p">SonarQube analysis con SONAR_TOKEN</span></div></div>
+          <div class="smell-item"><div class="dot dot-green"></div><div><b>Step 4:</b> <span class="p">Trivy security scan → GitHub Security</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">Trivy Security Scanner</h3>
+          <p class="p" style="font-size:.85rem;margin-bottom:10px">Escaneo de vulnerabilidades en cada push y pull request. Integrado en GitHub Security tab.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span class="tag">CVEs en dependencias</span><span class="tag">Secrets en código</span><span class="tag">Misconfigurations</span><span class="tag">IaC issues</span><span class="tag">SARIF format</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="h3">¿Por qué Trivy?</h3>
+          <p class="p" style="font-size:.85rem">Sin rate limits · BD actualizada por Aquasecurity · Multi-formato · Integración nativa GitHub · ~5-10s de escaneo · Open Source (Apache)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 9: SITIO WEB -->
+<div class="slide" id="s9">
+  <div style="max-width:900px;width:100%;text-align:center">
+    <span class="badge badge-pink" style="margin-bottom:16px;display:inline-block">07 · index.html — GitHub Pages</span>
+    <h2 class="h2">Sitio Web del Proyecto</h2>
+    <div class="card" style="margin:0 auto 24px;max-width:700px;padding:32px">
+      <div style="font-size:3rem;margin-bottom:16px">🌐</div>
+      <h3 class="h3" style="font-size:1.4rem;margin-bottom:12px">GitHub Pages — Dashboard Interactivo</h3>
+      <p class="p" style="margin-bottom:24px">Página de presentación profesional del proyecto con diseño glassmorphism, métricas del dashboard SonarQube, equipo y entregables.</p>
+      <a href="https://csdt-eci.github.io/customer-management-system/" target="_blank" class="link-card" style="max-width:500px;margin:0 auto;display:block">
+        <div style="font-size:1.1rem;font-weight:700;color:#a5b4fc;margin-bottom:6px">🔗 csdt-eci.github.io/customer-management-system</div>
+        <div class="p" style="font-size:.85rem">Haz clic para visitar el sitio</div>
+      </a>
+    </div>
+    <div class="grid3" style="max-width:800px;margin:0 auto">
+      <div class="card" style="text-align:center;padding:16px">
+        <div style="font-size:1.5rem;margin-bottom:8px">📊</div>
+        <div style="font-weight:600;font-size:.9rem">Metrics Dashboard</div>
+        <div class="p" style="font-size:.8rem">Ratings Sonar en tiempo real</div>
+      </div>
+      <div class="card" style="text-align:center;padding:16px">
+        <div style="font-size:1.5rem;margin-bottom:8px">📚</div>
+        <div style="font-weight:600;font-size:.9rem">Project Deliverables</div>
+        <div class="p" style="font-size:.8rem">Links a los 5 entregables</div>
+      </div>
+      <div class="card" style="text-align:center;padding:16px">
+        <div style="font-size:1.5rem;margin-bottom:8px">👥</div>
+        <div style="font-weight:600;font-size:.9rem">The Team</div>
+        <div class="p" style="font-size:.8rem">Integrantes con GitHub</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SLIDE 10: CONCLUSIONES -->
+<div class="slide" id="s10">
+  <div style="max-width:1000px;width:100%">
+    <span class="badge badge-primary" style="margin-bottom:16px;display:inline-block">08 · Conclusiones</span>
+    <h2 class="h2">Tratamiento de la Deuda Técnica</h2>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">🔍 Detección de Smells y Refactorización</h3>
+          <p class="p" style="font-size:.85rem">Se identificaron 35+ code smells clasificados por severidad. Las refactorizaciones propuestas (Builder, DTO, Constructor Injection, Extract Class) atacan los patrones de mayor riesgo, especialmente en las clases base AbstractController y AbstractService.</p>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">✅ Clean Code y Prácticas XP</h3>
+          <p class="p" style="font-size:.85rem">La evaluación reveló múltiples violaciones SOLID. Las prácticas XP (TDD, CI, Refactoring continuo, Small Releases) se incorporaron como hoja de ruta para transformar el proyecto de legacy a mantenible.</p>
+        </div>
+        <div class="card">
+          <h3 class="h3">👥 DevEx y Productividad</h3>
+          <p class="p" style="font-size:.85rem">El framework SPACE evidenció alta carga cognitiva y flow limitado. El equipo mejoró la productividad habilitadora: pasó de 0 a 16 clases de test, incorporó CI y dejó trazabilidad documental completa.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">🔒 Deuda en Procesos — SonarQube + Trivy</h3>
+          <p class="p" style="font-size:.85rem">El pipeline CI/CD con GitHub Actions automatiza Build, Unit Tests y análisis estático. SonarQube reveló 76 issues con 621 min de deuda estimada. Trivy complementa con escaneo de CVEs en dependencias y detección de secrets.</p>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h3 class="h3">🧪 Deuda en Pruebas</h3>
+          <p class="p" style="font-size:.85rem">Cobertura inicial 0% → ~45% final. Se incorporaron 100+ pruebas unitarias con JUnit, MockMvc y Mockito. JaCoCo configurado con umbrales mínimos (55% líneas, 10% ramas) como criterio de calidad.</p>
+        </div>
+        <div class="card">
+          <h3 class="h3">📈 Resultado General</h3>
+          <p class="p" style="font-size:.85rem">El proyecto es <b style="color:#22c55e">recuperable</b>. La deuda está concentrada y el costo es manejable. La prioridad: seguridad primero, luego estabilidad estructural, luego testabilidad y finalmente limpieza incremental.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- end slides -->
+<nav class="nav">
+  <button onclick="goTo(currentSlide-1)" id="btnPrev">← Anterior</button>
+  <button onclick="goTo(1)" id="btn1">1</button>
+  <button onclick="goTo(2)" id="btn2">2</button>
+  <button onclick="goTo(3)" id="btn3">3</button>
+  <button onclick="goTo(4)" id="btn4">4</button>
+  <button onclick="goTo(5)" id="btn5">5</button>
+  <button onclick="goTo(6)" id="btn6">6</button>
+  <button onclick="goTo(7)" id="btn7">7</button>
+  <button onclick="goTo(8)" id="btn8">8</button>
+  <button onclick="goTo(9)" id="btn9">9</button>
+  <button onclick="goTo(10)" id="btn10">10</button>
+  <button onclick="goTo(currentSlide+1)" id="btnNext">Siguiente →</button>
+</nav>
+<script>
+const total=10;let currentSlide=1;
+function goTo(n){if(n<1||n>total)return;document.getElementById('s'+currentSlide).classList.remove('active');document.getElementById('btn'+currentSlide).classList.remove('active-btn');currentSlide=n;const sl=document.getElementById('s'+currentSlide);sl.classList.add('active');sl.style.opacity=0;setTimeout(()=>{sl.style.opacity=1;},10);document.getElementById('btn'+currentSlide).classList.add('active-btn');document.getElementById('counter').textContent=currentSlide+' / '+total;document.getElementById('progress').style.width=((currentSlide/total)*100)+'%';}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(currentSlide+1);if(e.key==='ArrowLeft')goTo(currentSlide-1);});
+goTo(1);
+</script>
+</body></html>
