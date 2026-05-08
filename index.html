@@ -4,7 +4,6 @@ title: Home
 ---
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-
   :root {
     --bg-color: #0f172a;
     --card-bg: rgba(30, 41, 59, 0.7);
@@ -13,357 +12,523 @@ title: Home
     --secondary: #ec4899;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+    --yellow: #eab308;
   }
-
-  /* Override Minima defaults for a dark premium look */
-  body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-main) !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-  }
-  
-  .site-header {
-    background-color: rgba(15, 23, 42, 0.8) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-color) !important;
-  }
-
-  .site-title, .page-link {
-    color: var(--text-main) !important;
-  }
-
-  .wrapper {
-    max-width: 1100px !important;
-  }
-
-  .site-footer {
-    background-color: var(--bg-color) !important;
-    border-top: 1px solid var(--border-color) !important;
-    color: var(--text-muted) !important;
-  }
-  .site-footer a {
-    color: var(--primary) !important;
-  }
-
-  /* Hero Section */
-  .hero {
-    text-align: center;
-    padding: 4rem 1rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(15,23,42,0) 70%);
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  .hero h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #a5b4fc, #ec4899);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
-  }
-
-  .hero p {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    max-width: 700px;
-    margin: 0 auto 2.5rem auto;
-    line-height: 1.6;
-  }
-
-  /* Badges */
-  .badges {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-  }
-
-  .badge-img {
-    border-radius: 6px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s ease;
-  }
-  .badge-img:hover {
-    transform: translateY(-2px);
-  }
-
-  /* Glassmorphism Cards */
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  .glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-  }
-
-  .glass-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-  }
-
-  .metric-value {
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin: 0.5rem 0;
-    color: var(--primary);
-  }
-  
-  .metric-label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-
-  /* Section Titles */
-  .section-title {
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 5rem 0 2rem 0;
-    text-align: center;
-    color: var(--text-main);
-  }
-  
-  /* Blog List */
-  .post-list {
-    list-style: none;
-    padding: 0;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .post-item {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  @media (min-width: 600px) {
-    .post-item {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-
-  .post-item:hover {
-    background: rgba(255,255,255,0.05);
-    border-color: var(--primary);
-    transform: translateX(5px);
-  }
-
-  .post-link {
-    font-size: 1.25rem;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--text-main);
-  }
-
-  .post-link:hover {
-    text-decoration: none;
-    color: var(--primary);
-  }
-
-  .post-date {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  /* Team Section */
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .team-card {
-    text-align: center;
-    padding: 2.5rem 1.5rem;
-  }
-
-  .team-avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem auto;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: white;
-    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
-  }
-
-  .team-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .team-github {
-    color: var(--secondary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .team-github:hover {
-    text-decoration: underline;
-  }
+  body { background-color: var(--bg-color) !important; color: var(--text-main) !important; font-family: 'Inter', sans-serif !important; }
+  .site-header { background-color: rgba(15,23,42,0.8) !important; backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color) !important; }
+  .site-title, .page-link { color: var(--text-main) !important; }
+  .wrapper { max-width: 1100px !important; }
+  .site-footer { background-color: var(--bg-color) !important; border-top: 1px solid var(--border-color) !important; color: var(--text-muted) !important; }
+  .site-footer a { color: var(--primary) !important; }
+  .hero { text-align: center; padding: 4rem 1rem 3rem; position: relative; overflow: hidden; }
+  .hero::before { content:''; position:absolute; top:-30%; left:50%; transform:translateX(-50%); width:600px; height:600px; background:radial-gradient(circle,rgba(99,102,241,.15) 0%,rgba(15,23,42,0) 70%); z-index:-1; }
+  .hero h1 { font-size:3.5rem; font-weight:800; margin-bottom:1.5rem; background:linear-gradient(135deg,#a5b4fc,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.2; }
+  .hero p { font-size:1.2rem; color:var(--text-muted); max-width:700px; margin:0 auto 2.5rem; line-height:1.6; }
+  .badges { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:2rem; }
+  .badge-img { border-radius:6px; transition:transform 0.2s; }
+  .badge-img:hover { transform:translateY(-2px); }
+  .section-title { font-size:2rem; font-weight:800; margin:5rem 0 2rem; text-align:center; color:var(--text-main); }
+  .section-subtitle { text-align:center; color:var(--text-muted); margin-top:-1.5rem; margin-bottom:2.5rem; font-size:.95rem; }
+  .glass-card { background:var(--card-bg); backdrop-filter:blur(12px); border:1px solid var(--border-color); border-radius:16px; padding:1.5rem; transition:all .3s; box-shadow:0 10px 15px -3px rgba(0,0,0,.2); }
+  .glass-card:hover { transform:translateY(-5px); border-color:rgba(255,255,255,.2); box-shadow:0 20px 25px -5px rgba(0,0,0,.3); }
+  .dashboard-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; margin-top:2rem; }
+  .metric-value { font-size:2.8rem; font-weight:800; margin:.5rem 0; color:var(--primary); }
+  .metric-label { font-size:.85rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); font-weight:600; }
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+  .team-card { text-align:center; padding:2.5rem 1.5rem; }
+  .team-avatar { width:90px; height:90px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-size:2.5rem; font-weight:bold; color:white; box-shadow:0 10px 15px -3px rgba(99,102,241,.3); }
+  .team-name { font-weight:600; font-size:1.1rem; margin-bottom:.5rem; }
+  .team-github { color:var(--secondary); text-decoration:none; font-size:.9rem; font-weight:600; }
+  .team-github:hover { text-decoration:underline; }
+  .deliverable-card { background:var(--card-bg); border:1px solid var(--border-color); border-radius:16px; padding:2rem; margin-bottom:2rem; transition:all .3s; }
+  .deliverable-card:hover { border-color:rgba(99,102,241,.4); box-shadow:0 0 30px rgba(99,102,241,.1); }
+  .del-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .del-num { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#fff; font-weight:800; font-size:.85rem; padding:6px 14px; border-radius:20px; white-space:nowrap; }
+  .del-date { color:var(--text-muted); font-size:.85rem; }
+  .del-link { color:var(--primary); text-decoration:none; font-size:.85rem; font-weight:600; margin-left:auto; }
+  .del-link:hover { text-decoration:underline; }
+  .del-title { font-size:1.35rem; font-weight:700; margin-bottom:.8rem; color:var(--text-main); }
+  .del-desc { color:var(--text-muted); line-height:1.7; margin-bottom:1rem; font-size:.95rem; }
+  .tag-list { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1rem; }
+  .tag { background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.3); color:#a5b4fc; border-radius:8px; padding:3px 11px; font-size:.8rem; font-weight:500; }
+  .tag-red { background:rgba(239,68,68,.15); border-color:rgba(239,68,68,.3); color:#fca5a5; }
+  .tag-green { background:rgba(34,197,94,.15); border-color:rgba(34,197,94,.3); color:#86efac; }
+  .tag-yellow { background:rgba(234,179,8,.15); border-color:rgba(234,179,8,.3); color:#fde047; }
+  .mini-table { width:100%; border-collapse:collapse; font-size:.85rem; margin-top:1rem; }
+  .mini-table th { color:var(--text-muted); font-weight:600; padding:8px 10px; border-bottom:1px solid var(--border-color); text-align:left; }
+  .mini-table td { padding:7px 10px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text-main); }
+  .mini-table tr:last-child td { border-bottom:none; }
+  .bar-wrap { margin:.5rem 0; }
+  .bar-label { display:flex; justify-content:space-between; font-size:.8rem; color:var(--text-muted); margin-bottom:4px; }
+  .bar-bg { background:rgba(255,255,255,.06); border-radius:99px; height:8px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:99px; transition:width 1s ease; }
+  .finding-list { list-style:none; padding:0; }
+  .finding-list li { display:flex; align-items:flex-start; gap:.75rem; padding:.5rem 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:.9rem; color:var(--text-muted); }
+  .finding-list li:last-child { border-bottom:none; }
+  .finding-list li .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+  .pipeline-steps { display:flex; flex-direction:column; gap:.75rem; margin-top:1rem; }
+  .pipeline-step { display:flex; align-items:center; gap:1rem; }
+  .step-num { background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.4); color:#a5b4fc; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; flex-shrink:0; }
+  .step-text { font-size:.9rem; color:var(--text-muted); }
+  .step-text b { color:var(--text-main); }
+  .timeline { display:flex; gap:0; overflow-x:auto; padding-bottom:1rem; margin:2rem 0; }
+  .tl-item { flex:1; min-width:160px; position:relative; padding:1.5rem 1rem 1rem; text-align:center; }
+  .tl-item::before { content:''; position:absolute; top:22px; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--primary),var(--secondary)); z-index:0; }
+  .tl-item:first-child::before { left:50%; }
+  .tl-item:last-child::before { right:50%; }
+  .tl-dot { width:14px; height:14px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary)); margin:0 auto 12px; position:relative; z-index:1; box-shadow:0 0 12px rgba(99,102,241,.6); }
+  .tl-date { font-size:.75rem; color:var(--text-muted); margin-bottom:.3rem; }
+  .tl-label { font-size:.82rem; font-weight:600; color:var(--text-main); }
+  .tl-status { font-size:.75rem; color:var(--green); margin-top:.3rem; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+  @media(max-width:700px) { .two-col { grid-template-columns:1fr; } .del-link { margin-left:0; } }
+  .key-finding { background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(236,72,153,.07)); border:1px solid rgba(99,102,241,.25); border-radius:14px; padding:1.2rem 1.5rem; margin-bottom:1rem; }
+  .key-finding h4 { color:#a5b4fc; font-size:.95rem; font-weight:700; margin-bottom:.4rem; }
+  .key-finding p { color:var(--text-muted); font-size:.88rem; line-height:1.6; margin:0; }
+  .stack-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-top:1.5rem; }
+  .stack-item { background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; padding:1rem 1.2rem; }
+  .stack-item .tech { font-weight:700; font-size:.95rem; margin-bottom:.25rem; }
+  .stack-item .role { color:var(--text-muted); font-size:.8rem; }
+  .stack-item .note { color:#fde047; font-size:.75rem; margin-top:.25rem; }
+  .conclusion-box { background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(236,72,153,.08)); border:1px solid rgba(99,102,241,.3); border-radius:16px; padding:2rem; margin-top:2rem; text-align:center; }
+  .conclusion-box p { color:var(--text-muted); line-height:1.8; font-size:.95rem; max-width:750px; margin:0 auto; }
+  .conclusion-box strong { color:var(--text-main); }
 </style>
 
+<!-- HERO -->
 <div class="hero">
   <h1>Customer Management System</h1>
-  <p>An enterprise-grade refactoring initiative transforming a legacy monolith into a maintainable, testable, and professionally architected system.</p>
-  
+  <p>Análisis completo de calidad, refactorización y gestión de deuda técnica sobre un sistema empresarial legado — CSDT 2026.</p>
   <div class="badges">
-    <img class="badge-img" src="https://img.shields.io/badge/Curso-CSDT_2026-6C63FF?style=for-the-badge" alt="Curso CSDT 2026">
-    <img class="badge-img" src="https://img.shields.io/badge/Estado-Completado-22c55e?style=for-the-badge" alt="Estado Completado">
+    <img class="badge-img" src="https://img.shields.io/badge/Curso-CSDT_2026-6C63FF?style=for-the-badge" alt="Curso">
+    <img class="badge-img" src="https://img.shields.io/badge/Estado-Completado-22c55e?style=for-the-badge" alt="Estado">
     <img class="badge-img" src="https://img.shields.io/badge/Entregas-5_de_5-f59e0b?style=for-the-badge" alt="Entregas">
     <img class="badge-img" src="https://img.shields.io/badge/Tests-100%25_unitarios-3b82f6?style=for-the-badge" alt="Tests">
+    <img class="badge-img" src="https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI">
+    <img class="badge-img" src="https://img.shields.io/badge/SonarQube-Integrado-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white" alt="Sonar">
   </div>
 </div>
 
+<!-- METRICS DASHBOARD -->
 <h2 class="section-title">Metrics Dashboard</h2>
+<p class="section-subtitle">Métricas consolidadas del análisis SonarQube Cloud sobre la línea base del proyecto</p>
 <div class="dashboard-grid">
   <div class="glass-card">
     <div class="metric-label">Security Rating</div>
-    <div class="metric-value" style="color: #ef4444;">E</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">Vulnerabilities identified and prioritized</p>
+    <div class="metric-value" style="color:#ef4444">E</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">Vulnerabilidades identificadas y priorizadas — 4 issues de seguridad</p>
   </div>
   <div class="glass-card">
     <div class="metric-label">Reliability Rating</div>
-    <div class="metric-value" style="color: #f59e0b;">D</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">14 issues (2 high, 12 medium)</p>
+    <div class="metric-value" style="color:#f97316">D</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">14 issues de confiabilidad (2 high, 12 medium)</p>
   </div>
   <div class="glass-card">
     <div class="metric-label">Maintainability</div>
-    <div class="metric-value" style="color: #22c55e;">A</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">69 code smells — manageable debt</p>
+    <div class="metric-value" style="color:#22c55e">A</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">69 code smells — deuda manejable, ventana de oportunidad</p>
   </div>
   <div class="glass-card">
     <div class="metric-label">Test Coverage</div>
-    <div class="metric-value" style="color: #a855f7;">~45%</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0;">100+ unit tests incorporated</p>
+    <div class="metric-value" style="color:#a855f7">45%</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">100+ tests unitarios — de 0% inicial a ~45% final</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Issues Totales</div>
+    <div class="metric-value" style="color:#f59e0b">76</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">621 minutos de deuda técnica estimada</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Security Hotspots</div>
+    <div class="metric-value" style="color:#ef4444">7</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">100% revisados manualmente durante el curso</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Duplicación</div>
+    <div class="metric-value" style="color:#22c55e">0%</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">Sin copia masiva de bloques — señal positiva</p>
+  </div>
+  <div class="glass-card">
+    <div class="metric-label">Code Smells</div>
+    <div class="metric-value" style="color:#6366f1">35+</div>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:0">Identificados en análisis inicial — 6 categorías de severidad</p>
   </div>
 </div>
 
-<h2 class="section-title">Project Deliverables</h2>
-<div class="dashboard-grid">
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_Y_REFACTORIZACION.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
-    <div class="metric-label">Entregable 1</div>
-    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Refactoring & Code Smells</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Identificación de 35+ code smells y análisis de deuda técnica base.</p>
-  </a>
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/CODIGO_LIMPIO_+_PRACTICAS_XP.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
-    <div class="metric-label">Entregable 2</div>
-    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Clean Code & XP Practices</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Evaluación de principios SOLID y aplicación de prácticas XP.</p>
-  </a>
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/PRIMERA_ENTREGA_2026.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
-    <div class="metric-label">Entregable 3</div>
-    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Quality Models (SonarQube)</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Análisis según estándar ISO 25010 y estrategia de remediación.</p>
-  </a>
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
-    <div class="metric-label">Entregable 4</div>
-    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">DevEx & SPACE Framework</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Medición de la experiencia del desarrollador y cuellos de botella.</p>
-  </a>
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_EN_PROCESOS.md" class="glass-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: center;">
-    <div class="metric-label">Entregable 5</div>
-    <div style="color: var(--text-main); font-weight: 600; font-size: 1.2rem; margin: 0.5rem 0;">Technical Debt in CI/CD</div>
-    <p style="color: var(--text-muted); font-size: 0.9rem; margin:0; line-height: 1.5;">Pipeline automatizado con GitHub Actions, SonarQube y Trivy.</p>
-  </a>
+<!-- ISSUE DISTRIBUTION -->
+<h2 class="section-title">Distribución de Issues</h2>
+<p class="section-subtitle">Concentración y severidad de la deuda técnica identificada</p>
+<div class="two-col" style="margin-top:2rem">
+  <div class="glass-card">
+    <h3 style="font-weight:700;margin-bottom:1.2rem;color:var(--text-main)">Por Severidad</h3>
+    <div class="bar-wrap"><div class="bar-label"><span>🔴 Blocker</span><span>2 (2.7%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:3%;background:#ef4444"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>🟠 Critical</span><span>10 (13.3%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:13%;background:#f97316"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>🟡 Major</span><span>30 (40.0%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:40%;background:#eab308"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>⚪ Minor</span><span>34 (44.0%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:44%;background:#94a3b8"></div></div></div>
+  </div>
+  <div class="glass-card">
+    <h3 style="font-weight:700;margin-bottom:1.2rem;color:var(--text-main)">Concentración por Archivo</h3>
+    <div class="bar-wrap"><div class="bar-label"><span>AbstractController.java</span><span>21 issues (28%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:28%;background:#6366f1"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>AbstractService.java</span><span>11 issues (14.7%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:15%;background:#8b5cf6"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>RandomUtility.java</span><span>7 issues (9.3%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:9%;background:#a855f7"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>RandomController.java</span><span>7 issues (9.3%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:9%;background:#ec4899"></div></div></div>
+    <div class="bar-wrap"><div class="bar-label"><span>SecurityConfig.java</span><span>4 issues (5.3%)</span></div><div class="bar-bg"><div class="bar-fill" style="width:5%;background:#ef4444"></div></div></div>
+    <p style="color:var(--text-muted);font-size:.8rem;margin-top:1rem">52 de 76 issues (69.3%) concentrados en 5 archivos base</p>
+  </div>
 </div>
 
+<!-- TIMELINE -->
+<h2 class="section-title">Bitácora del Curso</h2>
+<p class="section-subtitle">5 entregables completados entre febrero y marzo de 2026</p>
+<div class="timeline">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Feb 12, 2026</div><div class="tl-label">Refactoring + Code Smells</div><div class="tl-status">✅ Completado</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Feb 19, 2026</div><div class="tl-label">Clean Code + XP Practices</div><div class="tl-status">✅ Completado</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Mar 15, 2026</div><div class="tl-label">Primera Entrega SonarQube</div><div class="tl-status">✅ Completado</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Mar 22, 2026</div><div class="tl-label">DevEx + Productivity</div><div class="tl-status">✅ Completado</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Mar 29, 2026</div><div class="tl-label">Deuda Técnica en CI/CD</div><div class="tl-status">✅ Completado</div></div>
+</div>
+
+<!-- DELIVERABLES -->
+<h2 class="section-title">Project Deliverables</h2>
+<p class="section-subtitle">Análisis detallado por entregable del curso</p>
+
+<!-- E1 -->
+<div class="deliverable-card">
+  <div class="del-header">
+    <span class="del-num">Entregable 1</span>
+    <span class="del-date">📅 Feb 12, 2026</span>
+    <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_Y_REFACTORIZACION.md" class="del-link" target="_blank">Ver documento →</a>
+  </div>
+  <div class="del-title">Refactoring + Code Smells</div>
+  <div class="del-desc">Identificación y análisis de más de 35 code smells distribuidos en 6 categorías de severidad. El nivel de deuda técnica fue clasificado como alto, con áreas críticas en seguridad, arquitectura y mantenibilidad.</div>
+  <div class="two-col">
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:#fca5a5;margin-bottom:.5rem">🔴 Hallazgos Críticos de Seguridad</p>
+      <ul class="finding-list">
+        <li><span class="dot" style="background:#ef4444"></span>Credenciales hardcodeadas <code style="color:#a5b4fc;font-size:.78rem">if(login.equals("admin"))</code> — OWASP A07</li>
+        <li><span class="dot" style="background:#ef4444"></span>Contraseñas en texto plano en <code style="color:#a5b4fc;font-size:.78rem">application.properties</code> — OWASP A02</li>
+        <li><span class="dot" style="background:#ef4444"></span>CSRF deshabilitado <code style="color:#a5b4fc;font-size:.78rem">http.csrf().disable()</code> — OWASP A01</li>
+        <li><span class="dot" style="background:#ef4444"></span>SQL dinámico sin sanitizar (<code style="color:#a5b4fc;font-size:.78rem">@Lob</code> query) — OWASP A03</li>
+        <li><span class="dot" style="background:#f97316"></span><code style="color:#a5b4fc;font-size:.78rem">WebSecurityConfigurerAdapter</code> deprecated</li>
+        <li><span class="dot" style="background:#f97316"></span><code style="color:#a5b4fc;font-size:.78rem">main()</code> con lógica BCrypt en clase de configuración</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:#fde047;margin-bottom:.5rem">🟡 Refactorizaciones Propuestas</p>
+      <div class="tag-list">
+        <span class="tag">Extract Method</span>
+        <span class="tag">Builder Pattern</span>
+        <span class="tag">Introduce DTO</span>
+        <span class="tag">Constructor Injection</span>
+        <span class="tag">Replace Inheritance</span>
+        <span class="tag">Extract Class</span>
+        <span class="tag">Magic String → Constant</span>
+        <span class="tag">Criteria API</span>
+      </div>
+      <p style="font-weight:600;font-size:.85rem;color:#fca5a5;margin-top:1rem;margin-bottom:.5rem">🟠 Problemas de Arquitectura</p>
+      <div class="tag-list">
+        <span class="tag tag-red">God Class</span>
+        <span class="tag tag-red">Field Injection</span>
+        <span class="tag tag-red">Clases Vacías</span>
+        <span class="tag tag-red">Violación SRP</span>
+        <span class="tag tag-red">JSF + Spring Mezclados</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- E2 -->
+<div class="deliverable-card">
+  <div class="del-header">
+    <span class="del-num">Entregable 2</span>
+    <span class="del-date">📅 Feb 19, 2026</span>
+    <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/CODIGO_LIMPIO_%2B_PRACTICAS_XP.md" class="del-link" target="_blank">Ver documento →</a>
+  </div>
+  <div class="del-title">Clean Code + XP Practices</div>
+  <div class="del-desc">Evaluación de 11 características de Clean Code con evidencia directa del repositorio y mapeo de violaciones a principios SOLID. Propuesta de prácticas XP para transformar el proyecto.</div>
+  <div class="two-col">
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Evaluación Clean Code</p>
+      <table class="mini-table">
+        <thead><tr><th>Característica</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Nombres significativos</td><td style="color:#eab308">⚠️ Parcial</td></tr>
+          <tr><td>Funciones pequeñas (SRP)</td><td style="color:#ef4444">❌ No cumple</td></tr>
+          <tr><td>Clases cohesivas</td><td style="color:#ef4444">❌ No cumple</td></tr>
+          <tr><td>DRY / Sin duplicación</td><td style="color:#ef4444">❌ No cumple</td></tr>
+          <tr><td>KISS (sin reflexión)</td><td style="color:#ef4444">❌ No cumple</td></tr>
+          <tr><td>Seguridad en el código</td><td style="color:#ef4444">❌ Crítico</td></tr>
+          <tr><td>Pruebas automatizadas</td><td style="color:#ef4444">❌ No cumple</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Principios SOLID Violados</p>
+      <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;gap:.6rem"><span style="background:#ef4444;color:#fff;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.78rem">SRP</span><span style="color:var(--text-muted);font-size:.83rem">AbstractController cambia por múltiples razones</span></div>
+        <div style="display:flex;align-items:center;gap:.6rem"><span style="background:#f97316;color:#fff;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.78rem">OCP</span><span style="color:var(--text-muted);font-size:.83rem">Nuevo gráfico requiere modificar if/else existentes</span></div>
+        <div style="display:flex;align-items:center;gap:.6rem"><span style="background:#eab308;color:#000;padding:2px 10px;border-radius:6px;font-weight:700;font-size:.78rem">DIP</span><span style="color:var(--text-muted);font-size:.83rem">Controllers dependen de otros controllers</span></div>
+      </div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.5rem">Prácticas XP Aplicadas</p>
+      <div class="tag-list">
+        <span class="tag tag-green">TDD</span><span class="tag tag-green">CI</span><span class="tag tag-green">Refactoring Continuo</span><span class="tag tag-green">Pair Programming</span><span class="tag tag-green">Small Releases</span><span class="tag tag-green">Collective Ownership</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- E3 -->
+<div class="deliverable-card">
+  <div class="del-header">
+    <span class="del-num">Entregable 3</span>
+    <span class="del-date">📅 Mar 15, 2026</span>
+    <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/PRIMERA_ENTREGA_2026.md" class="del-link" target="_blank">Ver documento →</a>
+  </div>
+  <div class="del-title">Modelos de Calidad — SonarQube (ISO/IEC 25010)</div>
+  <div class="del-desc">Análisis integral basado en ISO/IEC 25010 con evidencia de SonarQube Cloud. Diagnóstico de 6 dimensiones de calidad, identificación de hallazgos bloqueantes y plan de remediación priorizado.</div>
+  <div class="two-col">
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Hallazgos Bloqueantes y Críticos</p>
+      <table class="mini-table">
+        <thead><tr><th>Severidad</th><th>Archivo</th><th>Hallazgo</th></tr></thead>
+        <tbody>
+          <tr><td style="color:#ef4444">🔴 BLOCKER</td><td style="font-size:.78rem;color:#a5b4fc">SecurityConfig.java:39</td><td style="font-size:.82rem">Contraseña comprometida</td></tr>
+          <tr><td style="color:#ef4444">🔴 BLOCKER</td><td style="font-size:.78rem;color:#a5b4fc">UnitService.java:20</td><td style="font-size:.82rem">Campo entityManager oculta herencia</td></tr>
+          <tr><td style="color:#f97316">🟠 CRITICAL</td><td style="font-size:.78rem;color:#a5b4fc">MainRestController:20</td><td style="font-size:.82rem">Entidad JPA expuesta en REST</td></tr>
+          <tr><td style="color:#f97316">🟠 CRITICAL</td><td style="font-size:.78rem;color:#a5b4fc">AbstractController:158</td><td style="font-size:.82rem">new Random() por llamada</td></tr>
+          <tr><td style="color:#f97316">🟠 CRITICAL</td><td style="font-size:.78rem;color:#a5b4fc">AbstractController:27</td><td style="font-size:.82rem">Campo list no transient</td></tr>
+        </tbody>
+      </table>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-top:1rem;margin-bottom:.5rem">Incorporación de Tests</p>
+      <ul class="finding-list">
+        <li><span class="dot" style="background:#22c55e"></span>0.0% cobertura inicial → ~45% final</li>
+        <li><span class="dot" style="background:#22c55e"></span>100+ tests unitarios con JUnit</li>
+        <li><span class="dot" style="background:#22c55e"></span>MockMvc + Mockito para endpoints REST</li>
+        <li><span class="dot" style="background:#22c55e"></span>JaCoCo: umbrales 55% líneas / 10% ramas</li>
+      </ul>
+    </div>
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Deuda por Paquete</p>
+      <div class="bar-wrap"><div class="bar-label"><span>controller/</span><span>39 issues (52%) · 265 min</span></div><div class="bar-bg"><div class="bar-fill" style="width:52%;background:#6366f1"></div></div></div>
+      <div class="bar-wrap"><div class="bar-label"><span>service/</span><span>14 issues (18.7%) · 156 min</span></div><div class="bar-bg"><div class="bar-fill" style="width:19%;background:#8b5cf6"></div></div></div>
+      <div class="bar-wrap"><div class="bar-label"><span>util/</span><span>7 issues (9.3%) · 36 min</span></div><div class="bar-bg"><div class="bar-fill" style="width:9%;background:#a855f7"></div></div></div>
+      <div class="bar-wrap"><div class="bar-label"><span>model/</span><span>5 issues (6.7%) · 10 min</span></div><div class="bar-bg"><div class="bar-fill" style="width:7%;background:#ec4899"></div></div></div>
+      <div class="bar-wrap"><div class="bar-label"><span>configs/</span><span>4 issues (5.3%) · 85 min</span></div><div class="bar-bg"><div class="bar-fill" style="width:5%;background:#ef4444"></div></div></div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-top:1rem;margin-bottom:.5rem">Plan de Remediación</p>
+      <div class="tag-list">
+        <span class="tag tag-red">1° Seguridad</span><span class="tag tag-yellow">2° Arquitectura</span><span class="tag">3° Testabilidad</span><span class="tag tag-green">4° Higiene técnica</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- E4 -->
+<div class="deliverable-card">
+  <div class="del-header">
+    <span class="del-num">Entregable 4</span>
+    <span class="del-date">📅 Mar 22, 2026</span>
+    <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEVEX_Y_DEVELOPER_PRODUCTIVITY.md" class="del-link" target="_blank">Ver documento →</a>
+  </div>
+  <div class="del-title">DevEx + Developer Productivity (SPACE Framework)</div>
+  <div class="del-desc">Análisis de la experiencia del desarrollador bajo los marcos DevEx y SPACE. Se evaluaron feedback loops, carga cognitiva y estado de flujo, contrastados con métricas objetivas del repositorio.</div>
+  <div class="two-col">
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Diagnóstico DevEx</p>
+      <table class="mini-table">
+        <thead><tr><th>Dimensión</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>🔄 Feedback Loops</td><td style="color:#eab308">⚠️ Mixto — CI activo, onboarding manual</td></tr>
+          <tr><td>🧠 Cognitive Load</td><td style="color:#ef4444">❌ Alto — JSF + Spring + SQL + reflexión</td></tr>
+          <tr><td>🌊 Flow State</td><td style="color:#ef4444">❌ Limitado — deuda interrumpe el foco</td></tr>
+        </tbody>
+      </table>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-top:1rem;margin-bottom:.75rem">Framework SPACE</p>
+      <table class="mini-table">
+        <tbody>
+          <tr><td>😊 Satisfaction</td><td style="color:#eab308">No medible — señales mixtas</td></tr>
+          <tr><td>🎯 Performance</td><td style="color:#f97316">Mejorando, con riesgo técnico</td></tr>
+          <tr><td>📈 Activity</td><td style="color:#22c55e">Positiva en historial Git</td></tr>
+          <tr><td>🤝 Collaboration</td><td style="color:#22c55e">Fuerte — PRs + docs centralizados</td></tr>
+          <tr><td>⚡ Efficiency</td><td style="color:#ef4444">Por debajo — setup manual</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Estado del Repo al Momento del Análisis</p>
+      <table class="mini-table">
+        <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Archivos Java main</td><td>67</td></tr>
+          <tr><td>Clases de test</td><td>16</td></tr>
+          <tr><td>Archivos XHTML (UI)</td><td>17</td></tr>
+          <tr><td>CI configurado</td><td style="color:#22c55e">✅ build.yml</td></tr>
+          <tr><td>JaCoCo umbrales</td><td>55% / 10%</td></tr>
+        </tbody>
+      </table>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-top:1rem;margin-bottom:.5rem">Oportunidades Priorizadas</p>
+      <ul class="finding-list">
+        <li><span class="dot" style="background:#6366f1"></span>Actualizar README con estado real del proyecto</li>
+        <li><span class="dot" style="background:#6366f1"></span>Simplificar setup de base de datos</li>
+        <li><span class="dot" style="background:#6366f1"></span>Separar REST controllers de backing beans JSF</li>
+        <li><span class="dot" style="background:#6366f1"></span>Normalizar observabilidad con encuestas DevEx</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- E5 -->
+<div class="deliverable-card">
+  <div class="del-header">
+    <span class="del-num">Entregable 5</span>
+    <span class="del-date">📅 Mar 29, 2026</span>
+    <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/DEUDA_TECNICA_EN_PROCESOS.md" class="del-link" target="_blank">Ver documento →</a>
+  </div>
+  <div class="del-title">Deuda Técnica en Procesos — CI/CD con SonarQube + Trivy</div>
+  <div class="del-desc">Implementación de un pipeline de integración continua completo con GitHub Actions. Build automatizado, ejecución de pruebas unitarias, análisis estático con SonarQube Cloud y escaneo de seguridad con Trivy.</div>
+  <div class="two-col">
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Pipeline Implementado</p>
+      <div class="pipeline-steps">
+        <div class="pipeline-step"><div class="step-num">1</div><div class="step-text"><b>Setup JDK 8 + Maven cache</b><br>Entorno reproducible con caché de dependencias</div></div>
+        <div class="pipeline-step"><div class="step-num">2</div><div class="step-text"><b>mvn -B verify</b><br>Build + Unit Tests + JaCoCo en cada push/PR</div></div>
+        <div class="pipeline-step"><div class="step-num">3</div><div class="step-text"><b>SonarQube Analysis</b><br>Deuda técnica, calidad y hotspots automáticos</div></div>
+        <div class="pipeline-step"><div class="step-num">4</div><div class="step-text"><b>Trivy Scanner (fs scan)</b><br>CVEs en dependencias + secrets + misconfigs</div></div>
+        <div class="pipeline-step"><div class="step-num">5</div><div class="step-text"><b>Upload SARIF → GitHub Security</b><br>Resultados visibles en Security > Code Scanning</div></div>
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem">Resultados SonarQube en CI</p>
+      <table class="mini-table">
+        <tbody>
+          <tr><td>Coverage</td><td style="color:#a855f7;font-weight:700">45.2%</td></tr>
+          <tr><td>Duplicated lines</td><td style="color:#22c55e;font-weight:700">0.0%</td></tr>
+          <tr><td>Issues totales</td><td style="color:#f59e0b;font-weight:700">76</td></tr>
+          <tr><td>Deuda estimada</td><td style="color:#f59e0b;font-weight:700">621 minutos</td></tr>
+          <tr><td>Security Hotspots</td><td style="color:#ef4444;font-weight:700">7</td></tr>
+          <tr><td>Maintainability</td><td style="color:#22c55e;font-weight:700">A (1.0)</td></tr>
+        </tbody>
+      </table>
+      <p style="font-weight:600;font-size:.85rem;color:var(--text-muted);margin-top:1rem;margin-bottom:.5rem">¿Por qué Trivy?</p>
+      <div class="tag-list">
+        <span class="tag tag-green">Sin rate limits</span>
+        <span class="tag tag-green">BD Aquasecurity</span>
+        <span class="tag tag-green">~5-10s escaneo</span>
+        <span class="tag tag-green">Open Source Apache</span>
+        <span class="tag">CVEs Java/Maven</span>
+        <span class="tag">Secrets detection</span>
+        <span class="tag">SARIF nativo</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY FINDINGS -->
+<h2 class="section-title">Hallazgos Clave del Proyecto</h2>
+<p class="section-subtitle">Los descubrimientos más importantes a lo largo de los 5 entregables</p>
+<div class="two-col" style="margin-top:2rem">
+  <div>
+    <p style="font-weight:700;color:#fca5a5;margin-bottom:1rem">Lo que encontramos al inicio</p>
+    <div class="key-finding">
+      <h4>35+ Code Smells Identificados</h4>
+      <p>Distribuidos en seguridad, arquitectura, persistencia, código legacy y mantenibilidad. Nivel de deuda clasificado como alto.</p>
+    </div>
+    <div class="key-finding">
+      <h4>Seguridad E — Vulnerabilidades Activas</h4>
+      <p>Credenciales hardcodeadas, CSRF desactivado, CORS abierto, contraseñas en texto plano, entidades expuestas en REST.</p>
+    </div>
+    <div class="key-finding">
+      <h4>0% de Cobertura — Sin Tests</h4>
+      <p>El repositorio inicial no tenía carpeta src/test. Ningún test automatizado. Cualquier cambio tenía riesgo de regresión.</p>
+    </div>
+    <div class="key-finding">
+      <h4>God Class AbstractController</h4>
+      <p>28% de toda la deuda concentrada en un solo archivo. Mezclaba REST, JSF, reflexión, utilidades y estado mutable.</p>
+    </div>
+  </div>
+  <div>
+    <p style="font-weight:700;color:#86efac;margin-bottom:1rem">Lo que implementamos durante el curso</p>
+    <div class="key-finding" style="border-color:rgba(34,197,94,.25);background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(99,102,241,.05))">
+      <h4>✅ 100+ Tests Unitarios</h4>
+      <p>De 0% a ~45% de cobertura con JUnit, MockMvc y Mockito. JaCoCo configurado con umbrales mínimos como criterio de calidad.</p>
+    </div>
+    <div class="key-finding" style="border-color:rgba(34,197,94,.25);background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(99,102,241,.05))">
+      <h4>✅ CI/CD con GitHub Actions</h4>
+      <p>Build + tests + SonarQube + Trivy en cada push y pull request. Evidencia automática y auditable de calidad del código.</p>
+    </div>
+    <div class="key-finding" style="border-color:rgba(34,197,94,.25);background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(99,102,241,.05))">
+      <h4>✅ 5 Documentos de Análisis</h4>
+      <p>Deuda técnica, clean code, modelos de calidad, DevEx/SPACE y procesos CI/CD. Trazabilidad completa del trabajo académico.</p>
+    </div>
+    <div class="key-finding" style="border-color:rgba(34,197,94,.25);background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(99,102,241,.05))">
+      <h4>✅ Propuestas de Refactorización</h4>
+      <p>Catálogo con antes/después en código real: Builder, DTO, Constructor Injection, Extract Class, Criteria API y más.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<h2 class="section-title">Stack Tecnológico Analizado</h2>
+<p class="section-subtitle">Tecnologías del sistema base y herramientas de calidad incorporadas durante el curso</p>
+<div class="stack-grid">
+  <div class="stack-item"><div class="tech">☕ Java 1.8</div><div class="role">Lenguaje base</div><div class="note">⚠️ Limitante de modernización</div></div>
+  <div class="stack-item"><div class="tech">🍃 Spring Boot 1.5.7</div><div class="role">Framework principal</div><div class="note">⚠️ APIs deprecated identificadas</div></div>
+  <div class="stack-item"><div class="tech">🔐 Spring Security</div><div class="role">Autenticación</div><div class="note">⚠️ Configuración insegura detectada</div></div>
+  <div class="stack-item"><div class="tech">🖥️ JSF / PrimeFaces</div><div class="role">Interfaz de usuario</div><div class="note">⚠️ Mezcla con REST genera carga cognitiva</div></div>
+  <div class="stack-item"><div class="tech">💾 Spring Data JPA</div><div class="role">Persistencia</div><div class="note">⚠️ Eager fetching excesivo</div></div>
+  <div class="stack-item"><div class="tech">🗄️ MySQL / PostgreSQL</div><div class="role">Base de datos</div><div class="note">⚠️ Credenciales en texto plano</div></div>
+  <div class="stack-item"><div class="tech">📦 Maven</div><div class="role">Build & dependencias</div><div class="note">✅ Pipeline configurado con JaCoCo</div></div>
+  <div class="stack-item"><div class="tech">📊 SonarQube Cloud</div><div class="role">Análisis de calidad</div><div class="note">✅ Integrado en CI automático</div></div>
+  <div class="stack-item"><div class="tech">⚙️ GitHub Actions</div><div class="role">CI/CD</div><div class="note">✅ Build + tests + análisis por PR</div></div>
+  <div class="stack-item"><div class="tech">🔒 Trivy</div><div class="role">Seguridad</div><div class="note">✅ CVE scanning + secrets detection</div></div>
+  <div class="stack-item"><div class="tech">🧪 JaCoCo</div><div class="role">Cobertura</div><div class="note">✅ Umbrales 55% líneas / 10% ramas</div></div>
+  <div class="stack-item"><div class="tech">🧬 Mockito + MockMvc</div><div class="role">Testing</div><div class="note">✅ 100+ tests unitarios incorporados</div></div>
+</div>
+
+<!-- CONCLUSION -->
+<h2 class="section-title">Conclusión General</h2>
+<div class="conclusion-box">
+  <p>La <strong>Maintainability A</strong> no compensa una <strong style="color:#ef4444">Security E</strong>, una <strong style="color:#f97316">Reliability D</strong>, <strong>7 hotspots sin revisar</strong> y <strong>0.0% de cobertura inicial</strong>. El proyecto es funcional pero inmaduro en calidad integral. La deuda está <strong style="color:#22c55e">concentrada y recuperable</strong> — si se actúa en el orden correcto: <strong style="color:#ef4444">primero seguridad</strong> → <strong style="color:#f97316">estabilidad estructural</strong> → <strong style="color:#a855f7">testabilidad</strong> → <strong style="color:#22c55e">limpieza técnica</strong>.</p>
+</div>
+
+<!-- TEAM -->
 <h2 class="section-title">The Team</h2>
 <div class="team-grid">
   <div class="glass-card team-card">
-    <div class="team-avatar">J</div>
-    <div class="team-name">Juan David Rodriguez</div>
-    <a href="https://github.com/Enigmus12" class="team-github" target="_blank">@Enigmus12</a>
+    <div class="team-avatar">D</div>
+    <div class="team-name">David Santiago Castro Sierra</div>
+    <a href="https://github.com/daviidc29" class="team-github" target="_blank">@daviidc29</a>
   </div>
   <div class="glass-card team-card">
     <div class="team-avatar">J</div>
-    <div class="team-name">Jesus Alberto Jauregui</div>
+    <div class="team-name">Jesus Alberto Jauregui Conde</div>
     <a href="https://github.com/JesusJC15" class="team-github" target="_blank">@JesusJC15</a>
   </div>
   <div class="glass-card team-card">
-    <div class="team-avatar">D</div>
-    <div class="team-name">David Santiago Castro</div>
-    <a href="https://github.com/daviidc29" class="team-github" target="_blank">@daviidc29</a>
+    <div class="team-avatar">J</div>
+    <div class="team-name">Juan David Rodriguez Rodriguez</div>
+    <a href="https://github.com/Enigmus12" class="team-github" target="_blank">@Enigmus12</a>
   </div>
 </div>
 
-<div style="text-align: center; margin-top: 5rem; padding-bottom: 2rem;">
-  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/project-report.md" class="glass-card" style="display: inline-block; text-decoration: none; padding: 1rem 2rem;">
-    <span style="color: var(--text-main); font-weight: 600;">View Full Project Report (Markdown) &rarr;</span>
+<!-- FOOTER LINK -->
+<div style="text-align:center;margin-top:5rem;padding-bottom:2rem">
+  <a href="https://github.com/CSDT-ECI/customer-management-system/blob/main/docs/project-report.md" class="glass-card" style="display:inline-block;text-decoration:none;padding:1rem 2rem;margin-bottom:1rem">
+    <span style="color:var(--text-main);font-weight:600">📋 Ver Reporte Completo del Proyecto →</span>
   </a>
 </div>
 
 <script>
-  // Add simple intersection observer animations for the cards
   document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll('.glass-card, .badge-img, .post-item');
-    
-    // Set initial state
-    cards.forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-    
+    const cards = document.querySelectorAll('.glass-card, .badge-img, .deliverable-card, .key-finding, .stack-item, .tl-item');
+    cards.forEach(card => { card.style.opacity='0'; card.style.transform='translateY(20px)'; card.style.transition='opacity 0.6s ease, transform 0.6s ease'; });
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          // Unobserve once animated
-          observer.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.style.opacity='1'; entry.target.style.transform='translateY(0)'; observer.unobserve(entry.target); }
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    // Stagger animations
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        observer.observe(card);
-      }, index * 50); // slight delay for stagger effect
-    });
+    }, { threshold: 0.05, rootMargin:"0px 0px -30px 0px" });
+    cards.forEach((card, i) => { setTimeout(() => observer.observe(card), i * 30); });
   });
 </script>
