@@ -41,8 +41,7 @@ public class Unit extends CoreEntity {
   @ManyToOne(fetch = FetchType.EAGER)
   private Country country;
 
-  @JoinColumn(name="person_id")
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private Collection<Person> persons = new LinkedHashSet<>();
 
   public String getAddress() {
